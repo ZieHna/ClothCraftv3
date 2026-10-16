@@ -42,4 +42,10 @@
         <field name="model_id" ref="model_clothcraft_price_history"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
+
+    <record id="stock_listing_company_rule" model="ir.rule">
+        <field name="name">Stock Listing: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_stock_listing"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
 </odoo>

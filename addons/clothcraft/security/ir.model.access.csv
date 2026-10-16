@@ -3,3 +3,5 @@ access_garment_type_inventory,clothcraft.garment.type inventory,model_clothcraft
 access_garment_type_admin,clothcraft.garment.type admin,model_clothcraft_garment_type,group_admin,1,1,1,1
 access_price_history_inventory,clothcraft.price.history inventory,model_clothcraft_price_history,group_inventory,1,0,0,0
 access_price_history_admin,clothcraft.price.history admin,model_clothcraft_price_history,group_admin,1,0,0,0
+access_stock_listing_inventory,clothcraft.stock.listing inventory,model_clothcraft_stock_listing,group_inventory,1,0,0,0
+access_stock_listing_admin,clothcraft.stock.listing admin,model_clothcraft_stock_listing,group_admin,1,0,0,0
