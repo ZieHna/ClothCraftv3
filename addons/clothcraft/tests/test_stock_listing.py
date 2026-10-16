@@ -67,7 +67,7 @@ class TestStockListing(TransactionCase):
         self.assertEqual(len(row), 1)
         self.assertEqual(row.supplier, 'Listing Vendor A')
         self.assertEqual(row.quantity, 6)
-        self.assertEqual(row.arrival_date, when)
+        self.assertEqual(row.first_received, when)
         self.assertEqual((row.list_price, row.standard_price), (900, 400))
         self.assertFalse(row.lot_id)
 
@@ -76,14 +76,14 @@ class TestStockListing(TransactionCase):
         self._receive(product, 3)
         row = self._rows(product)
         self.assertEqual(row.supplier, 'No supplier')
-        self.assertTrue(row.arrival_date)
+        self.assertTrue(row.first_received)
 
     def test_stock_with_no_receipt_shows_no_supplier_and_no_date(self):
         product = self._product('Listing Tee 3')
         self.env['stock.quant']._update_available_quantity(product, self.warehouse.lot_stock_id, 4)
         row = self._rows(product)
         self.assertEqual((row.supplier, row.quantity), ('No supplier', 4))
-        self.assertFalse(row.arrival_date)
+        self.assertFalse(row.first_received)
 
     def test_purchase_order_receipt_shows_the_po_vendor(self):
         product = self._product('Listing Tee 4')
@@ -107,7 +107,7 @@ class TestStockListing(TransactionCase):
         row = self._rows(product)
         self.assertEqual(row.quantity, 2)
         self.assertEqual(row.supplier, 'No supplier')
-        self.assertFalse(row.arrival_date)
+        self.assertFalse(row.first_received)
 
     def test_returned_back_vendor_return_is_not_a_second_supplier(self):
         product = self._product('Listing Tee 6')
@@ -119,7 +119,7 @@ class TestStockListing(TransactionCase):
         row = self._rows(product)
         self.assertEqual(row.quantity, 5)
         self.assertEqual(row.supplier, 'Listing Vendor A')
-        self.assertEqual(row.arrival_date, datetime(2026, 2, 3, 10, 0))
+        self.assertEqual(row.first_received, datetime(2026, 2, 3, 10, 0))
 
     def test_lot_tracked_stock_has_one_row_per_lot_with_its_own_supplier(self):
         product = self._product('Listing Tee 7', tracking='lot')
@@ -134,7 +134,18 @@ class TestStockListing(TransactionCase):
         rows = self._rows(product)
         self.assertEqual(len(rows), 2)
         by_lot = {row.lot_id.name: row for row in rows}
-        self.assertEqual((by_lot['LST-A'].quantity, by_lot['LST-A'].supplier, by_lot['LST-A'].arrival_date),
+        self.assertEqual((by_lot['LST-A'].quantity, by_lot['LST-A'].supplier, by_lot['LST-A'].first_received),
                          (10, 'Listing Vendor A', datetime(2026, 1, 10, 9, 0)))
-        self.assertEqual((by_lot['LST-B'].quantity, by_lot['LST-B'].supplier, by_lot['LST-B'].arrival_date),
+        self.assertEqual((by_lot['LST-B'].quantity, by_lot['LST-B'].supplier, by_lot['LST-B'].first_received),
                          (4, 'Listing Vendor B', datetime(2026, 3, 5, 14, 30)))
+
+    def test_first_received_is_the_earliest_supplier_receipt_for_rows_without_a_lot(self):
+        product = self._product('Listing Tee 8')
+        # received later first, to show the date decides and not the order of creation
+        self._receive(product, 2, partner=self.vendor_b, when=datetime(2026, 5, 1, 9, 0))
+        self._receive(product, 3, partner=self.vendor_a, when=datetime(2026, 2, 1, 9, 0))
+        row = self._rows(product)
+        self.assertEqual(len(row), 1)
+        self.assertEqual(row.quantity, 5)
+        self.assertEqual(row.first_received, datetime(2026, 2, 1, 9, 0))
+        self.assertEqual(row.supplier, 'Listing Vendor A')

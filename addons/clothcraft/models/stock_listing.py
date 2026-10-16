@@ -19,12 +19,13 @@ class ClothcraftStockListing(models.Model):
         string="Sale Price", digits='Product Price', related='product_id.lst_price')
     standard_price = fields.Float(
         string="Cost", digits='Product Price', related='product_id.standard_price')
-    arrival_date = fields.Datetime(
-        compute='_compute_arrival', help="Latest supplier receipt of this variant (or lot).")
+    first_received = fields.Datetime(
+        string="First Received", compute='_compute_arrival',
+        help="Earliest supplier receipt of this variant (or lot).")
     supplier = fields.Char(
         compute='_compute_arrival',
-        help="Vendor of the purchase order line, else the receipt's partner, else 'No supplier'. "
-             "Returns never count as supplier receipts.")
+        help="Vendor of the purchase order line, else the partner, of that first supplier receipt, "
+             "else 'No supplier'. Returns never count as supplier receipts.")
 
     def init(self):
         tools.drop_view_if_exists(self.env.cr, self._table)
@@ -49,12 +50,12 @@ class ClothcraftStockListing(models.Model):
         lines = MoveLine.search(
             MoveLine._clothcraft_supplier_receipt_domain()
             + [('product_id', 'in', self.product_id.ids)], order='date, id')
-        latest = {}  # oldest first, so the last write per key is the latest receipt
+        first = {}  # oldest first, so the first receipt seen per key is the earliest
         for line in lines:
-            latest[line.product_id.id, line.lot_id.id] = line
+            first.setdefault((line.product_id.id, line.lot_id.id), line)
         for row in self:
-            line = latest.get((row.product_id.id, row.lot_id.id))
-            row.arrival_date = line.date if line else False
+            line = first.get((row.product_id.id, row.lot_id.id))
+            row.first_received = line.date if line else False
             partner = (line.move_id.purchase_line_id.order_id.partner_id
                        or line.picking_id.partner_id) if line else False
             row.supplier = partner.display_name if partner else NO_SUPPLIER
