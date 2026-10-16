@@ -13,7 +13,9 @@ class TestPriceHistoryCost(TransactionCase):
         cls.product = cls.template.product_variant_id
 
     def _rows(self, kind, **extra):
-        return self.history.search([('product_id', '=', self.product.id), ('kind', '=', kind)] +
+        # sale-price rows belong to the template; cost rows belong to the variant
+        scope = ('product_tmpl_id', '=', self.template.id) if kind == 'sale' else ('product_id', '=', self.product.id)
+        return self.history.search([scope, ('kind', '=', kind)] +
                                    [(k, '=', v) for k, v in extra.items()], order='id')
 
     def test_cost_change_logged_with_user(self):
@@ -46,6 +48,49 @@ class TestPriceHistoryCost(TransactionCase):
     def test_template_cost_write_goes_through_variant_hook(self):
         self.template.standard_price = 77
         self.assertEqual(self._rows('cost')[-1].new_price, 77.0)
+
+    def test_sale_price_initial_and_change(self):
+        rows = self._rows('sale')
+        self.assertEqual(len(rows), 1)
+        self.assertTrue(rows.is_initial)
+        self.assertEqual(rows.new_price, 500.0)
+        self.template.list_price = 650
+        row = self._rows('sale')[-1]
+        self.assertEqual((row.old_price, row.new_price, row.is_initial), (500.0, 650.0, False))
+
+    def test_unchanged_sale_price_not_logged(self):
+        self.template.list_price = 500
+        self.assertEqual(len(self._rows('sale')), 1)
+
+    def test_price_extra_change_logged_with_label(self):
+        attribute = self.env['product.attribute'].create({
+            'name': 'Test Size', 'create_variant': 'always',
+            'value_ids': [(0, 0, {'name': 'S'}), (0, 0, {'name': 'XL'})],
+        })
+        template = self.env['product.template'].create({
+            'name': 'Extra Tee',
+            'attribute_line_ids': [(0, 0, {
+                'attribute_id': attribute.id,
+                'value_ids': [(6, 0, attribute.value_ids.ids)],
+            })],
+        })
+        ptav = template.attribute_line_ids.product_template_value_ids.filtered(lambda v: v.name == 'XL')
+        ptav.price_extra = 50
+        row = self.history.search([('product_tmpl_id', '=', template.id), ('kind', '=', 'extra')])
+        self.assertEqual((row.old_price, row.new_price), (0.0, 50.0))
+        self.assertEqual(row.description, 'Test Size: XL')
+
+    def test_vendor_price_logged_on_create_and_change(self):
+        vendor = self.env['res.partner'].create({'name': 'Vendor One'})
+        info = self.env['product.supplierinfo'].create({
+            'partner_id': vendor.id, 'product_tmpl_id': self.template.id, 'price': 200,
+        })
+        rows = self.history.search([('product_tmpl_id', '=', self.template.id), ('kind', '=', 'vendor_cost')])
+        self.assertEqual((rows.partner_id, rows.new_price, rows.is_initial), (vendor, 200.0, True))
+        info.price = 230
+        row = self.history.search([('product_tmpl_id', '=', self.template.id),
+                                   ('kind', '=', 'vendor_cost')], order='id desc', limit=1)
+        self.assertEqual((row.old_price, row.new_price, row.partner_id), (200.0, 230.0, vendor))
 
     def test_history_cannot_be_edited_or_deleted(self):
         self.product.standard_price = 5
