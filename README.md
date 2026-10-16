@@ -36,6 +36,33 @@ docker compose up -d odoo
 
 Success looks like `0 failed, 0 error(s) of N tests when loading database`.
 
+### Run the tests on a throwaway database (recommended)
+
+Tests never touch the live `clothcraft` database this way. The first install takes about 4 minutes;
+later runs with `-u` take about 30 seconds.
+
+```powershell
+docker compose stop odoo
+docker compose exec -T db sh -c 'createdb -U "$POSTGRES_USER" -E UTF8 -T template0 clothcraft_test'
+docker compose run --rm --no-deps odoo odoo -d clothcraft_test -i clothcraft --test-tags /clothcraft --stop-after-init --without-demo=True
+# after code changes:
+docker compose run --rm --no-deps odoo odoo -d clothcraft_test -u clothcraft --test-tags /clothcraft --stop-after-init
+# when finished:
+docker compose exec -T db sh -c 'dropdb -U "$POSTGRES_USER" clothcraft_test'
+docker compose up -d odoo
+```
+
+### Upgrade the live database after pulling new module code
+
+The module adds columns (for example `garment_type_id` on products), so the live database must be
+upgraded before the web service is started with new code:
+
+```powershell
+docker compose stop odoo
+docker compose run --rm --no-deps odoo odoo -d clothcraft -u clothcraft --stop-after-init
+docker compose up -d odoo
+```
+
 ## Notes
 
 - Never commit `.env`. It is gitignored; `.env.example` holds the placeholders.
