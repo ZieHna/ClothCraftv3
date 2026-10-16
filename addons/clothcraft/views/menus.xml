@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_clothcraft_root" name="ClothCraft" sequence="50"/>
+    <menuitem id="menu_clothcraft_garment_type" name="Garment Types"
+              parent="menu_clothcraft_root" action="garment_type_action" sequence="10"/>
+</odoo>
