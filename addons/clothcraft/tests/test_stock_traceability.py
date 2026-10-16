@@ -52,9 +52,8 @@ class TestStockTraceability(TransactionCase):
         return sum(quants.mapped('quantity')) - sum(quants.mapped('reserved_quantity'))
 
     def _arrival(self, lot):
-        line = self.env['stock.move.line'].search([
-            ('lot_id', '=', lot.id), ('state', '=', 'done'),
-            ('location_id.usage', '=', 'supplier'), ('location_dest_id.usage', '=', 'internal')])
+        line = self.env['stock.move.line'].search(
+            self.env['stock.move.line']._clothcraft_supplier_receipt_domain() + [('lot_id', '=', lot.id)])
         self.assertEqual(len(line), 1)
         supplier = line.move_id.purchase_line_id.order_id.partner_id
         return line.date, supplier, line.picking_id.date_done
