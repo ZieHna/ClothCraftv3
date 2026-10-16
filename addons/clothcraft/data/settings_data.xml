@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Same effect as ticking "Variants" and "Lots & Serial Numbers" in Inventory/Sales Settings:
+         the setting is just an extra group implied by every internal user. -->
+    <record id="base.group_user" model="res.groups">
+        <field name="implied_ids" eval="[
+            Command.link(ref('product.group_product_variant')),
+            Command.link(ref('stock.group_production_lot')),
+        ]"/>
+    </record>
+</odoo>

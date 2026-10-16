@@ -7,6 +7,7 @@
     'license': 'LGPL-3',
     'depends': ['sale_management', 'stock', 'purchase', 'website_sale'],
     'data': [
+        'data/settings_data.xml',
         'security/ir.model.access.csv',
         'security/clothcraft_security.xml',
         'views/garment_type_views.xml',
