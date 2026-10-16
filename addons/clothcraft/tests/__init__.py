@@ -7,3 +7,4 @@ from . import test_stock_traceability
 from . import test_receipts
 from . import test_average_cost
 from . import test_stock_listing
+from . import test_vat
