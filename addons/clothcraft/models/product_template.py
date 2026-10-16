@@ -1,8 +1,11 @@
-from odoo import api, models
+from odoo import api, fields, models
 
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
+
+    garment_type_id = fields.Many2one(
+        'clothcraft.garment.type', string="Garment Type", index=True, ondelete='restrict')
 
     @api.model_create_multi
     def create(self, vals_list):

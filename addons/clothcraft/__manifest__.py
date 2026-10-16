@@ -8,9 +8,11 @@
     'depends': ['sale_management', 'stock', 'purchase', 'website_sale'],
     'data': [
         'data/settings_data.xml',
+        'data/attributes_data.xml',
         'security/ir.model.access.csv',
         'security/clothcraft_security.xml',
         'views/garment_type_views.xml',
+        'views/product_template_views.xml',
         'views/menus.xml',
     ],
     'application': True,
