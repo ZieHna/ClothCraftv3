@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_garment_type_user,clothcraft.garment.type user,model_clothcraft_garment_type,base.group_user,1,0,0,0
-access_garment_type_manager,clothcraft.garment.type manager,model_clothcraft_garment_type,stock.group_stock_manager,1,1,1,1
-access_price_history_user,clothcraft.price.history read,model_clothcraft_price_history,base.group_user,1,0,0,0
+access_garment_type_inventory,clothcraft.garment.type inventory,model_clothcraft_garment_type,group_inventory,1,1,1,0
+access_garment_type_admin,clothcraft.garment.type admin,model_clothcraft_garment_type,group_admin,1,1,1,1
+access_price_history_inventory,clothcraft.price.history inventory,model_clothcraft_price_history,group_inventory,1,0,0,0
+access_price_history_admin,clothcraft.price.history admin,model_clothcraft_price_history,group_admin,1,0,0,0

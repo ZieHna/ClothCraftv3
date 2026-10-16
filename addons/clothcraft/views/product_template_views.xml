@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <field name="categ_id" position="after">
-                <field name="garment_type_id"/>
+                <field name="garment_type_id" groups="clothcraft.group_inventory"/>
             </field>
         </field>
     </record>

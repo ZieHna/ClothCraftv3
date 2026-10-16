@@ -9,8 +9,8 @@
     'data': [
         'data/settings_data.xml',
         'data/attributes_data.xml',
-        'security/ir.model.access.csv',
         'security/clothcraft_security.xml',
+        'security/ir.model.access.csv',
         'views/garment_type_views.xml',
         'views/product_template_views.xml',
         'views/menus.xml',
