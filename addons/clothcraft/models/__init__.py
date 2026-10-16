@@ -6,3 +6,4 @@ from . import product_template_attribute_value
 from . import product_supplierinfo
 from . import stock_move_line
 from . import stock_listing
+from . import stock_move
