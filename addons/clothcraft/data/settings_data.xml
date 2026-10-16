@@ -11,4 +11,8 @@
             Command.link(ref('stock.group_production_lot')),
         ]},
     ]"/>
+
+    <!-- Philippine retail prices are VAT-inclusive. l10n_ph loads the 12% sale tax price-excluded and
+         owns that record, so a <function> reapplies the setting on install and -u. -->
+    <function model="account.tax" name="_clothcraft_set_ph_vat_included"/>
 </odoo>
