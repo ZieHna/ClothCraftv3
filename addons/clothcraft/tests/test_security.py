@@ -91,3 +91,31 @@ class TestSecurity(TransactionCase):
         self.assertTrue(self.admin.has_group('clothcraft.group_inventory'))
         self.assertTrue(self.admin.has_group('stock.group_stock_manager'))
         self.assertTrue(self.admin.has_group('purchase.group_purchase_manager'))
+
+    # --- ClothCraft menus
+    def _menu_visible_to(self, user, xmlid):
+        menu = self.env.ref(xmlid)
+        return menu.id in self.env['ir.ui.menu'].with_user(user)._visible_menu_ids()
+
+    def test_price_history_and_stock_menus_visible_to_inventory_staff_and_administrators_only(self):
+        for xmlid in ('clothcraft.menu_clothcraft_price_history', 'clothcraft.menu_clothcraft_stock'):
+            self.assertTrue(self._menu_visible_to(self.inventory, xmlid), xmlid)
+            self.assertTrue(self._menu_visible_to(self.admin, xmlid), xmlid)
+            self.assertFalse(self._menu_visible_to(self.sales_only, xmlid), xmlid)
+            # portal users cannot load menus at all; check they hold none of the menu's groups
+            menu = self.env.ref(xmlid)
+            self.assertTrue(menu.group_ids)
+            self.assertFalse(self.portal.all_group_ids & menu.group_ids, xmlid)
+
+    def test_price_history_and_stock_lists_are_read_only_in_the_ui(self):
+        for model, view_xmlid in (('clothcraft.price.history', 'clothcraft.price_history_view_list'),
+                                  ('clothcraft.stock.listing', 'clothcraft.stock_listing_view_list')):
+            arch = self.env[model].with_user(self.inventory).get_view(
+                self.env.ref(view_xmlid).id, 'list')['arch']
+            for attr in ('create="0"', 'edit="0"', 'delete="0"'):
+                self.assertIn(attr, arch, f"{model} {attr}")
+
+    def test_inventory_staff_can_read_but_not_write_the_stock_list(self):
+        listing = self.env['clothcraft.stock.listing'].with_user(self.inventory)
+        listing.search([])  # readable
+        self._assert_refused(lambda: listing.with_user(self.sales_only).search([]))

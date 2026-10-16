@@ -14,6 +14,7 @@
         'views/garment_type_views.xml',
         'views/product_template_views.xml',
         'views/stock_listing_views.xml',
+        'views/price_history_views.xml',
         'views/menus.xml',
     ],
     'application': True,

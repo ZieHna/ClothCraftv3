@@ -6,4 +6,7 @@
     <menuitem id="menu_clothcraft_stock" name="Stock"
               parent="menu_clothcraft_root" action="stock_listing_action" sequence="15"
               groups="group_inventory,group_admin"/>
+    <menuitem id="menu_clothcraft_price_history" name="Price History"
+              parent="menu_clothcraft_root" action="price_history_action" sequence="20"
+              groups="group_inventory,group_admin"/>
 </odoo>
