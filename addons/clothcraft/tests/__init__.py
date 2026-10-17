@@ -9,3 +9,4 @@ from . import test_average_cost
 from . import test_stock_listing
 from . import test_vat
 from . import test_checkout_stock
+from . import test_sim

@@ -87,6 +87,79 @@ docker compose run --rm --no-deps odoo odoo -d clothcraft -u clothcraft --stop-a
 docker compose up -d odoo
 ```
 
+## Simulated data (B7)
+
+A reproducible simulation of 18 months of shop activity, to give the demand forecast, restock and customer
+segments (B8) something realistic to work on: about 19 garment products with Color x Size variants, 6 fake
+suppliers, a few hundred purchase orders and receipts with lots, 150 fake portal customers and about 2,300 orders
+(cash on delivery and bank transfer; most delivered, some cancelled, a few unpaid transfers left stuck), with
+seasonality, weekday and payday effects, promotions, supplier outages and real stock-outs. Everything goes through
+Odoo's normal purchase, sale, delivery and payment flows, so the B6 stock guard runs on every sale and is never
+bypassed. Demand the shop cannot serve is not recorded as an order; it is written to `lost_demand.csv`
+(date, variant, wanted, free).
+
+- **Labelled and removable.** Every simulated record carries the label "Simulated" (partner category, product
+  tag, sale-order tag), lots start with `SIM-`, purchase orders have origin `SIM`; names are invented and emails
+  are on `example.com`. One command removes all of it (below).
+- **Never runs by itself.** The code is in `addons/clothcraft/sim/`; nothing imports it on install or `-u`.
+- **Reproducible.** The same preset and seed always give the same data; the run prints a digest you can compare.
+- **Dates.** Orders, receipts, deliveries, moves, payments, `create_date` and `write_date` carry the simulated
+  dates (Odoo cannot freeze `create_date`; a final SQL pass stamps it).
+
+### Plan a run in seconds (no database)
+
+```powershell
+docker run --rm -v "${PWD}:/repo:ro" python:3.12-slim python /repo/scripts/plan_sim.py full 7
+```
+
+Prints orders, cancellations, purchase orders and the share of demand lost, per month and per product.
+
+### Seed a database
+
+Use a **fresh** database with the Philippine setup (see above; for example `clothcraft_sim`), and stop the web
+service first, because its background jobs also work on every database and can collide with a long run. A full
+run takes roughly 25 minutes on a fresh database.
+
+```powershell
+docker compose stop odoo
+Get-Content scripts/seed_sim.py | docker compose run --rm --no-deps -T `
+    -v "${PWD}/assets-v1:/mnt/assets-v1:ro" -v "${PWD}/seed_output:/mnt/sim-out" `
+    -e SIM_PRESET=full -e SIM_SEED=7 odoo odoo shell -d clothcraft_sim --no-http
+docker compose up -d odoo
+```
+
+| Variable | Meaning |
+|---|---|
+| `SIM_PRESET` | `tiny` (tests), `small` (a quick look, deliberately starved of stock) or `full` (18 months). Default `small`. |
+| `SIM_SEED` | Random seed. Default `7`. |
+| `SIM_ASSETS` | Where the product images are mounted. Default `/mnt/assets-v1`. |
+| `SIM_OUT` | Folder for `lost_demand.csv` (mount it, as above). Default `/mnt/sim-out`; without the mount no CSV is written. |
+| `SIM_DRY_RUN=1` | Roll back at the end instead of committing. |
+| `SIM_BACKUP` | A `pg_dump` file you just took (path as seen inside the container). **Required** to seed a database named `clothcraft`; `clothcraft_usd_old` is always refused. |
+
+A second run on a seeded database is refused until you purge it. Check the result with
+`Get-Content scripts/verify_sim.sql | docker compose exec -T db sh -c 'psql -U "$POSTGRES_USER" -d clothcraft_sim'`.
+
+### Remove the simulated data
+
+```powershell
+docker compose stop odoo
+Get-Content scripts/purge_sim.py | docker compose run --rm --no-deps -T odoo odoo shell -d clothcraft_sim --no-http
+docker compose up -d odoo
+```
+
+Deletes exactly what the seed created (the tests prove every table returns to its pre-seed row count) and nothing
+else; running it twice is harmless. It does not reset ids or number sequences, and it leaves the Wire Transfer
+payment provider enabled (the simulation needs it). Dropping the database is the other clean way out.
+
+### Warnings
+
+- **Never seed or purge the live `clothcraft` database without a fresh backup.** The runner refuses without one.
+- The simulation tests (`tests/test_sim.py`) are for throwaway databases only. They roll back, but they run heavy
+  SQL, freeze the clock and enable the Wire Transfer provider, and they skip themselves on a protected database.
+- The data is invented. Seasonality, payday effects, promotions and outages are assumptions, so a forecast's
+  accuracy on this data demonstrates the method, not real-world accuracy.
+
 ## Notes
 
 - Never commit `.env`. It is gitignored; `.env.example` holds the placeholders.
