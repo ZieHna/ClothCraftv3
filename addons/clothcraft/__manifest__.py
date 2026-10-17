@@ -5,7 +5,7 @@
     'author': 'ClothCraft Team',
     'category': 'Sales',
     'license': 'LGPL-3',
-    'depends': ['sale_management', 'stock', 'purchase', 'website_sale'],
+    'depends': ['sale_management', 'stock', 'purchase', 'website_sale', 'website_sale_stock'],
     'data': [
         'data/settings_data.xml',
         'data/attributes_data.xml',

@@ -9,6 +9,11 @@ class ProductTemplate(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            # Garments are tracked stock and must not oversell (Odoo defaults to selling out of stock).
+            if vals.get('garment_type_id') and vals.get('type', 'consu') == 'consu':
+                vals.setdefault('is_storable', True)
+                vals.setdefault('allow_out_of_stock_order', False)
         templates = super().create(vals_list)
         history = self.env['clothcraft.price.history']
         for template in templates:
