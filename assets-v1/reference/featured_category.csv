@@ -1,0 +1,27 @@
+id,type,name,image_url,price
+1,featured,"Baby Hoodie","assets/samples/Babies/Hoodie_/hoodie.png",600.00
+2,featured,"Kid Hoodie","assets/samples/Babies/Hoodie_/hoodie2.png",650.00
+3,featured,"Design 1","assets/samples/Designs/1.png",350.00
+4,featured,"Design 11","assets/samples/Designs/11.png",400.00
+5,featured,"Design 17","assets/samples/Designs/17.png",380.00
+6,featured,"Design 20","assets/samples/Designs/20.png",450.00
+7,featured,"Design 5","assets/samples/Designs/5.png",500.00
+8,featured,"Design 15","assets/samples/Designs/15.png",425.00
+9,category,"T-Shirt","assets/samples/Designs/1.png",350.00
+10,category,"T-shirt with design","assets/samples/Designs/3.png",400.00
+11,category,"Long Sleeves","assets/samples/Designs/7.png",450.00
+12,category,"Hoodie","assets/samples/Designs/6.png",750.00
+13,category,"Tank Top","assets/samples/Designs/10.png",300.00
+14,category,"Tank Top","assets/samples/Designs/8.png",300.00
+15,category,"Cropped Top","assets/samples/Designs/5.png",380.00
+16,category,"Cropped Top","assets/samples/Designs/12.png",380.00
+17,category,"T-Shirt Women","assets/samples/Designs/13.png",350.00
+18,category,"T-Shirt Women","assets/samples/womendesign/Woman Designs/21.png",350.00
+19,category,"Polo Shirt Women","assets/samples/womendesign/Woman Designs/24.png",500.00
+20,category,"Long Sleeve Women","assets/samples/womendesign/Woman Designs/30.png",450.00
+21,category,"Baby Dress","assets/samples/Babies/Dresses/Baby girl dress with design 1.png",400.00
+22,category,"Onesie Long Sleeves","assets/samples/Babies/Onesie long sleeve_/Long sleeve onesies 3.png",350.00
+23,category,"Baby Hoodie","assets/samples/Babies/Hoodie_/hoodie3.png",600.00
+24,category,"Hoodie for Kids","assets/samples/Babies/Hoodie_/hoodie2.png",650.00
+25,category,"Dress for Kids","assets/samples/Babies/Dresses/Baby girl dress with design 3.png",450.00
+26,category,"Onesie","assets/samples/Babies/Onesie_/Onesies design 2.png",300.00
