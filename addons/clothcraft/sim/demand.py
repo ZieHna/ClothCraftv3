@@ -6,8 +6,8 @@ import datetime as dt
 from bisect import bisect_left
 from itertools import accumulate
 
-from .data import (ARRIVAL_HOUR_WEIGHT, CATEGORY_SEASON, COLOR_WEIGHT, CUSTOMER_MIX, CUSTOMER_RATE, FIRST_NAMES,
-                   LAST_NAMES, PAYDAY_BOOST, PAYDAY_DAYS, PRODUCTS, PROMOS, SEASON, SIZE_WEIGHT, TIER_WEIGHT,
+from .data import (ARRIVAL_HOUR_WEIGHT, CATEGORY_SEASON, COLOR_WEIGHT, CUSTOMER_BIG, CUSTOMER_GROWTH, CUSTOMER_MIX, CUSTOMER_ORDERS,
+                   FIRST_NAMES, FULL_RUN_DAYS, LAPSED_AFTER_DAYS, LAST_NAMES, PAYDAY_BOOST, PAYDAY_DAYS, PRODUCTS, PROMOS, SEASON, SIZE_WEIGHT, TIER_WEIGHT,
                    TREND_PER_MONTH, UNITS_PER_ORDER, WEEKDAY)
 from .util import rng
 
@@ -43,35 +43,42 @@ def plan_customers(cfg, seed):
     start, end, n = cfg['start'], cfg['end'], cfg['customers']
     days = days_between(start, end)
     day_weights = [multiplier(d, start) for d in days]
-    kinds = []
+    horizon = len(days)
+    # shorter presets shrink the lifetime order counts in proportion to their length (times rate_scale)
+    scale = horizon / FULL_RUN_DAYS * cfg.get('rate_scale', 1.0)
+    kinds = ['big'] * min(CUSTOMER_BIG, n // 10)
     for kind, share in CUSTOMER_MIX:
         kinds += [kind] * round(n * share)
     while len(kinds) < n:
-        kinds.append('occasional')
+        kinds.append('light')
     kinds = kinds[:n]
     stream.shuffle(kinds)
+    # a lapsed customer's last order is older than LAPSED_AFTER_DAYS, if the run is long enough to say so
+    lapse_by = end - dt.timedelta(days=LAPSED_AFTER_DAYS + 1) if horizon > 2 * LAPSED_AFTER_DAYS else end
     customers = []
     for index, kind in enumerate(kinds):
-        horizon = len(days)
-        customer = dict(index=index, kind=kind, rate=CUSTOMER_RATE.get(kind, 0.0) * cfg.get('rate_scale', 1.0),
-                        first=stream.choice(FIRST_NAMES), last=stream.choice(LAST_NAMES),
+        customer = dict(index=index, kind=kind, first=stream.choice(FIRST_NAMES), last=stream.choice(LAST_NAMES),
                         email=f"sim.customer{index:03d}@example.com")
         if kind == 'one_time':
-            customer['order_day'] = pick(stream, days, day_weights)
-            customer['join'] = customer['active_to'] = customer['order_day']
-        elif kind == 'occasional':
-            customer['join'], customer['active_to'] = days[stream.randint(0, int(horizon * 0.8))], end
-        elif kind == 'regular':
-            customer['join'], customer['active_to'] = days[stream.randint(0, int(horizon * 0.4))], end
-        elif kind == 'big':
-            customer['join'], customer['active_to'] = days[stream.randint(0, int(horizon * 0.5))], end
+            join = active_to = pick(stream, days, [w * (1 + CUSTOMER_GROWTH * i / horizon) for i, w in enumerate(day_weights)])
+            wanted = 1
+        elif kind == 'new':    # joined in the last two months
+            join, active_to = max(start, end - dt.timedelta(days=stream.randint(5, 60))), end
         elif kind == 'lapsed':
             join = days[stream.randint(0, int(horizon * 0.35))]
-            customer['join'] = join
-            customer['active_to'] = min(end, join + dt.timedelta(days=stream.randint(90, 210)))
-        else:  # new: joined in the last two months
-            customer['join'], customer['active_to'] = end - dt.timedelta(days=stream.randint(5, 60)), end
-            customer['join'] = max(customer['join'], start)
+            active_to = max(join, min(lapse_by, join + dt.timedelta(days=stream.randint(60, 300))))
+        else:
+            share = {'light': 0.75, 'steady': 0.55, 'regular': 0.45, 'big': 0.3}[kind]
+            join, active_to = days[stream.randint(0, int(horizon * share))], end
+        if kind != 'one_time':
+            counts, weights = CUSTOMER_ORDERS[kind]
+            wanted = max(1, round(pick(stream, counts, weights) * (scale if kind != 'new' else min(1.0, scale))))
+        window = [i for i, d in enumerate(days) if join <= d <= active_to]
+        wanted = min(wanted, len(window))
+        chosen = set()
+        while len(chosen) < wanted:   # distinct days, weighted by how busy the shop is
+            chosen.add(pick(stream, window, [day_weights[i] for i in window]))
+        customer.update(join=join, active_to=active_to, order_days=sorted(days[i] for i in chosen))
         customers.append(customer)
     return customers
 
@@ -82,16 +89,12 @@ def plan_arrivals(cfg, customers, seed):
     start = cfg['start']
     hours = list(range(len(ARRIVAL_HOUR_WEIGHT)))
     arrivals, number = {}, 0
+    ordering = {}   # day -> customers who order that day
+    for customer in customers:
+        for day in customer['order_days']:
+            ordering.setdefault(day, []).append(customer['index'])
     for day in days_between(start, cfg['end']):
-        factor = multiplier(day, start)
-        today = []
-        for customer in customers:
-            if customer['kind'] == 'one_time':
-                if customer['order_day'] == day:
-                    today.append(customer['index'])
-            elif customer['join'] <= day <= customer['active_to']:
-                if stream.random() < min(0.85, customer['rate'] * factor):
-                    today.append(customer['index'])
+        today = ordering.get(day, [])
         timed = []
         for index in today:
             hour = pick(stream, hours, ARRIVAL_HOUR_WEIGHT)

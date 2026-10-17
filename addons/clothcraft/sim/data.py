@@ -131,9 +131,19 @@ PROMOS = [
     dict(name="9.9 sale", start=dt.date(2026, 9, 9), end=dt.date(2026, 9, 10), discount=0.15, demand=1.8, match=None),
     dict(name="10.10 sale", start=dt.date(2026, 10, 10), end=dt.date(2026, 10, 11), discount=0.15, demand=1.8, match=None),
 ]
-# customer behaviour: share of customers, and orders per active day
-CUSTOMER_MIX = [("one_time", 0.33), ("occasional", 0.27), ("regular", 0.15), ("big", 0.05), ("lapsed", 0.15), ("new", 0.05)]
-CUSTOMER_RATE = {"occasional": 1 / 40, "regular": 1 / 12, "big": 1 / 9, "lapsed": 1 / 15, "new": 1 / 10}
+# customer behaviour: each customer gets a lifetime number of orders (drawn per kind) placed on days picked by the
+# shop's busyness. CUSTOMER_MIX = share of customers per kind; CUSTOMER_ORDERS = (counts, weights) per kind, for the
+# 18-month run (shorter presets shrink them with rate_scale). CUSTOMER_BIG customers are the few heavy buyers.
+CUSTOMER_MIX = [("one_time", 0.30), ("light", 0.32), ("steady", 0.17), ("regular", 0.08), ("lapsed", 0.04), ("new", 0.06)]
+CUSTOMER_BIG = 3
+CUSTOMER_GROWTH = 3.5                                         # new customers arrive this much more often at the end than at the start
+CUSTOMER_ORDERS = {
+    "light": ([2, 3, 4], [36, 40, 24]), "steady": ([5, 6, 7, 8, 9], [1, 1, 1, 1, 1]),
+    "regular": ([10, 11, 12, 13, 14, 15, 16, 17, 18], [1] * 9), "big": ([22, 25, 28, 30], [1, 1, 1, 1]),
+    "lapsed": ([2, 3, 4, 5, 6, 7], [20, 20, 20, 15, 15, 10]), "new": ([1, 2, 3], [40, 40, 20]),
+}
+FULL_RUN_DAYS = 562                                            # the approved full run (2025-04-01 .. 2026-10-15)
+LAPSED_AFTER_DAYS = 180                                        # a lapsed customer's last order is older than this
 FIRST_NAMES = ["Ana", "Bea", "Carlo", "Dina", "Elio", "Faye", "Gino", "Hana", "Ian", "Jade", "Kai", "Lara", "Migs",
                "Nina", "Owen", "Pia", "Quin", "Rina", "Seth", "Tala", "Uri", "Vera", "Wes", "Xia", "Yna", "Zed",
                "Aly", "Ben", "Cris", "Dex", "Ella", "Fin", "Gwen", "Hugo", "Ivy", "Jun", "Kim", "Lia", "Mika", "Noel"]
@@ -152,20 +162,20 @@ STUCK_WINDOW_DAYS = 25                                         # ...except in th
 CUSTOMER_CANCEL = 0.04
 DELAYED_SHIPMENT = 0.05
 REVIEW_EVERY_DAYS = 7
-SAFETY_DAYS, COVER_DAYS = 14, 21
+SAFETY_DAYS, COVER_DAYS = 11, 20
 
 PRESETS = {
     # quick runs for development and tests. rate_scale makes ~20 customers behave like many; pack and
     # cover_days are small so that a 2-month window actually runs out of some variants.
-    "small": dict(start=dt.date(2026, 8, 1), end=dt.date(2026, 9, 30), customers=20, rate_scale=3.0, pack=2,
+    "small": dict(start=dt.date(2026, 8, 1), end=dt.date(2026, 9, 30), customers=20, rate_scale=6.0, pack=2,
                   cover_days=14, products=["M-TEE", "W-HOOD", "K-POLO", "B-ONES"],
                   supply_gaps=[dict(product="W-HOOD", start=dt.date(2026, 8, 8), end=dt.date(2026, 9, 30))]),
     # the smallest run that still shows every behaviour (orders, deliveries, a stock-out, cancellations): for tests
-    "tiny": dict(start=dt.date(2026, 8, 3), end=dt.date(2026, 9, 6), customers=10, rate_scale=5.0, pack=2,
+    "tiny": dict(start=dt.date(2026, 8, 3), end=dt.date(2026, 9, 6), customers=10, rate_scale=14.0, pack=2,
                  cover_days=14, products=["K-TANK", "B-ONES"],
                  supply_gaps=[dict(product="B-ONES", start=dt.date(2026, 8, 8), end=dt.date(2026, 8, 30))]),
     # the approved full run: 18 months, opening receipts dated ~3 weeks before the start, sized to cover ~60 days
-    "full": dict(start=dt.date(2025, 4, 1), end=dt.date(2026, 10, 15), customers=150, rate_scale=1.0, pack=4,
+    "full": dict(start=dt.date(2025, 4, 1), end=dt.date(2026, 10, 15), customers=560, rate_scale=1.0, pack=4,
                  cover_days=60, products=list(PRODUCTS),
                  # supplier problems on products that sell enough for it to hurt: weeks without replenishment
                  supply_gaps=[dict(product="W-HOOD", start=dt.date(2025, 10, 20), end=dt.date(2025, 12, 20)),

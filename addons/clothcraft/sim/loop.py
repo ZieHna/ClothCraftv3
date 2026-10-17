@@ -141,15 +141,14 @@ class Simulation:
     def _on_arrival(self, when, customer, number):
         day = when.date()
         stream = rng(self.seed, f"order:{number}")
-        big = self.customers[customer]['kind'] == 'big'
-        n_lines = demand.pick(stream, [2, 3, 4], [30, 35, 35]) if big else demand.pick(stream, [1, 2, 3, 4], [50, 30, 15, 5])
+        n_lines = demand.pick(stream, [1, 2, 3, 4], [50, 30, 15, 5])
         weights = demand.product_weights(day, self.keys)
         wanted = defaultdict(int)
         for _ in range(n_lines):
             key = demand.pick(stream, self.keys, weights)
             codes = self.by_product[key]
             code = demand.pick(stream, codes, [demand.variant_weight(PRODUCTS[key], self.variants[c]['color'], self.variants[c]['size']) for c in codes])
-            wanted[code] += demand.pick(stream, [2, 3, 4], [50, 30, 20]) if big else demand.pick(stream, [1, 2, 3], [70, 22, 8])
+            wanted[code] += demand.pick(stream, [1, 2, 3], [70, 22, 8])
         # what the shop can actually serve right now (the same free quantity the stock guard checks)
         lines = defaultdict(int)
         available = {}   # free units per variant, reduced as this basket claims them

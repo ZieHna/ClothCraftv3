@@ -91,7 +91,7 @@ docker compose up -d odoo
 
 A reproducible simulation of 18 months of shop activity, to give the demand forecast, restock and customer
 segments (B8) something realistic to work on: about 19 garment products with Color x Size variants, 6 fake
-suppliers, a few hundred purchase orders and receipts with lots, 150 fake portal customers and about 2,300 orders
+suppliers, several hundred purchase orders and receipts with lots, 560 fake portal customers and about 2,200 orders
 (cash on delivery and bank transfer; most delivered, some cancelled, a few unpaid transfers left stuck), with
 seasonality, weekday and payday effects, promotions, supplier outages and real stock-outs. Everything goes through
 Odoo's normal purchase, sale, delivery and payment flows, so the B6 stock guard runs on every sale and is never
