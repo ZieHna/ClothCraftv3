@@ -1,0 +1,19 @@
+{
+  "name": "clothcraft-video-src",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Source for the landing-page 'How it works' motion graphic. Not part of the app bundle.",
+  "type": "module",
+  "scripts": {
+    "audio": "node audio.mjs",
+    "render": "node render.mjs",
+    "serve": "node serve.mjs"
+  },
+  "devDependencies": {
+    "@fontsource/cormorant-garamond": "5.3.0",
+    "@fontsource/jost": "5.3.0",
+    "ffmpeg-static": "5.3.0",
+    "playwright-core": "1.64.1",
+    "sharp": "0.35.5"
+  }
+}
