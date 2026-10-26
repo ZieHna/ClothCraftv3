@@ -1,0 +1,1145 @@
+[
+ {
+  "name": "cart: a new customer's saved cart is empty (version 0); no session and a staff session are 401",
+  "customers": [
+   "shopper"
+  ],
+  "steps": [
+   {
+    "as": "shopper",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 0
+     },
+     {
+      "op": "eq",
+      "path": "len:data.lines",
+      "value": 0
+     },
+     {
+      "op": "eq",
+      "path": "data.updatedAt",
+      "value": null
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "POST",
+    "path": "/api/staff/auth/login",
+    "body": {
+     "email": "{{staffInventoryEmail}}",
+     "password": "{{staffInventoryPassword}}"
+    },
+    "status": 200
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      }
+     ]
+    },
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "cart: written and read back in its order, ticks kept, no prices; another customer sees only their own cart",
+  "customers": [
+   "shopper",
+   "other"
+  ],
+  "steps": [
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku2}}",
+       "quantity": 2,
+       "selected": true
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      }
+     ]
+    },
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 1
+     },
+     {
+      "op": "eq",
+      "path": "len:data.lines",
+      "value": 2
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].sku",
+      "value": "{{staffSku2}}"
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].quantity",
+      "value": 2
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].selected",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[1].selected",
+      "value": false
+     },
+     {
+      "op": "matches",
+      "path": "data.updatedAt",
+      "value": "Z$"
+     },
+     {
+      "op": "absent",
+      "value": "price"
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 1
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].sku",
+      "value": "{{staffSku2}}"
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[1].sku",
+      "value": "{{staffSku1}}"
+     }
+    ]
+   },
+   {
+    "as": "other",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 0
+     },
+     {
+      "op": "eq",
+      "path": "len:data.lines",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "as": "other",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku3}}",
+       "quantity": 5,
+       "selected": false
+      }
+     ]
+    },
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "len:data.lines",
+      "value": 2
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].sku",
+      "value": "{{staffSku2}}"
+     }
+    ]
+   },
+   {
+    "as": "other",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "len:data.lines",
+      "value": 1
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].sku",
+      "value": "{{staffSku3}}"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "cart: a write based on an old version is 409 cart_conflict with the cart as it is; the same write again is 200, not a conflict",
+  "customers": [
+   "shopper"
+  ],
+  "steps": [
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 2,
+       "selected": false
+      }
+     ]
+    },
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku2}}",
+       "quantity": 1,
+       "selected": false
+      }
+     ]
+    },
+    "status": 409,
+    "shape": {
+     "$ref": "ApiErrorCart"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "cart_conflict"
+     },
+     {
+      "op": "eq",
+      "path": "error.cart.version",
+      "value": 1
+     },
+     {
+      "op": "eq",
+      "path": "error.cart.lines[0].sku",
+      "value": "{{staffSku1}}"
+     },
+     {
+      "op": "eq",
+      "path": "error.cart.lines[0].quantity",
+      "value": 2
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 2,
+       "selected": false
+      }
+     ]
+    },
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 1,
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 2,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku2}}",
+       "quantity": 1,
+       "selected": false
+      }
+     ]
+    },
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 2
+     },
+     {
+      "op": "eq",
+      "path": "len:data.lines",
+      "value": 2
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "cart: the limits: 51 lines, quantity 0 or 100, an unknown item, the same item twice are 422; a request with no version is 400; nothing is written",
+  "customers": [
+   "shopper"
+  ],
+  "steps": [
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      }
+     ]
+    },
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "matches",
+      "path": "error.fields.lines",
+      "value": "at most 50"
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 0,
+       "selected": false
+      }
+     ]
+    },
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 100,
+       "selected": false
+      }
+     ]
+    },
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "NO-SUCH-ITEM",
+       "quantity": 1,
+       "selected": false
+      }
+     ]
+    },
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      },
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 2,
+       "selected": false
+      }
+     ]
+    },
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      }
+     ]
+    },
+    "status": 400,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "bad_request"
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 0
+     },
+     {
+      "op": "eq",
+      "path": "len:data.lines",
+      "value": 0
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "cart: placing an order takes exactly what it ordered off the saved cart; the rest stays, unticked",
+  "customers": [
+   "shopper"
+  ],
+  "keys": [
+   "k1"
+  ],
+  "steps": [
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku4}}",
+       "quantity": 3,
+       "selected": true
+      },
+      {
+       "sku": "{{staffSku5}}",
+       "quantity": 1,
+       "selected": false
+      }
+     ]
+    },
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "POST",
+    "path": "/api/orders",
+    "headers": {
+     "Idempotency-Key": "{{k1}}"
+    },
+    "body": {
+     "lines": [
+      {
+       "sku": "{{staffSku4}}",
+       "quantity": 1
+      }
+     ],
+     "delivery": "{{validDelivery}}",
+     "paymentMethod": "cod",
+     "quotedTotal": "{{staffSku4Price}}"
+    },
+    "status": 201
+   },
+   {
+    "as": "shopper",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 2
+     },
+     {
+      "op": "eq",
+      "path": "len:data.lines",
+      "value": 2
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].sku",
+      "value": "{{staffSku4}}"
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].quantity",
+      "value": 2
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].selected",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[1].sku",
+      "value": "{{staffSku5}}"
+     }
+    ]
+   },
+   {
+    "as": "shopper",
+    "method": "POST",
+    "path": "/api/orders",
+    "headers": {
+     "Idempotency-Key": "{{k1}}"
+    },
+    "body": {
+     "lines": [
+      {
+       "sku": "{{staffSku4}}",
+       "quantity": 1
+      }
+     ],
+     "delivery": "{{validDelivery}}",
+     "paymentMethod": "cod",
+     "quotedTotal": "{{staffSku4Price}}"
+    },
+    "status": 201
+   },
+   {
+    "as": "shopper",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 2
+     },
+     {
+      "op": "eq",
+      "path": "data.lines[0].quantity",
+      "value": 2
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "cart: a write from another site is refused before anything is read (403 forbidden_origin)",
+  "customers": [
+   "shopper"
+  ],
+  "steps": [
+   {
+    "as": "shopper",
+    "method": "PUT",
+    "path": "/api/cart",
+    "body": {
+     "baseVersion": 0,
+     "lines": [
+      {
+       "sku": "{{staffSku1}}",
+       "quantity": 1,
+       "selected": false
+      }
+     ]
+    },
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden_origin"
+     }
+    ],
+    "headers": {
+     "Origin": "https://evil.example"
+    }
+   },
+   {
+    "as": "shopper",
+    "method": "GET",
+    "path": "/api/cart",
+    "status": 200,
+    "shape": {
+     "data": {
+      "$ref": "ServerCart"
+     },
+     "simulation": {
+      "$ref": "Simulation"
+     }
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.version",
+      "value": 0
+     }
+    ]
+   }
+  ]
+ }
+]

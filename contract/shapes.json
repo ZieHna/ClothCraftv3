@@ -1,0 +1,1351 @@
+{
+  "Simulation": {
+    "$oneOf": [
+      "null",
+      {
+        "label": "string",
+        "note": "string"
+      }
+    ]
+  },
+  "ApiError": {
+    "error": {
+      "code": "string",
+      "message": "string"
+    }
+  },
+  "Color": {
+    "id": "enum:black|white|navy|red|gray",
+    "name": "string",
+    "hex": "string"
+  },
+  "ColorOption": {
+    "id": "enum:black|white|navy|red|gray",
+    "name": "string",
+    "hex": "string",
+    "image": "string"
+  },
+  "GarmentType": {
+    "code": "string",
+    "name": "string"
+  },
+  "ProductSummary": {
+    "id": "string",
+    "name": "string",
+    "group": "enum:Men|Women|Kids|Babies",
+    "garmentType": {
+      "$ref": "GarmentType"
+    },
+    "price": "number",
+    "image": "string",
+    "colors": [
+      "enum:black|white|navy|red|gray"
+    ],
+    "sizes": [
+      "enum:XS|S|M|L|XL|XXL"
+    ],
+    "stock": "number",
+    "status": "enum:in_stock|low_stock|out_of_stock"
+  },
+  "Variant": {
+    "sku": "string",
+    "color": "enum:black|white|navy|red|gray",
+    "size": "enum:XS|S|M|L|XL|XXL",
+    "price": "number",
+    "priceExtra": "number",
+    "stock": "number",
+    "status": "enum:in_stock|low_stock|out_of_stock"
+  },
+  "ProductDetail": {
+    "id": "string",
+    "name": "string",
+    "group": "enum:Men|Women|Kids|Babies",
+    "garmentType": {
+      "$ref": "GarmentType"
+    },
+    "price": "number",
+    "image": "string",
+    "colors": [
+      "enum:black|white|navy|red|gray"
+    ],
+    "sizes": [
+      "enum:XS|S|M|L|XL|XXL"
+    ],
+    "stock": "number",
+    "status": "enum:in_stock|low_stock|out_of_stock",
+    "variants": [
+      {
+        "$ref": "Variant"
+      }
+    ],
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "colorOptions": [
+      {
+        "$ref": "ColorOption"
+      }
+    ]
+  },
+  "CatalogueList": {
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "groups": [
+      "string"
+    ],
+    "colors": [
+      {
+        "$ref": "Color"
+      }
+    ],
+    "sizes": [
+      "string"
+    ],
+    "count": "number",
+    "garmentTypes": [
+      {
+        "code": "string",
+        "name": "string",
+        "count": "number"
+      }
+    ],
+    "priceBounds": {
+      "min": "number",
+      "max": "number"
+    },
+    "products": [
+      {
+        "$ref": "ProductSummary"
+      }
+    ]
+  },
+  "FeaturedList": {
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "products": [
+      {
+        "$ref": "ProductSummary"
+      }
+    ]
+  },
+  "QuoteLine": {
+    "sku": "string",
+    "productId": "string",
+    "name": "string",
+    "colorName": "string",
+    "size": "string|null",
+    "image": "string",
+    "quantity": "number",
+    "unitPrice": "number",
+    "lineTotal": "number",
+    "available": "number",
+    "issue": "enum:ok|over_stock|sold_out|unavailable",
+    "message": "string|null"
+  },
+  "PrintFee": {
+    "coveredSqIn": "number",
+    "rate": "number",
+    "sizeStep": "number",
+    "steps": "number",
+    "unit": "number",
+    "total": "number"
+  },
+  "DesignedQuoteLine": {
+    "sku": "string",
+    "productId": "string",
+    "name": "string",
+    "colorName": "string",
+    "size": "string|null",
+    "image": "string",
+    "quantity": "number",
+    "unitPrice": "number",
+    "lineTotal": "number",
+    "available": "number",
+    "issue": "enum:ok|over_stock|sold_out|unavailable|design_unavailable",
+    "message": "string|null",
+    "designId": "string",
+    "printFee": {
+      "$oneOf": [
+        "null",
+        {
+          "$ref": "PrintFee"
+        }
+      ]
+    },
+    "remedy": {
+      "$oneOf": [
+        "null",
+        "enum:remove"
+      ]
+    }
+  },
+  "Quote": {
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "vatRate": "number",
+    "lines": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "QuoteLine"
+          },
+          {
+            "$ref": "DesignedQuoteLine"
+          }
+        ]
+      }
+    ],
+    "deliveryFee": "number",
+    "deliveryLabel": "string",
+    "total": "number",
+    "vatAmount": "number",
+    "ready": "boolean"
+  },
+  "OrderLine": {
+    "sku": "string",
+    "productId": "string",
+    "name": "string",
+    "colorName": "string",
+    "size": "enum:XS|S|M|L|XL|XXL",
+    "image": "string",
+    "quantity": "number",
+    "unitPrice": "number",
+    "lineTotal": "number"
+  },
+  "DesignedOrderLine": {
+    "sku": "string",
+    "productId": "string",
+    "name": "string",
+    "colorName": "string",
+    "size": "enum:XS|S|M|L|XL|XXL",
+    "image": "string",
+    "quantity": "number",
+    "unitPrice": "number",
+    "lineTotal": "number",
+    "designId": "string",
+    "printFee": {
+      "$oneOf": [
+        "null",
+        {
+          "$ref": "PrintFee"
+        }
+      ]
+    }
+  },
+  "BankDetails": {
+    "placeholder": "boolean",
+    "bankName": "string",
+    "accountName": "string",
+    "accountNumber": "string",
+    "paymentReference": "string"
+  },
+  "Order": {
+    "$oneOf": [
+      {
+        "$ref": "OrderStep7"
+      },
+      {
+        "$ref": "OrderTracked"
+      }
+    ]
+  },
+  "StockProblem": {
+    "sku": "string",
+    "available": "number",
+    "message": "string"
+  },
+  "ApiErrorStock": {
+    "error": {
+      "code": "string",
+      "message": "string",
+      "lines": [
+        {
+          "$ref": "StockProblem"
+        }
+      ]
+    }
+  },
+  "ApiErrorPrice": {
+    "error": {
+      "code": "string",
+      "message": "string",
+      "quote": {
+        "$ref": "Quote"
+      }
+    }
+  },
+  "ApiErrorFields": {
+    "error": {
+      "code": "string",
+      "message": "string",
+      "fields": {
+        "$map": "string"
+      }
+    }
+  },
+  "CheckoutOptions": {
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "vatRate": "number",
+    "provinces": [
+      {
+        "code": "string",
+        "name": "string"
+      }
+    ],
+    "paymentMethods": [
+      {
+        "id": "enum:cod|bank_transfer",
+        "label": "string",
+        "description": "string"
+      }
+    ]
+  },
+  "AuthUser": {
+    "id": "string",
+    "displayName": "string",
+    "email": "string"
+  },
+  "AuthResponse": {
+    "data": {
+      "user": {
+        "$ref": "AuthUser"
+      }
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "SignedOut": {
+    "data": {
+      "signedOut": "boolean"
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "ApiErrorThrottle": {
+    "error": {
+      "code": "string",
+      "message": "string",
+      "retryAfter": "number"
+    }
+  },
+  "StaffUser": {
+    "id": "string",
+    "displayName": "string",
+    "email": "string",
+    "role": "enum:inventory|admin"
+  },
+  "StaffAuthResponse": {
+    "data": {
+      "user": {
+        "$ref": "StaffUser"
+      }
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "StaffOrderSummary": {
+    "$oneOf": [
+      {
+        "$ref": "StaffOrderSummaryStep7"
+      },
+      {
+        "$ref": "StaffOrderSummaryTracked"
+      }
+    ]
+  },
+  "StaffOrderList": {
+    "orders": [
+      {
+        "$ref": "StaffOrderSummary"
+      }
+    ],
+    "total": "number",
+    "page": "number",
+    "pageSize": "number"
+  },
+  "StaffOrderDetail": {
+    "$oneOf": [
+      {
+        "$ref": "StaffOrderDetailStep7"
+      },
+      {
+        "$ref": "StaffOrderDetailTracked"
+      }
+    ]
+  },
+  "ApiErrorCurrent": {
+    "error": {
+      "code": "string",
+      "message": "string",
+      "currentState": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled"
+    }
+  },
+  "ApiErrorStateChanged": {
+    "error": {
+      "code": "string",
+      "message": "string",
+      "currentState": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+      "order": {
+        "$ref": "StaffOrderDetail"
+      }
+    }
+  },
+  "DesignPricing": {
+    "productId": "string",
+    "designable": "boolean",
+    "message": "string|null",
+    "box": {
+      "$oneOf": [
+        "null",
+        {
+          "x": "number",
+          "y": "number",
+          "width": "number",
+          "height": "number"
+        }
+      ]
+    },
+    "referenceSqIn": "number",
+    "rate": "number",
+    "sizeStep": "number",
+    "steps": {
+      "$map": "number"
+    },
+    "band": "number",
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "limits": {
+      "totalBytes": "number",
+      "pictureBytes": "number",
+      "pictures": "number",
+      "elements": "number",
+      "previewBytes": "number",
+      "printBytes": "number",
+      "stateBytes": "number",
+      "printMaxPx": "number",
+      "previewPx": "number"
+    }
+  },
+  "DesignSummary": {
+    "id": "string",
+    "productId": "string",
+    "sku": "string",
+    "state": "enum:draft|ordered",
+    "coveredSqIn": "number",
+    "layerCount": "number",
+    "printPx": "number",
+    "createdAt": "string",
+    "previewUrl": "string",
+    "printUrl": "string"
+  },
+  "DesignRemoved": {
+    "removed": "boolean"
+  },
+  "DesignState": {
+    "design": {
+      "$ref": "DesignSummary"
+    },
+    "state": "string",
+    "pictures": [
+      {
+        "id": "string",
+        "type": "string",
+        "data": "string"
+      }
+    ]
+  },
+  "OrderTracking": {
+    "steps": [
+      {
+        "step": "enum:received|shipped|on_delivery|delivered",
+        "reachedAt": "string|null"
+      }
+    ],
+    "current": {
+      "$oneOf": [
+        "null",
+        "enum:received|shipped|on_delivery|delivered"
+      ]
+    },
+    "awaitingPayment": "boolean",
+    "closedAt": "string|null",
+    "closedBy": {
+      "$oneOf": [
+        "null",
+        "enum:customer|automatic"
+      ]
+    },
+    "canConfirm": "boolean"
+  },
+  "OrderStep7": {
+    "id": "string",
+    "reference": "string",
+    "state": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "createdAt": "string",
+    "paymentMethod": "enum:cod|bank_transfer",
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "vatRate": "number",
+    "lines": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "OrderLine"
+          },
+          {
+            "$ref": "DesignedOrderLine"
+          }
+        ]
+      }
+    ],
+    "delivery": {
+      "fullName": "string",
+      "email": "string",
+      "phone": "string",
+      "street": "string",
+      "city": "string",
+      "province": "string",
+      "postalCode": "string",
+      "note": "string",
+      "provinceName": "string"
+    },
+    "deliveryFee": "number",
+    "deliveryLabel": "string",
+    "total": "number",
+    "vatAmount": "number",
+    "bankTransfer": {
+      "$oneOf": [
+        "null",
+        {
+          "$ref": "BankDetails"
+        }
+      ]
+    }
+  },
+  "OrderTracked": {
+    "id": "string",
+    "reference": "string",
+    "state": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "createdAt": "string",
+    "paymentMethod": "enum:cod|bank_transfer",
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "vatRate": "number",
+    "lines": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "OrderLine"
+          },
+          {
+            "$ref": "DesignedOrderLine"
+          }
+        ]
+      }
+    ],
+    "delivery": {
+      "fullName": "string",
+      "email": "string",
+      "phone": "string",
+      "street": "string",
+      "city": "string",
+      "province": "string",
+      "postalCode": "string",
+      "note": "string",
+      "provinceName": "string"
+    },
+    "deliveryFee": "number",
+    "deliveryLabel": "string",
+    "total": "number",
+    "vatAmount": "number",
+    "bankTransfer": {
+      "$oneOf": [
+        "null",
+        {
+          "$ref": "BankDetails"
+        }
+      ]
+    },
+    "tracking": {
+      "$ref": "OrderTracking"
+    }
+  },
+  "StaffOrderSummaryStep7": {
+    "id": "string",
+    "reference": "string",
+    "state": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "paymentMethod": "enum:cod|bank_transfer",
+    "paid": "boolean",
+    "customer": {
+      "name": "string",
+      "email": "string"
+    },
+    "total": "number",
+    "itemCount": "number",
+    "createdAt": "string",
+    "statusChangedAt": "string"
+  },
+  "StaffOrderSummaryTracked": {
+    "id": "string",
+    "reference": "string",
+    "state": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "paymentMethod": "enum:cod|bank_transfer",
+    "paid": "boolean",
+    "customer": {
+      "name": "string",
+      "email": "string"
+    },
+    "total": "number",
+    "itemCount": "number",
+    "createdAt": "string",
+    "statusChangedAt": "string",
+    "hasDesign": "boolean"
+  },
+  "StaffHistoryLineStep7": {
+    "at": "string",
+    "from": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "to": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "staff": "string",
+    "note": "string",
+    "via": "enum:dashboard|odoo"
+  },
+  "StaffHistoryLineTracked": {
+    "at": "string",
+    "from": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "to": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "staff": "string",
+    "note": "string",
+    "via": "enum:dashboard|odoo|shop|cron",
+    "actor": "enum:staff|customer|automatic|odoo",
+    "stepBack": "boolean"
+  },
+  "StaffAllowedMoveStep7": {
+    "to": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "label": "string",
+    "needsNote": "boolean",
+    "confirm": "boolean"
+  },
+  "StaffAllowedMoveTracked": {
+    "to": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "label": "string",
+    "needsNote": "boolean",
+    "confirm": "boolean",
+    "direction": "enum:forward|back"
+  },
+  "StaffOrderDetailStep7": {
+    "id": "string",
+    "reference": "string",
+    "state": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "createdAt": "string",
+    "paymentMethod": "enum:cod|bank_transfer",
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "vatRate": "number",
+    "lines": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "OrderLine"
+          },
+          {
+            "$ref": "DesignedOrderLine"
+          }
+        ]
+      }
+    ],
+    "delivery": {
+      "fullName": "string",
+      "email": "string",
+      "phone": "string",
+      "street": "string",
+      "city": "string",
+      "province": "string",
+      "postalCode": "string",
+      "note": "string",
+      "provinceName": "string"
+    },
+    "deliveryFee": "number",
+    "deliveryLabel": "string",
+    "total": "number",
+    "vatAmount": "number",
+    "bankTransfer": {
+      "$oneOf": [
+        "null",
+        {
+          "$ref": "BankDetails"
+        }
+      ]
+    },
+    "customer": {
+      "name": "string",
+      "email": "string",
+      "phone": "string"
+    },
+    "history": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "StaffHistoryLineStep7"
+          },
+          {
+            "$ref": "StaffHistoryLineTracked"
+          }
+        ]
+      }
+    ],
+    "allowed": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "StaffAllowedMoveStep7"
+          },
+          {
+            "$ref": "StaffAllowedMoveTracked"
+          }
+        ]
+      }
+    ],
+    "blocked": [
+      {
+        "to": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+        "label": "string",
+        "reason": "string"
+      }
+    ]
+  },
+  "StaffOrderDetailTracked": {
+    "id": "string",
+    "reference": "string",
+    "state": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+    "createdAt": "string",
+    "paymentMethod": "enum:cod|bank_transfer",
+    "currency": "enum:PHP",
+    "vatIncluded": "boolean",
+    "vatRate": "number",
+    "lines": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "OrderLine"
+          },
+          {
+            "$ref": "DesignedOrderLine"
+          }
+        ]
+      }
+    ],
+    "delivery": {
+      "fullName": "string",
+      "email": "string",
+      "phone": "string",
+      "street": "string",
+      "city": "string",
+      "province": "string",
+      "postalCode": "string",
+      "note": "string",
+      "provinceName": "string"
+    },
+    "deliveryFee": "number",
+    "deliveryLabel": "string",
+    "total": "number",
+    "vatAmount": "number",
+    "bankTransfer": {
+      "$oneOf": [
+        "null",
+        {
+          "$ref": "BankDetails"
+        }
+      ]
+    },
+    "customer": {
+      "name": "string",
+      "email": "string",
+      "phone": "string"
+    },
+    "history": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "StaffHistoryLineStep7"
+          },
+          {
+            "$ref": "StaffHistoryLineTracked"
+          }
+        ]
+      }
+    ],
+    "allowed": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "StaffAllowedMoveStep7"
+          },
+          {
+            "$ref": "StaffAllowedMoveTracked"
+          }
+        ]
+      }
+    ],
+    "blocked": [
+      {
+        "to": "enum:awaiting_payment|confirmed|packed|shipped|out_for_delivery|delivered|closed|cancelled",
+        "label": "string",
+        "reason": "string"
+      }
+    ],
+    "tracking": {
+      "$ref": "OrderTracking"
+    }
+  },
+  "ServerCartLine": {
+    "sku": "string",
+    "productId": "string",
+    "quantity": "number",
+    "selected": "boolean"
+  },
+  "DesignedServerCartLine": {
+    "sku": "string",
+    "productId": "string",
+    "quantity": "number",
+    "selected": "boolean",
+    "designId": "string"
+  },
+  "ServerCart": {
+    "version": "number",
+    "updatedAt": "string|null",
+    "lines": [
+      {
+        "$oneOf": [
+          {
+            "$ref": "ServerCartLine"
+          },
+          {
+            "$ref": "DesignedServerCartLine"
+          }
+        ]
+      }
+    ]
+  },
+  "ApiErrorCart": {
+    "error": {
+      "code": "string",
+      "message": "string",
+      "cart": {
+        "$ref": "ServerCart"
+      }
+    }
+  },
+  "DssRunRef": {
+    "id": "string",
+    "kind": "enum:real|simulated",
+    "simulated": "boolean",
+    "notice": "string|null",
+    "asOf": "string|null",
+    "engineVersion": "string|null",
+    "closedRule": "string|null",
+    "closedRuleText": "string|null",
+    "trigger": "enum:cron|manual|import",
+    "finishedAt": "string|null",
+    "ageDays": "number|null",
+    "stale": "boolean"
+  },
+  "DssRunSummary": {
+    "id": "string",
+    "kind": "enum:real|simulated",
+    "simulated": "boolean",
+    "notice": "string|null",
+    "asOf": "string|null",
+    "engineVersion": "string|null",
+    "closedRule": "string|null",
+    "closedRuleText": "string|null",
+    "trigger": "enum:cron|manual|import",
+    "finishedAt": "string|null",
+    "ageDays": "number|null",
+    "stale": "boolean",
+    "state": "enum:done|failed",
+    "startedAt": "string|null",
+    "durationS": "number|null",
+    "requestedByName": "string|null",
+    "headline": {
+      "orderNow": "number",
+      "alertsCritical": "number",
+      "alertsWarning": "number",
+      "forecastStatus": "string|null",
+      "segmentsStatus": "string|null",
+      "trend": "string|null"
+    }
+  },
+  "DssStatusNote": {
+    "code": "string",
+    "message": "string"
+  },
+  "DssRunRequestBody": {
+    "requestId": "string|null",
+    "state": "enum:queued|running|done|failed|unknown",
+    "runId": "string|null",
+    "detail": "string|null"
+  },
+  "DssOverview": {
+    "data": {
+      "real": {
+        "$oneOf": [
+          "null",
+          {
+            "$ref": "DssRunSummary"
+          }
+        ]
+      },
+      "simulated": {
+        "$oneOf": [
+          "null",
+          {
+            "$ref": "DssRunSummary"
+          }
+        ]
+      },
+      "queue": {
+        "$oneOf": [
+          "null",
+          {
+            "$ref": "DssRunRequestBody"
+          }
+        ]
+      }
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssRuns": {
+    "data": {
+      "runs": [
+        {
+          "$ref": "DssRunSummary"
+        }
+      ],
+      "total": "number",
+      "page": "number",
+      "pageSize": "number"
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssRunDetail": {
+    "data": {
+      "run": {
+        "id": "string",
+        "kind": "enum:real|simulated",
+        "simulated": "boolean",
+        "notice": "string|null",
+        "asOf": "string|null",
+        "engineVersion": "string|null",
+        "closedRule": "string|null",
+        "closedRuleText": "string|null",
+        "trigger": "enum:cron|manual|import",
+        "finishedAt": "string|null",
+        "ageDays": "number|null",
+        "stale": "boolean",
+        "state": "enum:done|failed",
+        "startedAt": "string|null",
+        "durationS": "number|null",
+        "requestedByName": "string|null",
+        "headline": {
+          "orderNow": "number",
+          "alertsCritical": "number",
+          "alertsWarning": "number",
+          "forecastStatus": "string|null",
+          "segmentsStatus": "string|null",
+          "trend": "string|null"
+        },
+        "partStatus": {
+          "$map": {
+            "code": "string|null",
+            "message": "string|null"
+          }
+        },
+        "selection": {
+          "$oneOf": [
+            "null",
+            {
+              "chosen": "string|null",
+              "bestBaseline": "string|null",
+              "modelBeatsBaseline": "boolean|null",
+              "wape": {
+                "$map": "number"
+              }
+            }
+          ]
+        },
+        "rowCounts": {
+          "$map": "number"
+        },
+        "libraries": {
+          "$map": "any"
+        },
+        "inputFingerprint": "string|null",
+        "outputHash": "string|null",
+        "forecastNotes": [
+          "string"
+        ],
+        "error": "string|null"
+      }
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssForecastKeys": {
+    "data": {
+      "run": {
+        "$ref": "DssRunRef"
+      },
+      "level": "enum:product|garment_type|total",
+      "keys": [
+        {
+          "level": "string",
+          "key": "string",
+          "label": "string"
+        }
+      ]
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssForecast": {
+    "data": {
+      "run": {
+        "$ref": "DssRunRef"
+      },
+      "level": "enum:product|garment_type|total",
+      "key": "string",
+      "dataStatus": {
+        "$oneOf": [
+          "null",
+          {
+            "$ref": "DssStatusNote"
+          }
+        ]
+      },
+      "rows": [
+        {
+          "weekStart": "string",
+          "h": "number",
+          "yhat": "number",
+          "lo80": "number|null",
+          "hi80": "number|null",
+          "lo95": "number|null",
+          "hi95": "number|null",
+          "method": "string|null",
+          "flags": [
+            "string"
+          ],
+          "censored": "boolean"
+        }
+      ],
+      "history": {
+        "$oneOf": [
+          "null",
+          [
+            {
+              "weekStart": "string",
+              "units": "number",
+              "censored": "boolean"
+            }
+          ]
+        ]
+      },
+      "historyStatus": {
+        "$oneOf": [
+          "null",
+          {
+            "$ref": "DssStatusNote"
+          }
+        ]
+      }
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssBacktest": {
+    "data": {
+      "run": {
+        "$ref": "DssRunRef"
+      },
+      "total": "number",
+      "page": "number",
+      "pageSize": "number",
+      "rows": [
+        {
+          "level": "string|null",
+          "key": "string|null",
+          "policy": "string|null",
+          "horizon": "string|null",
+          "weeks": "string|null",
+          "n": "number",
+          "nWithInterval": "number",
+          "mae": "number|null",
+          "wape": "number|null",
+          "bias": "number|null",
+          "cov80": "number|null",
+          "cov95": "number|null",
+          "chosen": "boolean"
+        }
+      ]
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssRestockAlternative": {
+    "supplierId": "string|null",
+    "supplier": "string|null",
+    "landedUnitCost": "number|null",
+    "leadP90": "number|null",
+    "coverageRisk": "boolean|null",
+    "arrivesBeforeRunout": "boolean|null",
+    "ineligible": [
+      "string"
+    ]
+  },
+  "DssRestockRow": {
+    "productId": "string",
+    "productTemplateId": "string",
+    "sku": "string|null",
+    "product": "string|null",
+    "garmentType": "string|null",
+    "size": "string|null",
+    "color": "string|null",
+    "onHand": "number",
+    "reserved": "number",
+    "free": "number",
+    "incoming": "number",
+    "dailyDemand": "number|null",
+    "weeklyDemand": "number|null",
+    "daysLeft": "number|null",
+    "runoutDate": "string|null",
+    "runoutDateHi80": "string|null",
+    "supplierId": "string|null",
+    "supplier": "string|null",
+    "unitCost": "number|null",
+    "landedUnitCost": "number|null",
+    "estCost": "number|null",
+    "leadP50": "number|null",
+    "leadP90": "number|null",
+    "leadSource": "string|null",
+    "leadDays": "number|null",
+    "safetyStock": "number|null",
+    "reorderPoint": "number|null",
+    "orderUpTo": "number|null",
+    "suggestedQty": "number|null",
+    "orderBy": "string|null",
+    "orderNow": "boolean",
+    "stockoutBeforeArrival": "boolean",
+    "arrivesBeforeRunout": "boolean|null",
+    "coverageRisk": "boolean",
+    "capped": "boolean",
+    "urgency": "enum:stockout_before_arrival|order_now|plan|ok|no_forecast",
+    "alternatives": [
+      {
+        "$ref": "DssRestockAlternative"
+      }
+    ],
+    "flags": [
+      "string"
+    ]
+  },
+  "DssRestock": {
+    "data": {
+      "run": {
+        "$ref": "DssRunRef"
+      },
+      "total": "number",
+      "page": "number",
+      "pageSize": "number",
+      "counts": {
+        "stockoutBeforeArrival": "number",
+        "orderNow": "number",
+        "plan": "number",
+        "ok": "number",
+        "noForecast": "number"
+      },
+      "rows": [
+        {
+          "$ref": "DssRestockRow"
+        }
+      ]
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssSegmentCustomer": {
+    "customerId": "string|null",
+    "partnerId": "string|null",
+    "displayName": "string|null"
+  },
+  "DssSegments": {
+    "data": {
+      "run": {
+        "$ref": "DssRunRef"
+      },
+      "dataStatus": {
+        "$oneOf": [
+          "null",
+          {
+            "$ref": "DssStatusNote"
+          }
+        ]
+      },
+      "total": "number",
+      "page": "number",
+      "pageSize": "number",
+      "summary": [
+        {
+          "segment": "string",
+          "segmentName": "string",
+          "customers": "number",
+          "sharePct": "number|null",
+          "avgRecencyDays": "number|null",
+          "avgOrders": "number|null",
+          "avgMonetary": "number|null",
+          "totalMonetary": "number|null"
+        }
+      ],
+      "rows": [
+        {
+          "customerKey": "string",
+          "recencyDays": "number",
+          "frequency": "number",
+          "monetary": "number",
+          "rScore": "number",
+          "fScore": "number",
+          "mScore": "number",
+          "segment": "string|null",
+          "segmentName": "string|null",
+          "customer": {
+            "$oneOf": [
+              "null",
+              {
+                "$ref": "DssSegmentCustomer"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssAlerts": {
+    "data": {
+      "run": {
+        "$ref": "DssRunRef"
+      },
+      "total": "number",
+      "page": "number",
+      "pageSize": "number",
+      "counts": {
+        "critical": "number",
+        "warning": "number",
+        "info": "number"
+      },
+      "rows": [
+        {
+          "kind": "string|null",
+          "band": "string|null",
+          "severity": "enum:info|warning|critical",
+          "subjectType": "string|null",
+          "subjectId": "string|null",
+          "subjectLabel": "string|null",
+          "ageDays": "number|null",
+          "message": "string|null"
+        }
+      ]
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssHealth": {
+    "data": {
+      "run": {
+        "$ref": "DssRunRef"
+      },
+      "trend": {
+        "$oneOf": [
+          "null",
+          {
+            "$map": "any"
+          }
+        ]
+      },
+      "kpis": {
+        "$oneOf": [
+          "null",
+          {
+            "$map": "any"
+          }
+        ]
+      },
+      "projection": {
+        "$oneOf": [
+          "null",
+          {
+            "$map": "any"
+          }
+        ]
+      },
+      "months": [
+        {
+          "month": "string",
+          "monthStart": "string",
+          "complete": "boolean",
+          "revenue": "number",
+          "closedOrders": "number",
+          "spending": "number",
+          "cogs": "number",
+          "closedUnits": "number",
+          "unitsWithoutCost": "number",
+          "netCash": "number",
+          "netMargin": "number",
+          "revenueMa3": "number|null",
+          "netCashMa3": "number|null",
+          "netMarginMa3": "number|null",
+          "flags": [
+            "string"
+          ]
+        }
+      ]
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssRunQueued": {
+    "data": {
+      "requestId": "string",
+      "state": "enum:queued"
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  },
+  "DssRunRequest": {
+    "data": {
+      "requestId": "string",
+      "state": "enum:queued|running|done|failed|unknown",
+      "runId": "string|null",
+      "detail": "string|null"
+    },
+    "simulation": {
+      "$ref": "Simulation"
+    }
+  }
+}

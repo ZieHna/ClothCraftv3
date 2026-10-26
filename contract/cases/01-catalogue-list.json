@@ -1,0 +1,52 @@
+[
+  { "name": "list: every product, with the count the server states", "method": "GET", "path": "/api/catalogue/products", "status": 200,
+    "shape": { "data": { "$ref": "CatalogueList" }, "simulation": { "$ref": "Simulation" } },
+    "asserts": [
+      { "op": "eq", "path": "data.currency", "value": "PHP" },
+      { "op": "eq", "path": "data.vatIncluded", "value": true },
+      { "op": "eq", "path": "data.groups", "value": ["Men", "Women", "Kids", "Babies"] },
+      { "op": "eq", "path": "data.sizes", "value": ["XS", "S", "M", "L", "XL", "XXL"] },
+      { "op": "eq", "path": "data.colors[*].id", "value": ["black", "white", "navy", "red", "gray"] },
+      { "op": "eqPath", "path": "data.count", "other": "len:data.products" },
+      { "op": "eq", "path": "data.count", "value": 19 },
+      { "op": "unique", "path": "data.products[*].id" },
+      { "op": "eqPath", "path": "data.priceBounds.min", "other": "min:data.products[*].price" },
+      { "op": "eqPath", "path": "data.priceBounds.max", "other": "max:data.products[*].price" }
+    ] },
+  { "name": "list: a group keeps only that group", "method": "GET", "path": "/api/catalogue/products", "query": { "group": "Men" }, "status": 200,
+    "asserts": [
+      { "op": "each", "path": "data.products[*].group", "is": "eq", "value": "Men" },
+      { "op": "eqPath", "path": "data.count", "other": "len:data.products" },
+      { "op": "gt", "path": "data.count", "value": 0 }
+    ] },
+  { "name": "list: a garment type narrows the products, not the facets", "method": "GET", "path": "/api/catalogue/products", "query": { "group": "Men", "type": "TEE" }, "status": 200,
+    "asserts": [
+      { "op": "each", "path": "data.products[*].garmentType.code", "is": "eq", "value": "TEE" },
+      { "op": "gt", "path": "len:data.garmentTypes", "value": 1 }
+    ] },
+  { "name": "list: name search is case-insensitive contains", "method": "GET", "path": "/api/catalogue/products", "query": { "q": "POLO" }, "status": 200,
+    "asserts": [
+      { "op": "each", "path": "data.products[*].name", "is": "containsI", "value": "polo" },
+      { "op": "gt", "path": "data.count", "value": 0 }
+    ] },
+  { "name": "list: the price range is inclusive and applies to the base price", "method": "GET", "path": "/api/catalogue/products", "query": { "min": "300", "max": "450" }, "status": 200,
+    "asserts": [
+      { "op": "each", "path": "data.products[*].price", "is": "gte", "value": 300 },
+      { "op": "each", "path": "data.products[*].price", "is": "lte", "value": 450 },
+      { "op": "gt", "path": "data.count", "value": 0 }
+    ] },
+  { "name": "list: stock=1 leaves out what is sold out", "method": "GET", "path": "/api/catalogue/products", "query": { "stock": "1" }, "status": 200,
+    "asserts": [ { "op": "each", "path": "data.products[*].status", "is": "ne", "value": "out_of_stock" } ] },
+  { "name": "list: nothing matches -> an empty list with count 0, not an error", "method": "GET", "path": "/api/catalogue/products", "query": { "q": "zzzz-no-such-garment" }, "status": 200,
+    "asserts": [ { "op": "eq", "path": "data.count", "value": 0 }, { "op": "eq", "path": "len:data.products", "value": 0 } ] },
+  { "name": "list: unknown group is 400 bad_group", "method": "GET", "path": "/api/catalogue/products", "query": { "group": "Pets" }, "status": 400,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_group" }, { "op": "eq", "path": "error.message", "value": "Unknown group \"Pets\"" } ] },
+  { "name": "list: unknown garment type is 400 bad_type", "method": "GET", "path": "/api/catalogue/products", "query": { "type": "HAT" }, "status": 400,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_type" } ] },
+  { "name": "list: a price that is not a number is 400 bad_price", "method": "GET", "path": "/api/catalogue/products", "query": { "min": "abc" }, "status": 400,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_price" }, { "op": "eq", "path": "error.message", "value": "Prices must be numbers of 0 or more" } ] },
+  { "name": "list: a negative price is 400 bad_price", "method": "GET", "path": "/api/catalogue/products", "query": { "max": "-5" }, "status": 400,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_price" } ] },
+  { "name": "list: a minimum above the maximum is 400 bad_price", "method": "GET", "path": "/api/catalogue/products", "query": { "min": "500", "max": "100" }, "status": 400,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_price" }, { "op": "eq", "path": "error.message", "value": "The minimum price is above the maximum price" } ] }
+]

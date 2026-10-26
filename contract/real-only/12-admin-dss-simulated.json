@@ -1,0 +1,1655 @@
+[
+ {
+  "name": "dss: the overview carries both blocks, each labelled; the default is never simulated",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "shape": {
+     "$ref": "DssOverview"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.real.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.real.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.real.notice",
+      "value": null
+     },
+     {
+      "op": "eq",
+      "path": "data.simulated.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.simulated.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.simulated.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "eq",
+      "path": "data.simulated.trigger",
+      "value": "import"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "status": 200,
+    "shape": {
+     "$ref": "DssHealth"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "query": {
+     "kind": "real"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssHealth"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     },
+     {
+      "op": "eq",
+      "path": "data.run.id",
+      "value": "{{realRunId}}"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "query": {
+     "kind": "simulated"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssHealth"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "eq",
+      "path": "data.run.id",
+      "value": "{{simRunId}}"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "query": {
+     "run": "{{simRunId}}"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssHealth"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "status": 200,
+    "shape": {
+     "$ref": "DssForecast"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "status": 200,
+    "shape": {
+     "$ref": "DssRestock"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments",
+    "status": 200,
+    "shape": {
+     "$ref": "DssSegments"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "status": 200,
+    "shape": {
+     "$ref": "DssBacktest"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts",
+    "status": 200,
+    "shape": {
+     "$ref": "DssAlerts"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: the run list (real by default, simulated or all on request) and one run in detail",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs",
+    "status": 200,
+    "shape": {
+     "$ref": "DssRuns"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.runs[*].kind",
+      "is": "eq",
+      "value": "real"
+     },
+     {
+      "op": "gt",
+      "path": "data.total",
+      "value": 0
+     },
+     {
+      "op": "eq",
+      "path": "data.page",
+      "value": 1
+     },
+     {
+      "op": "eq",
+      "path": "data.pageSize",
+      "value": 25
+     },
+     {
+      "op": "unique",
+      "path": "data.runs[*].id"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs",
+    "query": {
+     "kind": "simulated"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssRuns"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.runs[*].kind",
+      "is": "eq",
+      "value": "simulated"
+     },
+     {
+      "op": "each",
+      "path": "data.runs[*].notice",
+      "is": "eq",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "gt",
+      "path": "data.total",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs",
+    "query": {
+     "kind": "all",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssRuns"
+    },
+    "asserts": [
+     {
+      "op": "gt",
+      "path": "data.total",
+      "value": 1
+     },
+     {
+      "op": "lte",
+      "path": "len:data.runs",
+      "value": 100
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs/{{simRunId}}",
+    "status": 200,
+    "shape": {
+     "$ref": "DssRunDetail"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.id",
+      "value": "{{simRunId}}"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "eq",
+      "path": "data.run.error",
+      "value": null
+     },
+     {
+      "op": "gt",
+      "path": "len:data.run.inputFingerprint",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs/{{realRunId}}",
+    "status": 200,
+    "shape": {
+     "$ref": "DssRunDetail"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: forecast keys, a forecast with its weekly history, a garment type summed from its products, and the empty state of a real run with no history",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast/keys",
+    "query": {
+     "kind": "simulated",
+     "level": "product"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssForecastKeys"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "gt",
+      "path": "len:data.keys",
+      "value": 1
+     }
+    ],
+    "save": {
+     "firstKey": "data.keys.0.key"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast/keys",
+    "query": {
+     "kind": "simulated",
+     "level": "garment_type"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssForecastKeys"
+    },
+    "save": {
+     "typeKey": "data.keys.0.key"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "query": {
+     "kind": "simulated",
+     "level": "product",
+     "key": "{{firstKey}}"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssForecast"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "eq",
+      "path": "len:data.rows",
+      "value": 8
+     },
+     {
+      "op": "gt",
+      "path": "len:data.history",
+      "value": 8
+     },
+     {
+      "op": "eq",
+      "path": "data.dataStatus",
+      "value": null
+     },
+     {
+      "op": "eq",
+      "path": "data.historyStatus",
+      "value": null
+     },
+     {
+      "op": "eq",
+      "path": "data.rows.0.h",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "query": {
+     "kind": "simulated",
+     "level": "total"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssForecast"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "eq",
+      "path": "len:data.rows",
+      "value": 8
+     },
+     {
+      "op": "gt",
+      "path": "len:data.history",
+      "value": 8
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "query": {
+     "kind": "simulated",
+     "level": "garment_type",
+     "key": "{{typeKey}}"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssForecast"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "eq",
+      "path": "len:data.rows",
+      "value": 8
+     },
+     {
+      "op": "gt",
+      "path": "len:data.history",
+      "value": 8
+     },
+     {
+      "op": "eq",
+      "path": "data.historyStatus",
+      "value": null
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "query": {
+     "kind": "simulated",
+     "level": "product",
+     "key": "no-such-key"
+    },
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.key",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "query": {
+     "kind": "real",
+     "level": "total"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssForecast"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     },
+     {
+      "op": "eq",
+      "path": "data.rows",
+      "value": []
+     },
+     {
+      "op": "eq",
+      "path": "data.history",
+      "value": []
+     },
+     {
+      "op": "eq",
+      "path": "data.dataStatus.code",
+      "value": "not_enough_history"
+     },
+     {
+      "op": "eq",
+      "path": "data.historyStatus.code",
+      "value": "not_enough_history"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: the backtest table pages (25 by default, 100 at most), filters and gives the empty state for a run with no forecast",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "query": {
+     "kind": "simulated"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssBacktest"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "eq",
+      "path": "len:data.rows",
+      "value": 25
+     },
+     {
+      "op": "gt",
+      "path": "data.total",
+      "value": 25
+     },
+     {
+      "op": "eq",
+      "path": "data.page",
+      "value": 1
+     },
+     {
+      "op": "eq",
+      "path": "data.pageSize",
+      "value": 25
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "query": {
+     "kind": "simulated",
+     "pageSize": "100",
+     "page": "2"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssBacktest"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "len:data.rows",
+      "value": 100
+     },
+     {
+      "op": "eq",
+      "path": "data.page",
+      "value": 2
+     },
+     {
+      "op": "eq",
+      "path": "data.pageSize",
+      "value": 100
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "query": {
+     "kind": "simulated",
+     "policy": "ets",
+     "horizon": "all",
+     "weeks": "all",
+     "level": "product",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssBacktest"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.rows[*].policy",
+      "is": "eq",
+      "value": "ets"
+     },
+     {
+      "op": "each",
+      "path": "data.rows[*].horizon",
+      "is": "eq",
+      "value": "all"
+     },
+     {
+      "op": "each",
+      "path": "data.rows[*].level",
+      "is": "eq",
+      "value": "product"
+     },
+     {
+      "op": "gt",
+      "path": "len:data.rows",
+      "value": 5
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "query": {
+     "kind": "simulated",
+     "chosen": "true",
+     "level": "total",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssBacktest"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.rows[*].chosen",
+      "is": "eq",
+      "value": true
+     },
+     {
+      "op": "each",
+      "path": "data.rows[*].level",
+      "is": "eq",
+      "value": "total"
+     },
+     {
+      "op": "gt",
+      "path": "len:data.rows",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "query": {
+     "kind": "real"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssBacktest"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     },
+     {
+      "op": "eq",
+      "path": "data.rows",
+      "value": []
+     },
+     {
+      "op": "eq",
+      "path": "data.total",
+      "value": 0
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: restock rows - shape, paging, filters, and the weekly demand sent next to the daily one",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "query": {
+     "kind": "simulated"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssRestock"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "eq",
+      "path": "len:data.rows",
+      "value": 25
+     },
+     {
+      "op": "gt",
+      "path": "data.total",
+      "value": 100
+     },
+     {
+      "op": "eq",
+      "path": "data.pageSize",
+      "value": 25
+     },
+     {
+      "op": "gt",
+      "path": "data.counts.stockoutBeforeArrival",
+      "value": -1
+     },
+     {
+      "op": "gt",
+      "path": "data.rows.0.weeklyDemand",
+      "value": -1000000000000
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "query": {
+     "kind": "simulated",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssRestock"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "len:data.rows",
+      "value": 100
+     },
+     {
+      "op": "unique",
+      "path": "data.rows[*].productId"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "query": {
+     "kind": "simulated",
+     "urgency": "order_now",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssRestock"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.rows[*].urgency",
+      "is": "eq",
+      "value": "order_now"
+     },
+     {
+      "op": "each",
+      "path": "data.rows[*].orderNow",
+      "is": "eq",
+      "value": true
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "query": {
+     "kind": "simulated",
+     "garmentType": "TEE",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssRestock"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.rows[*].garmentType",
+      "is": "eq",
+      "value": "TEE"
+     },
+     {
+      "op": "gt",
+      "path": "len:data.rows",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "query": {
+     "kind": "simulated",
+     "q": "SIM-W-TEE",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssRestock"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.rows[*].sku",
+      "is": "containsI",
+      "value": "sim-w-tee"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "query": {
+     "kind": "real"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssRestock"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     },
+     {
+      "op": "eq",
+      "path": "data.rows",
+      "value": []
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: segments - a simulated run shows only pseudonymous keys, filters and sorts; a real run without enough customers says so",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments",
+    "query": {
+     "kind": "simulated"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssSegments"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "each",
+      "path": "data.rows[*].customer",
+      "is": "eq",
+      "value": null
+     },
+     {
+      "op": "matches",
+      "path": "data.rows.0.customerKey",
+      "value": "^c_[0-9a-f]{16}$"
+     },
+     {
+      "op": "eq",
+      "path": "len:data.rows",
+      "value": 25
+     },
+     {
+      "op": "gt",
+      "path": "len:data.summary",
+      "value": 5
+     },
+     {
+      "op": "eq",
+      "path": "data.dataStatus",
+      "value": null
+     },
+     {
+      "op": "absent",
+      "value": "@"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments",
+    "query": {
+     "kind": "simulated",
+     "segment": "champions",
+     "sort": "recency",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssSegments"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.rows[*].segment",
+      "is": "eq",
+      "value": "champions"
+     },
+     {
+      "op": "gt",
+      "path": "len:data.rows",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments",
+    "query": {
+     "kind": "real"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssSegments"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     },
+     {
+      "op": "eq",
+      "path": "data.rows",
+      "value": []
+     },
+     {
+      "op": "eq",
+      "path": "data.dataStatus.code",
+      "value": "not_enough_customers"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: alerts have no state - the filters are severity and kind, and critical comes first",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts",
+    "query": {
+     "run": "{{simRunId}}",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssAlerts"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "gt",
+      "path": "data.total",
+      "value": 0
+     },
+     {
+      "op": "gt",
+      "path": "data.counts.critical",
+      "value": 0
+     },
+     {
+      "op": "eq",
+      "path": "data.rows.0.severity",
+      "value": "critical"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts",
+    "query": {
+     "run": "{{simRunId}}",
+     "severity": "warning",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssAlerts"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.rows[*].severity",
+      "is": "eq",
+      "value": "warning"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts",
+    "query": {
+     "run": "{{simRunId}}",
+     "kind": "unpaid_bank_transfer",
+     "pageSize": "100"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssAlerts"
+    },
+    "asserts": [
+     {
+      "op": "each",
+      "path": "data.rows[*].kind",
+      "is": "eq",
+      "value": "unpaid_bank_transfer"
+     },
+     {
+      "op": "gt",
+      "path": "len:data.rows",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts",
+    "status": 200,
+    "shape": {
+     "$ref": "DssAlerts"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: health - months, trend, KPIs and projection of a run, and the note only on a simulated run",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "query": {
+     "kind": "simulated"
+    },
+    "status": 200,
+    "shape": {
+     "$ref": "DssHealth"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "simulated"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": "Simulated data: demonstrates the method, not real-world accuracy."
+     },
+     {
+      "op": "gt",
+      "path": "len:data.months",
+      "value": 12
+     },
+     {
+      "op": "matches",
+      "path": "data.trend.label",
+      "value": "^(growing|stable|declining)$"
+     },
+     {
+      "op": "gt",
+      "path": "data.trend.revenueRelSlopePct",
+      "value": -1000000000000
+     },
+     {
+      "op": "gt",
+      "path": "len:data.kpis.netPositionLabel",
+      "value": 0
+     },
+     {
+      "op": "matches",
+      "path": "data.projection.note",
+      "value": "Simulated data demonstrates the method only"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "status": 200,
+    "shape": {
+     "$ref": "DssHealth"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.run.simulated",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "path": "data.run.kind",
+      "value": "real"
+     },
+     {
+      "op": "eq",
+      "path": "data.run.notice",
+      "value": null
+     },
+     {
+      "op": "gt",
+      "path": "len:data.months",
+      "value": 0
+     },
+     {
+      "op": "eq",
+      "path": "data.trend.label",
+      "value": "not_enough_history"
+     },
+     {
+      "op": "absent",
+      "value": "Simulated data demonstrates"
+     }
+    ]
+   }
+  ]
+ }
+]

@@ -1,0 +1,161 @@
+[
+  { "name": "orders: placing without a session is 401", "method": "POST", "path": "/api/orders", "body": { "lines": [{ "sku": "{{orderSku1}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": 1 }, "status": 401,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "unauthorised" }, { "op": "eq", "path": "error.message", "value": "Sign in to place or see orders." } ] },
+  { "name": "orders: listing without a session is 401", "method": "GET", "path": "/api/orders", "status": 401,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "unauthorised" } ] },
+  { "name": "orders: reading one without a session is 401", "method": "GET", "path": "/api/orders/1", "status": 401,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "unauthorised" } ] },
+
+  { "name": "orders: cash on delivery is created confirmed, reserves stock, and can be read back", "customers": ["shopper"], "as": "shopper", "keys": ["k1"], "steps": [
+      { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k1}}" },
+        "body": { "lines": [{ "sku": "{{orderSku1}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{orderSku1Price}}" },
+        "status": 201, "shape": { "data": { "$ref": "Order" }, "simulation": { "$ref": "Simulation" } },
+        "save": { "orderId": "data.id", "orderRef": "data.reference" },
+        "asserts": [
+          { "op": "eq", "path": "data.state", "value": "confirmed" },
+          { "op": "eq", "path": "data.paymentMethod", "value": "cod" },
+          { "op": "eq", "path": "data.bankTransfer", "value": null },
+          { "op": "matches", "path": "data.reference", "value": "^S\\d{5,}$" },
+          { "op": "eq", "path": "data.lines[0].sku", "value": "{{orderSku1}}" },
+          { "op": "eq", "path": "data.lines[0].quantity", "value": 1 },
+          { "op": "eq", "path": "data.total", "value": "{{orderSku1Price}}" },
+          { "op": "vatOf", "total": "data.total", "vat": "data.vatAmount", "rate": "data.vatRate" },
+          { "op": "eq", "path": "data.deliveryFee", "value": 0 },
+          { "op": "eq", "path": "data.delivery.fullName", "value": "Ana Cruz" },
+          { "op": "eq", "path": "data.delivery.province", "value": "PH-00" },
+          { "op": "eq", "path": "data.delivery.provinceName", "value": "Metro Manila (NCR)" },
+          { "op": "eq", "path": "data.delivery.note", "value": "Leave with the guard" }
+        ] },
+      { "method": "GET", "path": "/api/orders/{{orderId}}", "status": 200, "shape": { "data": { "$ref": "Order" }, "simulation": { "$ref": "Simulation" } },
+        "asserts": [ { "op": "eq", "path": "data.reference", "value": "{{orderRef}}" }, { "op": "eq", "path": "data.state", "value": "confirmed" } ] },
+      { "method": "GET", "path": "/api/orders", "status": 200, "shape": { "data": [{ "$ref": "Order" }], "simulation": { "$ref": "Simulation" } },
+        "asserts": [ { "op": "countEq", "path": "data[*].id", "value": "{{orderId}}", "count": 1 }, { "op": "eq", "path": "data[0].id", "value": "{{orderId}}" } ] },
+      { "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{orderSku1}}", "quantity": 1 }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].available", "value": "{{orderSku1Avail-1}}" } ] }
+  ] },
+
+  { "name": "orders: bank transfer is confirmed too, but waits for payment, with the order number as the reference", "customers": ["shopper"], "as": "shopper", "keys": ["k2"], "steps": [
+      { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k2}}" },
+        "body": { "lines": [{ "sku": "{{orderSku2}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "bank_transfer", "quotedTotal": "{{orderSku2Price}}" },
+        "status": 201, "shape": { "data": { "$ref": "Order" }, "simulation": { "$ref": "Simulation" } },
+        "asserts": [
+          { "op": "eq", "path": "data.state", "value": "awaiting_payment" },
+          { "op": "eq", "path": "data.paymentMethod", "value": "bank_transfer" },
+          { "op": "eqPath", "path": "data.bankTransfer.paymentReference", "other": "data.reference" },
+          { "op": "eq", "path": "data.bankTransfer.placeholder", "value": true }
+        ] },
+      { "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{orderSku2}}", "quantity": 1 }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].available", "value": "{{orderSku2Avail-1}}" } ] }
+  ] },
+
+  { "name": "orders: the same Idempotency-Key replayed returns the same order and takes stock once", "customers": ["shopper"], "as": "shopper", "keys": ["k3"], "steps": [
+      { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k3}}" },
+        "body": { "lines": [{ "sku": "{{orderSku3}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{orderSku3Price}}" },
+        "status": 201, "save": { "orderId": "data.id" } },
+      { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k3}}" },
+        "body": { "lines": [{ "sku": "{{orderSku3}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{orderSku3Price}}" },
+        "status": 201, "asserts": [ { "op": "eq", "path": "data.id", "value": "{{orderId}}" } ] },
+      { "method": "GET", "path": "/api/orders", "status": 200, "asserts": [ { "op": "countEq", "path": "data[*].id", "value": "{{orderId}}", "count": 1 } ] },
+      { "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{orderSku3}}", "quantity": 1 }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].available", "value": "{{orderSku3Avail-1}}" } ] }
+  ] },
+
+  { "name": "orders: TWO CONCURRENT requests with the same key create exactly one order", "customers": ["shopper"], "as": "shopper", "keys": ["k4"], "steps": [
+      { "parallel": [
+          { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k4}}" },
+            "body": { "lines": [{ "sku": "{{orderSku4}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{orderSku4Price}}" } },
+          { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k4}}" },
+            "body": { "lines": [{ "sku": "{{orderSku4}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{orderSku4Price}}" } }
+        ],
+        "statuses": [201, 201],
+        "save": { "orderId": "results[0].body.data.id" },
+        "asserts": [ { "op": "eqPath", "path": "results[0].body.data.id", "other": "results[1].body.data.id" } ] },
+      { "method": "GET", "path": "/api/orders", "status": 200, "asserts": [ { "op": "countEq", "path": "data[*].id", "value": "{{orderId}}", "count": 1 } ] },
+      { "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{orderSku4}}", "quantity": 1 }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].available", "value": "{{orderSku4Avail-1}}" } ] }
+  ] },
+
+  { "name": "orders: two concurrent orders for the last units - exactly one succeeds, the other is a stock conflict", "customers": ["shopper"], "as": "shopper", "keys": ["k5", "k6"], "steps": [
+      { "parallel": [
+          { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k5}}" },
+            "body": { "lines": [{ "sku": "{{raceSku}}", "quantity": "{{raceAvail}}" }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{racePriceAll}}" } },
+          { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k6}}" },
+            "body": { "lines": [{ "sku": "{{raceSku}}", "quantity": "{{raceAvail}}" }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{racePriceAll}}" } }
+        ],
+        "statuses": [201, 409],
+        "asserts": [
+          { "op": "countEq", "path": "results[*].body.error.code", "value": "stock_conflict", "count": 1 },
+          { "op": "countEq", "path": "results[*].body.data.state", "value": "confirmed", "count": 1 }
+        ] },
+      { "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{raceSku}}", "quantity": 1 }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].issue", "value": "sold_out" }, { "op": "eq", "path": "data.lines[0].available", "value": 0 } ] }
+  ] },
+
+  { "name": "orders: asking for more than is free is 409 stock_conflict and creates nothing", "customers": ["shopper"], "as": "shopper", "keys": ["k7"], "steps": [
+      { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k7}}" },
+        "body": { "lines": [{ "sku": "{{orderSku5}}", "quantity": "{{orderSku5Avail+1}}" }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{orderSku5PriceMore}}" },
+        "status": 409, "shape": { "$ref": "ApiErrorStock" },
+        "asserts": [
+          { "op": "eq", "path": "error.code", "value": "stock_conflict" },
+          { "op": "eq", "path": "len:error.lines", "value": 1 },
+          { "op": "eq", "path": "error.lines[0].sku", "value": "{{orderSku5}}" },
+          { "op": "eq", "path": "error.lines[0].available", "value": "{{orderSku5Avail}}" },
+          { "op": "startsWith", "path": "error.lines[0].message", "value": "Sorry, only {{orderSku5Avail}} of " },
+          { "op": "endsWith", "path": "error.message", "value": " Your cart has been kept." }
+        ] },
+      { "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{orderSku5}}", "quantity": 1 }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].available", "value": "{{orderSku5Avail}}" } ] }
+  ] },
+
+  { "name": "orders: it is all or nothing, and every short line is reported", "customers": ["shopper"], "as": "shopper", "keys": ["k8"], "steps": [
+      { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k8}}" },
+        "body": { "lines": [{ "sku": "{{orderSku6}}", "quantity": 1 }, { "sku": "{{soldOutSku}}", "quantity": 1 }, { "sku": "NO-SUCH-SKU", "quantity": 1 }],
+                  "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{orderSku6Price}}" },
+        "status": 409, "shape": { "$ref": "ApiErrorStock" },
+        "asserts": [
+          { "op": "eq", "path": "len:error.lines", "value": 2 },
+          { "op": "eq", "path": "error.lines[*].sku", "value": ["{{soldOutSku}}", "NO-SUCH-SKU"] }
+        ] },
+      { "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{orderSku6}}", "quantity": 1 }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].available", "value": "{{orderSku6Avail}}" } ] }
+  ] },
+
+  { "name": "orders: a total that is not the current one is 409 price_changed with the new quote, and creates nothing", "customers": ["shopper"], "as": "shopper", "keys": ["k9"], "steps": [
+      { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k9}}" },
+        "body": { "lines": [{ "sku": "{{orderSku7}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{orderSku7PriceMore}}" },
+        "status": 409, "shape": { "$ref": "ApiErrorPrice" },
+        "asserts": [
+          { "op": "eq", "path": "error.code", "value": "price_changed" },
+          { "op": "eq", "path": "error.quote.total", "value": "{{orderSku7Price}}" },
+          { "op": "eq", "path": "error.quote.ready", "value": true },
+          { "op": "eq", "path": "error.message", "value": "The price changed since you last looked. Nothing was ordered. Please check the new total." }
+        ] },
+      { "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{orderSku7}}", "quantity": 1 }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].available", "value": "{{orderSku7Avail}}" } ] }
+  ] },
+
+  { "name": "orders: delivery details that need fixing are 422 with a message per field", "customers": ["shopper"], "as": "shopper", "method": "POST", "path": "/api/orders",
+    "body": { "lines": [{ "sku": "{{orderSku7}}", "quantity": 1 }], "delivery": "{{badDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{orderSku7Price}}" },
+    "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [
+      { "op": "eq", "path": "error.code", "value": "validation" },
+      { "op": "eq", "path": "error.message", "value": "Some delivery details need fixing." },
+      { "op": "eq", "path": "error.fields", "value": { "email": "Enter an email address like name@example.com.", "postalCode": "Enter a 4-digit postal code, like 1000." } }
+    ] },
+  { "name": "orders: a payment method that does not exist is 400", "customers": ["shopper"], "as": "shopper", "method": "POST", "path": "/api/orders",
+    "body": { "lines": [{ "sku": "{{orderSku7}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "card", "quotedTotal": "{{orderSku7Price}}" },
+    "status": 400, "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_request" }, { "op": "eq", "path": "error.message", "value": "Choose Cash on delivery or Bank transfer." } ] },
+  { "name": "orders: an empty cart is 400", "customers": ["shopper"], "as": "shopper", "method": "POST", "path": "/api/orders",
+    "body": { "lines": [], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": 0 },
+    "status": 400, "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.message", "value": "The cart is empty." } ] },
+  { "name": "orders: a missing total is 400", "customers": ["shopper"], "as": "shopper", "method": "POST", "path": "/api/orders",
+    "body": { "lines": [{ "sku": "{{orderSku7}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod" },
+    "status": 400, "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.message", "value": "The total you were shown is missing." } ] },
+  { "name": "orders: a request without delivery is 400", "customers": ["shopper"], "as": "shopper", "method": "POST", "path": "/api/orders",
+    "body": { "lines": [{ "sku": "{{orderSku7}}", "quantity": 1 }], "paymentMethod": "cod", "quotedTotal": 1 },
+    "status": 400, "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.message", "value": "The order request is not complete." } ] },
+  { "name": "orders: an order that does not exist is 404", "customers": ["shopper"], "as": "shopper", "method": "GET", "path": "/api/orders/999999999", "status": 404,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "not_found" }, { "op": "eq", "path": "error.message", "value": "No order \"999999999\"" } ] },
+  { "name": "orders: an order id that is not a number is 404", "customers": ["shopper"], "as": "shopper", "method": "GET", "path": "/api/orders/abc", "status": 404,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "not_found" } ] }
+]

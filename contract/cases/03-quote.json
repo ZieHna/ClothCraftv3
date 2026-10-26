@@ -1,0 +1,62 @@
+[
+  { "name": "quote: one line that can be supplied is ready", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{inStockSku}}", "quantity": 1 }] }, "status": 200,
+    "shape": { "data": { "$ref": "Quote" }, "simulation": { "$ref": "Simulation" } },
+    "asserts": [
+      { "op": "eq", "path": "data.ready", "value": true },
+      { "op": "eq", "path": "data.lines[0].issue", "value": "ok" },
+      { "op": "eq", "path": "data.lines[0].message", "value": null },
+      { "op": "eq", "path": "data.lines[0].sku", "value": "{{inStockSku}}" },
+      { "op": "eq", "path": "data.lines[0].productId", "value": "{{inStockProductId}}" },
+      { "op": "eq", "path": "data.lines[0].unitPrice", "value": "{{inStockPrice}}" },
+      { "op": "eq", "path": "data.lines[0].available", "value": "{{inStockAvailable}}" },
+      { "op": "eqPath", "path": "data.total", "other": "data.lines[0].lineTotal" },
+      { "op": "eq", "path": "data.deliveryFee", "value": 0 },
+      { "op": "eq", "path": "data.vatRate", "value": 12 },
+      { "op": "eq", "path": "data.vatIncluded", "value": true },
+      { "op": "matches", "path": "data.deliveryLabel", "value": "\\S" }
+    ] },
+  { "name": "quote: lines for one SKU are counted together", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{inStockSku}}", "quantity": 1 }, { "sku": "{{inStockSku}}", "quantity": 1 }] }, "status": 200,
+    "asserts": [
+      { "op": "eq", "path": "len:data.lines", "value": 1 },
+      { "op": "eq", "path": "data.lines[0].quantity", "value": 2 },
+      { "op": "eq", "path": "data.total", "value": "{{inStockPrice*2}}" }
+    ] },
+  { "name": "quote: the VAT is the part of the total, rounded once on the total", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{inStockSku}}", "quantity": 1 }, { "sku": "{{otherInStockSku}}", "quantity": 1 }] }, "status": 200,
+    "asserts": [
+      { "op": "vatOf", "total": "data.total", "vat": "data.vatAmount", "rate": "data.vatRate" },
+      { "op": "eqPath", "path": "data.total", "other": "sum:data.lines[*].lineTotal" }
+    ] },
+  { "name": "quote: asking for more than is free is over_stock, not ready, with the guard's sentence", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{inStockSku}}", "quantity": "{{inStockAvailable+1}}" }] }, "status": 200,
+    "asserts": [
+      { "op": "eq", "path": "data.lines[0].issue", "value": "over_stock" },
+      { "op": "eq", "path": "data.ready", "value": false },
+      { "op": "eq", "path": "data.lines[0].available", "value": "{{inStockAvailable}}" },
+      { "op": "startsWith", "path": "data.lines[0].message", "value": "Sorry, only {{inStockAvailable}} of " }
+    ] },
+  { "name": "quote: a sold-out variant is sold_out", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{soldOutSku}}", "quantity": 1 }] }, "status": 200,
+    "asserts": [
+      { "op": "eq", "path": "data.lines[0].issue", "value": "sold_out" },
+      { "op": "eq", "path": "data.lines[0].available", "value": 0 },
+      { "op": "endsWith", "path": "data.lines[0].message", "value": " just sold out." },
+      { "op": "eq", "path": "data.ready", "value": false }
+    ] },
+  { "name": "quote: a SKU the shop does not sell is unavailable and costs nothing", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "NO-SUCH-SKU", "quantity": 2 }] }, "status": 200,
+    "asserts": [
+      { "op": "eq", "path": "data.lines[0].issue", "value": "unavailable" },
+      { "op": "eq", "path": "data.lines[0].message", "value": "Sorry, this item is no longer sold." },
+      { "op": "eq", "path": "data.lines[0].size", "value": null },
+      { "op": "eq", "path": "data.lines[0].lineTotal", "value": 0 },
+      { "op": "eq", "path": "data.total", "value": 0 },
+      { "op": "eq", "path": "data.ready", "value": false }
+    ] },
+  { "name": "quote: an empty cart is not ready", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [] }, "status": 200,
+    "asserts": [ { "op": "eq", "path": "len:data.lines", "value": 0 }, { "op": "eq", "path": "data.ready", "value": false }, { "op": "eq", "path": "data.total", "value": 0 } ] },
+  { "name": "quote: quantity 0 is 400 bad_request", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{inStockSku}}", "quantity": 0 }] }, "status": 400,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_request" } ] },
+  { "name": "quote: quantity above 99 is 400 bad_request", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{inStockSku}}", "quantity": 100 }] }, "status": 400,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_request" } ] },
+  { "name": "quote: a fractional quantity is 400 bad_request", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{inStockSku}}", "quantity": 1.5 }] }, "status": 400,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_request" } ] },
+  { "name": "quote: no lines key is 400 bad_request", "method": "POST", "path": "/api/cart/quote", "body": {}, "status": 400,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_request" } ] }
+]

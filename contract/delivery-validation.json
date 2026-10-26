@@ -1,0 +1,22 @@
+{
+  "valid": { "fullName": "Ana Cruz", "email": "ana@example.com", "phone": "0917 123 4567", "street": "12 Rizal Street", "city": "Quezon City", "province": "PH-00", "postalCode": "1100", "note": "Leave with the guard" },
+  "cases": [
+    { "name": "a valid address has no errors", "change": {}, "errors": {} },
+    { "name": "+63 mobile with spaces and dashes is fine", "change": { "phone": "+63 917-123-4567" }, "errors": {} },
+    { "name": "name too short", "change": { "fullName": " A " }, "errors": { "fullName": "Enter your full name." } },
+    { "name": "name too long", "change": { "fullName": "{{x81}}" }, "errors": { "fullName": "Use 80 characters or fewer for the name." } },
+    { "name": "email without a domain", "change": { "email": "ana@example" }, "errors": { "email": "Enter an email address like name@example.com." } },
+    { "name": "email with a space", "change": { "email": "ana cruz@example.com" }, "errors": { "email": "Enter an email address like name@example.com." } },
+    { "name": "landline is not a mobile number", "change": { "phone": "02 8123 4567" }, "errors": { "phone": "Enter a Philippine mobile number, like 0917 123 4567 or +63 917 123 4567." } },
+    { "name": "mobile with a letter", "change": { "phone": "0917 123 456x" }, "errors": { "phone": "Enter a Philippine mobile number, like 0917 123 4567 or +63 917 123 4567." } },
+    { "name": "street too short", "change": { "street": "12 R" }, "errors": { "street": "Enter your house number and street, at least 5 characters." } },
+    { "name": "city too short", "change": { "city": "Q" }, "errors": { "city": "Enter your city or municipality." } },
+    { "name": "province not in the list", "change": { "province": "PH-NOPE" }, "errors": { "province": "Choose your province." } },
+    { "name": "empty province", "change": { "province": "" }, "errors": { "province": "Choose your province." } },
+    { "name": "postal code with three digits", "change": { "postalCode": "110" }, "errors": { "postalCode": "Enter a 4-digit postal code, like 1000." } },
+    { "name": "postal code with letters", "change": { "postalCode": "11AB" }, "errors": { "postalCode": "Enter a 4-digit postal code, like 1000." } },
+    { "name": "note over 300 characters", "change": { "note": "{{x301}}" }, "errors": { "note": "Keep the delivery note to 300 characters or fewer." } },
+    { "name": "several errors together", "change": { "fullName": "", "email": "", "phone": "", "street": "", "city": "", "province": "", "postalCode": "", "note": "" },
+      "errors": { "fullName": "Enter your full name.", "email": "Enter an email address like name@example.com.", "phone": "Enter a Philippine mobile number, like 0917 123 4567 or +63 917 123 4567.", "street": "Enter your house number and street, at least 5 characters.", "city": "Enter your city or municipality.", "province": "Choose your province.", "postalCode": "Enter a 4-digit postal code, like 1000." } }
+  ]
+}

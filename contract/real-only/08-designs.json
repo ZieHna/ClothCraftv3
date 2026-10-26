@@ -1,0 +1,139 @@
+[
+  { "name": "designs: the print-fee settings of a garment", "method": "GET", "path": "/api/designs/pricing", "query": { "product": "{{designProductId}}" }, "status": 200,
+    "shape": { "data": { "$ref": "DesignPricing" }, "simulation": { "$ref": "Simulation" } },
+    "asserts": [
+      { "op": "eq", "path": "data.productId", "value": "{{designProductId}}" },
+      { "op": "eq", "path": "data.designable", "value": true },
+      { "op": "eq", "path": "data.message", "value": null },
+      { "op": "eq", "path": "data.steps", "value": { "XS": 0, "S": 0, "M": 1, "L": 2, "XL": 3, "XXL": 4 } },
+      { "op": "eq", "path": "data.limits.totalBytes", "value": 20971520 },
+      { "op": "eq", "path": "data.limits.elements", "value": 50 }
+    ] },
+  { "name": "designs: the settings of a garment the shop does not sell are 404", "method": "GET", "path": "/api/designs/pricing", "query": { "product": "no-such-garment" }, "status": 404,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "not_found" } ] },
+  { "name": "designs: uploading needs a session", "method": "POST", "path": "/api/designs", "body": "{{designUpload}}", "status": 401,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "unauthorised" } ] },
+
+  { "name": "designs: an upload is checked, priced by its bounding box, and seen by its owner only",
+    "customers": ["owner", "other"], "keys": ["k1"],
+    "steps": [
+      { "as": "owner", "method": "POST", "path": "/api/designs", "headers": { "Idempotency-Key": "{{k1}}" }, "body": "{{designUpload}}", "status": 201,
+        "shape": { "data": { "$ref": "DesignSummary" }, "simulation": { "$ref": "Simulation" } },
+        "asserts": [
+          { "op": "eq", "path": "data.productId", "value": "{{designProductId}}" },
+          { "op": "eq", "path": "data.state", "value": "draft" },
+          { "op": "eq", "path": "data.coveredSqIn", "value": "{{designArea}}" },
+          { "op": "eq", "path": "data.layerCount", "value": 1 }
+        ], "save": { "designId": "data.id" } },
+      { "as": "owner", "method": "POST", "path": "/api/designs", "headers": { "Idempotency-Key": "{{k1}}" }, "body": "{{designUpload}}", "status": 201,
+        "asserts": [ { "op": "eq", "path": "data.id", "value": "{{designId}}" } ] },
+      { "as": "owner", "method": "GET", "path": "/api/designs/{{designId}}", "status": 200, "shape": { "data": { "$ref": "DesignSummary" }, "simulation": { "$ref": "Simulation" } } },
+      { "as": "owner", "method": "GET", "path": "/api/designs/{{designId}}/preview.png", "status": 200,
+        "asserts": [
+          { "op": "header", "name": "content-type", "matches": "^image/png$" },
+          { "op": "header", "name": "x-content-type-options", "matches": "^nosniff$" },
+          { "op": "header", "name": "cache-control", "matches": "^private" }
+        ] },
+      { "as": "owner", "method": "GET", "path": "/api/designs/{{designId}}/state", "status": 200, "shape": { "data": { "$ref": "DesignState" }, "simulation": { "$ref": "Simulation" } },
+        "asserts": [ { "op": "eq", "path": "data.design.id", "value": "{{designId}}" }, { "op": "matches", "path": "data.state", "value": "contract-1" } ] },
+      { "as": "other", "method": "GET", "path": "/api/designs/{{designId}}/state", "status": 404 },
+      { "as": "other", "method": "GET", "path": "/api/designs/{{designId}}", "status": 404, "shape": { "$ref": "ApiError" },
+        "asserts": [ { "op": "eq", "path": "error.message", "value": "This design is no longer available." } ] },
+      { "as": "other", "method": "GET", "path": "/api/designs/{{designId}}/print.png", "status": 404 },
+      { "as": "other", "method": "DELETE", "path": "/api/designs/{{designId}}", "status": 404 },
+      { "as": "other", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{designSku}}", "quantity": 1, "designId": "{{designId}}" }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].issue", "value": "design_unavailable" }, { "op": "eq", "path": "data.total", "value": 0 } ] },
+      { "as": "owner", "method": "GET", "path": "/api/staff/designs/{{designId}}/print.png", "status": 401 }
+    ] },
+
+  { "name": "designs: a designed cart line is the garment plus its print fee, per piece",
+    "customers": ["owner"],
+    "steps": [
+      { "as": "owner", "method": "POST", "path": "/api/designs", "body": "{{designUpload}}", "status": 201, "save": { "designId": "data.id" } },
+      { "as": "owner", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{designSku}}", "quantity": 2, "designId": "{{designId}}" }] }, "status": 200,
+        "shape": { "data": { "$ref": "Quote" }, "simulation": { "$ref": "Simulation" } },
+        "asserts": [
+          { "op": "eq", "path": "data.ready", "value": true },
+          { "op": "eq", "path": "data.lines[0].designId", "value": "{{designId}}" },
+          { "op": "eq", "path": "data.lines[0].unitPrice", "value": "{{designPrice}}" },
+          { "op": "eq", "path": "data.lines[0].printFee.coveredSqIn", "value": "{{designArea}}" },
+          { "op": "eq", "path": "data.lines[0].printFee.steps", "value": "{{designSteps}}" },
+          { "op": "eq", "path": "data.lines[0].printFee.unit", "value": "{{designFeeUnit}}" },
+          { "op": "eq", "path": "data.lines[0].printFee.total", "value": "{{designFeeUnit*2}}" },
+          { "op": "eq", "path": "data.lines[0].remedy", "value": null },
+          { "op": "eq", "path": "data.total", "value": "{{designQuoteTotal*2}}" },
+          { "op": "vatOf", "total": "data.total", "vat": "data.vatAmount", "rate": "data.vatRate" }
+        ] },
+      { "as": "owner", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{designSku}}", "quantity": 1, "designId": "{{designId}}" }, { "sku": "{{designSku}}", "quantity": 1 }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "len:data.lines", "value": 2 }, { "op": "eq", "path": "data.total", "value": "{{designQuoteAndPlain}}" } ] },
+      { "as": "owner", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{otherDesignSku}}", "quantity": 1, "designId": "{{designId}}" }] }, "status": 422,
+        "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "product_mismatch" }, { "op": "eq", "path": "error.message", "value": "This design was made for another garment." } ] }
+    ] },
+
+  { "name": "designs: a removed design is an issue with Remove and is never priced as a plain garment",
+    "customers": ["owner"],
+    "steps": [
+      { "as": "owner", "method": "POST", "path": "/api/designs", "body": "{{designUpload}}", "status": 201, "save": { "designId": "data.id" } },
+      { "as": "owner", "method": "DELETE", "path": "/api/designs/{{designId}}", "status": 200, "shape": { "data": { "$ref": "DesignRemoved" }, "simulation": { "$ref": "Simulation" } } },
+      { "as": "owner", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{designSku}}", "quantity": 1, "designId": "{{designId}}" }] }, "status": 200,
+        "shape": { "data": { "$ref": "Quote" }, "simulation": { "$ref": "Simulation" } },
+        "asserts": [
+          { "op": "eq", "path": "data.lines[0].issue", "value": "design_unavailable" },
+          { "op": "eq", "path": "data.lines[0].message", "value": "This design is no longer available." },
+          { "op": "eq", "path": "data.lines[0].remedy", "value": "remove" },
+          { "op": "eq", "path": "data.lines[0].unitPrice", "value": 0 },
+          { "op": "eq", "path": "data.lines[0].lineTotal", "value": 0 },
+          { "op": "eq", "path": "data.lines[0].printFee", "value": null },
+          { "op": "eq", "path": "data.total", "value": 0 },
+          { "op": "eq", "path": "data.ready", "value": false }
+        ] },
+      { "as": "owner", "method": "POST", "path": "/api/cart/quote", "body": { "lines": [{ "sku": "{{designSku}}", "quantity": 1, "designId": "999999999" }] }, "status": 200,
+        "asserts": [ { "op": "eq", "path": "data.lines[0].issue", "value": "design_unavailable" }, { "op": "eq", "path": "data.total", "value": 0 } ] },
+      { "as": "owner", "method": "POST", "path": "/api/orders", "body": { "lines": [{ "sku": "{{designSku}}", "quantity": 1, "designId": "{{designId}}" }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{designPrice}}" }, "status": 409,
+        "shape": { "$ref": "ApiErrorStock" },
+        "asserts": [ { "op": "eq", "path": "error.code", "value": "design_unavailable" }, { "op": "eq", "path": "error.lines[0].message", "value": "This design is no longer available." } ] },
+      { "as": "owner", "method": "GET", "path": "/api/orders", "status": 200, "asserts": [ { "op": "eq", "path": "len:data", "value": 0 } ] }
+    ] },
+
+  { "name": "designs: an order keeps the print fee, the design is then fixed, and staff download it named after the order line",
+    "customers": ["buyer"],
+    "steps": [
+      { "as": "buyer", "method": "POST", "path": "/api/designs", "body": "{{designUpload}}", "status": 201, "save": { "designId": "data.id" } },
+      { "as": "buyer", "method": "POST", "path": "/api/orders", "body": { "lines": [{ "sku": "{{designSku}}", "quantity": 1, "designId": "{{designId}}" }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{designQuoteTotal}}" }, "status": 201,
+        "shape": { "data": { "$ref": "Order" }, "simulation": { "$ref": "Simulation" } },
+        "asserts": [
+          { "op": "eq", "path": "len:data.lines", "value": 1 },
+          { "op": "eq", "path": "data.lines[0].designId", "value": "{{designId}}" },
+          { "op": "eq", "path": "data.lines[0].printFee.unit", "value": "{{designFeeUnit}}" },
+          { "op": "eq", "path": "data.total", "value": "{{designQuoteTotal}}" }
+        ], "save": { "orderId": "data.id", "orderRef": "data.reference" } },
+      { "as": "buyer", "method": "GET", "path": "/api/designs/{{designId}}", "status": 200, "asserts": [ { "op": "eq", "path": "data.state", "value": "ordered" } ] },
+      { "as": "buyer", "method": "DELETE", "path": "/api/designs/{{designId}}", "status": 409,
+        "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "ordered" }, { "op": "eq", "path": "error.message", "value": "This design is on an order and cannot be removed." } ] },
+      { "as": "inv", "method": "POST", "path": "/api/staff/auth/login", "body": { "email": "{{staffInventoryEmail}}", "password": "{{staffInventoryPassword}}" }, "status": 200 },
+      { "as": "inv", "method": "GET", "path": "/api/staff/orders/{{orderId}}", "status": 200, "shape": { "data": { "$ref": "StaffOrderDetail" }, "simulation": { "$ref": "Simulation" } },
+        "asserts": [ { "op": "eq", "path": "data.lines[0].designId", "value": "{{designId}}" }, { "op": "eq", "path": "data.lines[0].printFee.unit", "value": "{{designFeeUnit}}" } ] },
+      { "as": "inv", "method": "GET", "path": "/api/staff/designs/{{designId}}/print.png", "status": 200,
+        "asserts": [
+          { "op": "header", "name": "content-type", "matches": "^image/png$" },
+          { "op": "header", "name": "content-disposition", "matches": "^attachment; filename=\"{{orderRef}}-1-{{designSku}}\\.png\"$" },
+          { "op": "header", "name": "cache-control", "matches": "no-store" }
+        ] },
+      { "as": "inv", "method": "GET", "path": "/api/staff/designs/{{designId}}/preview.png", "status": 200 },
+      { "as": "inv", "method": "GET", "path": "/api/designs/{{designId}}/print.png", "status": 401 },
+      { "as": "buyer", "method": "GET", "path": "/api/staff/designs/{{designId}}/preview.png", "status": 401 }
+    ] },
+
+  { "name": "designs: an element list that does not match the editor state is 422", "customers": ["owner"],
+    "steps": [ { "as": "owner", "method": "POST", "path": "/api/designs", "body": "{{designUploadMismatch}}", "status": 422, "shape": { "$ref": "ApiError" },
+      "asserts": [ { "op": "eq", "path": "error.code", "value": "mismatch" }, { "op": "eq", "path": "error.message", "value": "The design changed while it was being sent. Please try again." } ] } ] },
+  { "name": "designs: a body over the cap is 413 before it is read", "customers": ["owner"],
+    "steps": [ { "as": "owner", "method": "POST", "path": "/api/designs", "body": "{{designUploadHuge}}", "status": 413, "shape": { "$ref": "ApiError" },
+      "asserts": [ { "op": "eq", "path": "error.code", "value": "too_large" }, { "op": "eq", "path": "error.message", "value": "This design is too large to upload (at most 20 MB in all). Use smaller pictures or fewer of them." } ] } ] },
+  { "name": "designs: the preview must be a PNG picture", "customers": ["owner"],
+    "steps": [ { "as": "owner", "method": "POST", "path": "/api/designs", "body": "{{designUploadJpegPreview}}", "status": 415, "shape": { "$ref": "ApiError" },
+      "asserts": [ { "op": "eq", "path": "error.code", "value": "png_required" }, { "op": "eq", "path": "error.message", "value": "The preview and print file must be PNG pictures." } ] } ] },
+  { "name": "designs: another format version is 422", "customers": ["owner"],
+    "steps": [ { "as": "owner", "method": "POST", "path": "/api/designs", "body": "{{designUploadV2}}", "status": 422, "shape": { "$ref": "ApiError" },
+      "asserts": [ { "op": "eq", "path": "error.code", "value": "format" }, { "op": "eq", "path": "error.message", "value": "This design could not be read (format version 1 expected)." } ] } ] }
+]

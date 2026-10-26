@@ -1,0 +1,12 @@
+[
+  { "name": "options: provinces and the two payment methods, VAT stated by the server", "method": "GET", "path": "/api/checkout/options", "status": 200,
+    "shape": { "data": { "$ref": "CheckoutOptions" }, "simulation": { "$ref": "Simulation" } },
+    "asserts": [
+      { "op": "eq", "path": "data.vatRate", "value": 12 },
+      { "op": "eq", "path": "data.vatIncluded", "value": true },
+      { "op": "eq", "path": "data.paymentMethods[*].id", "value": ["cod", "bank_transfer"] },
+      { "op": "eq", "path": "data.provinces[0]", "value": { "code": "PH-00", "name": "Metro Manila (NCR)" } },
+      { "op": "eq", "path": "len:data.provinces", "value": 83 },
+      { "op": "unique", "path": "data.provinces[*].code" }
+    ] }
+]

@@ -1,0 +1,2010 @@
+[
+ {
+  "name": "dss: every DSS route needs the admin cookie - no cookie and a customer cookie are 401, an employee cookie 403, the Administrator 200",
+  "customers": [
+   "alice"
+  ],
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "POST",
+    "path": "/api/staff/auth/login",
+    "body": {
+     "email": "{{staffInventoryEmail}}",
+     "password": "{{staffInventoryPassword}}"
+    },
+    "status": 200
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/runs",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/runs",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/runs",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/runs",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/runs/{{realRunId}}",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/runs/{{realRunId}}",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/runs/{{realRunId}}",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/runs/{{realRunId}}",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/forecast/keys",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/forecast/keys",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/forecast/keys",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/forecast/keys",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/forecast",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/backtest",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/restock",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/segments",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/segments",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/segments",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/segments",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/alerts",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/alerts",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/alerts",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/alerts",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/health",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "GET",
+    "path": "/api/admin/dss/run-now/999999",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "GET",
+    "path": "/api/admin/dss/run-now/999999",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "GET",
+    "path": "/api/admin/dss/run-now/999999",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/run-now/999999",
+    "status": 200
+   },
+   {
+    "as": "nobody",
+    "method": "POST",
+    "path": "/api/admin/dss/run-now",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "alice",
+    "method": "POST",
+    "path": "/api/admin/dss/run-now",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "as": "inv",
+    "method": "POST",
+    "path": "/api/admin/dss/run-now",
+    "status": 403,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "forbidden"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "The admin dashboard has its own sign-in. Use Admin login."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: an unknown query name, a bad value, pageSize 101, pageSize 0 and page 0 are 422 (and a run named by the path that is not there is 404)",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/overview?notAName=1",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.notAName",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast/keys?notAName=1",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.notAName",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast?notAName=1",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.notAName",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health?notAName=1",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.notAName",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs?notAName=1",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.notAName",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest?notAName=1",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.notAName",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock?notAName=1",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.notAName",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments?notAName=1",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.notAName",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts?notAName=1",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.notAName",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs?kind=mixed",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.kind",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs?state=open",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.state",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast?level=type",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.level",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/forecast/keys?level=type",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.level",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health?run=abc",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.run",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health?kind=both",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.kind",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest?horizon=9",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.horizon",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest?chosen=maybe",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.chosen",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest?policy=guess",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.policy",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock?urgency=late",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.urgency",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock?supplierId=x",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.supplierId",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments?segment=vip",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.segment",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments?sort=name",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.sort",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts?severity=open",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.severity",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts?kind=open",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.kind",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs?pageSize=101",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs?pageSize=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs?page=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.page",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest?pageSize=101",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest?pageSize=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/backtest?page=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.page",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock?pageSize=101",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock?pageSize=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/restock?page=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.page",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments?pageSize=101",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments?pageSize=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/segments?page=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.page",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts?pageSize=101",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts?pageSize=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.pageSize",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/alerts?page=0",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.page",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/health?run={{simRunId}}&kind=simulated",
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "validation"
+     },
+     {
+      "op": "gt",
+      "path": "len:error.fields.run",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs/x5",
+    "status": 404,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "not_found"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs/99999999",
+    "status": 404,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "No DSS run \"99999999\""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: Run now - two at once give one 202 and one 409 (in either order)",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "parallel": [
+     {
+      "method": "POST",
+      "path": "/api/admin/dss/run-now"
+     },
+     {
+      "method": "POST",
+      "path": "/api/admin/dss/run-now"
+     }
+    ],
+    "statuses": [
+     202,
+     409
+    ],
+    "asserts": [
+     {
+      "op": "countEq",
+      "path": "results[*].status",
+      "value": 202,
+      "count": 1
+     },
+     {
+      "op": "countEq",
+      "path": "results[*].status",
+      "value": 409,
+      "count": 1
+     },
+     {
+      "op": "countEq",
+      "path": "results[*].body.error.code",
+      "value": "run_in_progress",
+      "count": 1
+     },
+     {
+      "op": "countEq",
+      "path": "results[*].body.error.message",
+      "value": "A DSS run is already queued or running. It appears here when it has finished.",
+      "count": 1
+     },
+     {
+      "op": "countEq",
+      "path": "results[*].body.data.state",
+      "value": "queued",
+      "count": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: Run now takes no body, and a request that is not known (or not a number) is read as such",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "method": "POST",
+    "path": "/api/admin/dss/run-now",
+    "body": {
+     "force": true
+    },
+    "status": 422,
+    "shape": {
+     "$ref": "ApiErrorFields"
+    },
+    "asserts": [
+     {
+      "op": "gt",
+      "path": "len:error.fields.body",
+      "value": 0
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/run-now/999999",
+    "status": 200,
+    "shape": {
+     "$ref": "DssRunRequest"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "data.state",
+      "value": "unknown"
+     },
+     {
+      "op": "eq",
+      "path": "data.runId",
+      "value": null
+     },
+     {
+      "op": "eq",
+      "path": "data.requestId",
+      "value": "999999"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/run-now/x",
+    "status": 404,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "No run request \"x\""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dss: a bundle cannot be imported through the API (no such route), and runs cannot be created, replaced or deleted over HTTP",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "as": "adm",
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "save": {
+     "realRunId": "data.real.id",
+     "simRunId": "data.simulated.id"
+    }
+   },
+   {
+    "method": "POST",
+    "path": "/api/admin/dss/import",
+    "body": {},
+    "status": 404
+   },
+   {
+    "method": "POST",
+    "path": "/api/admin/dss/runs",
+    "body": {},
+    "status": 405
+   },
+   {
+    "method": "PUT",
+    "path": "/api/admin/dss/runs/{{realRunId}}",
+    "body": {},
+    "status": 405
+   },
+   {
+    "method": "DELETE",
+    "path": "/api/admin/dss/runs/{{realRunId}}",
+    "status": 405
+   }
+  ]
+ },
+ {
+  "name": "dss: signing out ends the admin session for the DSS routes at once",
+  "as": "adm",
+  "steps": [
+   {
+    "as": "adm",
+    "method": "POST",
+    "path": "/api/admin/auth/login",
+    "body": {
+     "email": "{{staffAdminEmail}}",
+     "password": "{{staffAdminPassword}}"
+    },
+    "status": 200,
+    "asserts": [
+     {
+      "op": "absent",
+      "value": "{{staffAdminPassword}}"
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 200,
+    "shape": {
+     "$ref": "DssOverview"
+    }
+   },
+   {
+    "method": "POST",
+    "path": "/api/admin/auth/logout",
+    "status": 200
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/overview",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   },
+   {
+    "method": "GET",
+    "path": "/api/admin/dss/runs",
+    "status": 401,
+    "shape": {
+     "$ref": "ApiError"
+    },
+    "asserts": [
+     {
+      "op": "eq",
+      "path": "error.code",
+      "value": "unauthorised"
+     },
+     {
+      "op": "eq",
+      "path": "error.message",
+      "value": "Sign in to the admin dashboard to continue."
+     }
+    ]
+   }
+  ]
+ }
+]

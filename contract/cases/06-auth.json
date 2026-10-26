@@ -1,0 +1,154 @@
+[
+  { "name": "auth: who am I, signed out, is 401", "method": "GET", "path": "/api/auth/me", "status": 401,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "unauthorised" }, { "op": "eq", "path": "error.message", "value": "Sign in to place or see orders." } ] },
+
+  { "name": "auth: registering creates the account, signs the customer in, and never sends the password back", "keys": ["k1"], "as": "reg", "steps": [
+      { "method": "POST", "path": "/api/auth/register", "body": { "name": "  Ana Cruz ", "email": " Reg-{{k1}}@EXAMPLE.test ", "password": "{{contractPassword}}" }, "status": 201,
+        "shape": { "$ref": "AuthResponse" },
+        "save": { "userId": "data.user.id" },
+        "asserts": [
+          { "op": "eq", "path": "data.user.displayName", "value": "Ana Cruz" },
+          { "op": "eq", "path": "data.user.email", "value": "reg-{{k1}}@example.test" },
+          { "op": "matches", "path": "data.user.id", "value": "^\\d+$" },
+          { "op": "absent", "value": "{{contractPassword}}" }
+        ] },
+      { "method": "GET", "path": "/api/auth/me", "status": 200, "shape": { "$ref": "AuthResponse" },
+        "asserts": [ { "op": "eq", "path": "data.user.id", "value": "{{userId}}" }, { "op": "eq", "path": "data.user.displayName", "value": "Ana Cruz" } ] },
+      { "method": "GET", "path": "/api/auth/me", "as": "somebody-else", "status": 401, "shape": { "$ref": "ApiError" } }
+  ] },
+
+  { "name": "auth: a name that is too short is 422 with a sentence", "method": "POST", "path": "/api/auth/register", "keys": ["k1"],
+    "body": { "name": " A ", "email": "v-{{k1}}@example.test", "password": "{{contractPassword}}" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.code", "value": "validation" }, { "op": "eq", "path": "error.message", "value": "Some details need fixing." }, { "op": "eq", "path": "error.fields", "value": { "name": "Enter your name." } } ] },
+  { "name": "auth: a name over 80 characters is 422", "method": "POST", "path": "/api/auth/register", "keys": ["k1"],
+    "body": { "name": "{{x81}}", "email": "v-{{k1}}@example.test", "password": "{{contractPassword}}" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.fields", "value": { "name": "Use 80 characters or fewer for the name." } } ] },
+  { "name": "auth: an email that is not an email is 422", "method": "POST", "path": "/api/auth/register",
+    "body": { "name": "Ana Cruz", "email": "ana@example", "password": "{{contractPassword}}" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.fields", "value": { "email": "Enter an email address like name@example.com." } } ] },
+  { "name": "auth: a password under 10 characters is 422", "method": "POST", "path": "/api/auth/register", "keys": ["k1"],
+    "body": { "name": "Ana Cruz", "email": "v-{{k1}}@example.test", "password": "short" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.fields", "value": { "password": "Use at least 10 characters." } } ] },
+  { "name": "auth: a password over 128 characters is 422", "method": "POST", "path": "/api/auth/register", "keys": ["k1"],
+    "body": { "name": "Ana Cruz", "email": "v-{{k1}}@example.test", "password": "{{x129}}" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.fields", "value": { "password": "Use 128 characters or fewer." } } ] },
+  { "name": "auth: a common password is 422, whatever its case", "method": "POST", "path": "/api/auth/register", "keys": ["k1"],
+    "body": { "name": "Ana Cruz", "email": "v-{{k1}}@example.test", "password": "PassWord123" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.fields", "value": { "password": "That password is too common. Choose another one." } } ] },
+  { "name": "auth: a password that is one character repeated is 422", "method": "POST", "path": "/api/auth/register", "keys": ["k1"],
+    "body": { "name": "Ana Cruz", "email": "v-{{k1}}@example.test", "password": "kkkkkkkkkkkk" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.fields", "value": { "password": "That password is too common. Choose another one." } } ] },
+  { "name": "auth: a password containing the email is 422", "method": "POST", "path": "/api/auth/register", "keys": ["k1"],
+    "body": { "name": "Ana Cruz", "email": "v-{{k1}}@example.test", "password": "my-v-{{k1}}@example.test-pw" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.fields", "value": { "password": "Your password cannot contain your email address." } } ] },
+  { "name": "auth: a password that is the start of the email is 422", "method": "POST", "path": "/api/auth/register", "keys": ["k1"],
+    "body": { "name": "Ana Cruz", "email": "v-{{k1}}@example.test", "password": "v-{{k1}}" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.fields", "value": { "password": "Your password cannot contain your email address." } } ] },
+  { "name": "auth: several problems are reported together", "method": "POST", "path": "/api/auth/register",
+    "body": { "name": "", "email": "nope", "password": "x" }, "status": 422, "shape": { "$ref": "ApiErrorFields" },
+    "asserts": [ { "op": "eq", "path": "error.fields", "value": { "name": "Enter your name.", "email": "Enter an email address like name@example.com.", "password": "Use at least 10 characters." } } ] },
+  { "name": "auth: a registration with missing or non-text fields is 400", "method": "POST", "path": "/api/auth/register",
+    "body": { "name": "Ana", "email": 5 }, "status": 400, "shape": { "$ref": "ApiError" },
+    "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_request" }, { "op": "eq", "path": "error.message", "value": "The request is not complete." } ] },
+
+  { "name": "auth: an email already taken is 409, however it is written", "customers": ["dup"], "steps": [
+      { "method": "POST", "path": "/api/auth/register", "body": { "name": "Someone Else", "email": " {{dupEmail}} ", "password": "{{contractPassword}}" }, "status": 409,
+        "shape": { "$ref": "ApiError" },
+        "asserts": [ { "op": "eq", "path": "error.code", "value": "email_unavailable" }, { "op": "eq", "path": "error.message", "value": "We couldn't create an account with that email. If it is yours, sign in instead." } ] },
+      { "method": "POST", "path": "/api/auth/register", "body": { "name": "Someone Else", "email": "{{dupEmail}}", "password": "{{contractPassword}}" }, "status": 409, "shape": { "$ref": "ApiError" } }
+  ] },
+
+  { "name": "auth: signing in from another browser works, and the email is not case sensitive", "customers": ["lia"], "as": "second", "steps": [
+      { "method": "POST", "path": "/api/auth/login", "body": { "email": " {{liaEmail}} ", "password": "{{liaPassword}}" }, "status": 200, "shape": { "$ref": "AuthResponse" },
+        "asserts": [ { "op": "eq", "path": "data.user.id", "value": "{{liaId}}" }, { "op": "absent", "value": "{{liaPassword}}" } ] },
+      { "method": "GET", "path": "/api/auth/me", "status": 200, "asserts": [ { "op": "eq", "path": "data.user.id", "value": "{{liaId}}" } ] },
+      { "method": "GET", "path": "/api/auth/me", "as": "lia", "status": 200, "asserts": [ { "op": "eq", "path": "data.user.id", "value": "{{liaId}}" } ] }
+  ] },
+  { "name": "auth: a wrong password and an unknown email get exactly the same answer", "customers": ["mo"], "keys": ["k1"], "steps": [
+      { "method": "POST", "path": "/api/auth/login", "body": { "email": "{{moEmail}}", "password": "not the password!" }, "status": 401, "shape": { "$ref": "ApiError" },
+        "asserts": [ { "op": "eq", "path": "error.code", "value": "invalid_credentials" }, { "op": "eq", "path": "error.message", "value": "The email or password is not right." } ] },
+      { "method": "POST", "path": "/api/auth/login", "body": { "email": "nobody-{{k1}}@example.test", "password": "not the password!" }, "status": 401, "shape": { "$ref": "ApiError" },
+        "asserts": [ { "op": "eq", "path": "error.code", "value": "invalid_credentials" }, { "op": "eq", "path": "error.message", "value": "The email or password is not right." } ] },
+      { "method": "POST", "path": "/api/auth/login", "body": { "email": "{{moEmail}}", "password": "" }, "status": 401, "shape": { "$ref": "ApiError" },
+        "asserts": [ { "op": "eq", "path": "error.code", "value": "invalid_credentials" } ] }
+  ] },
+  { "name": "auth: a sign-in with missing fields is 400", "method": "POST", "path": "/api/auth/login", "body": { "email": "a@b.cc" }, "status": 400, "shape": { "$ref": "ApiError" },
+    "asserts": [ { "op": "eq", "path": "error.code", "value": "bad_request" } ] },
+
+  { "name": "auth: signing out ends the session for good; a copy of the old session is dead", "customers": ["ben"], "as": "ben", "steps": [
+      { "method": "GET", "path": "/api/auth/me", "status": 200 },
+      { "snapshot": "before" },
+      { "method": "POST", "path": "/api/auth/logout", "status": 200, "shape": { "$ref": "SignedOut" }, "asserts": [ { "op": "eq", "path": "data.signedOut", "value": true } ] },
+      { "method": "GET", "path": "/api/auth/me", "status": 401 },
+      { "restore": "before" },
+      { "method": "GET", "path": "/api/auth/me", "status": 401, "shape": { "$ref": "ApiError" } },
+      { "method": "GET", "path": "/api/orders", "status": 401 },
+      { "method": "POST", "path": "/api/auth/logout", "as": "nobody-at-all", "status": 200, "shape": { "$ref": "SignedOut" } }
+  ] },
+  { "name": "auth: signing in again ends the session the browser held", "customers": ["cat"], "as": "cat", "steps": [
+      { "snapshot": "first" },
+      { "method": "POST", "path": "/api/auth/login", "body": { "email": "{{catEmail}}", "password": "{{catPassword}}" }, "status": 200 },
+      { "method": "GET", "path": "/api/auth/me", "status": 200 },
+      { "snapshot": "second" },
+      { "restore": "first" },
+      { "method": "GET", "path": "/api/auth/me", "status": 401 },
+      { "restore": "second" },
+      { "method": "GET", "path": "/api/auth/me", "status": 200 }
+  ] },
+
+  { "name": "auth: five wrong passwords lock that email, even for the right password and from another browser", "customers": ["dan"], "keys": ["k1"], "steps": [
+      { "method": "POST", "path": "/api/auth/login", "as": "guesser", "repeat": 5, "body": { "email": "{{danEmail}}", "password": "wrong password!!" }, "status": 401 },
+      { "method": "POST", "path": "/api/auth/login", "as": "guesser", "body": { "email": "{{danEmail}}", "password": "{{danPassword}}" }, "status": 429, "shape": { "$ref": "ApiErrorThrottle" },
+        "asserts": [
+          { "op": "eq", "path": "error.code", "value": "too_many_attempts" },
+          { "op": "eq", "path": "error.message", "value": "Too many sign-in attempts. Please wait a minute and try again." },
+          { "op": "gt", "path": "error.retryAfter", "value": 0 },
+          { "op": "lte", "path": "error.retryAfter", "value": 60 },
+          { "op": "header", "name": "retry-after", "matches": "^\\d+$" }
+        ] },
+      { "method": "POST", "path": "/api/auth/login", "as": "the-owner", "body": { "email": "{{danEmail}}", "password": "{{danPassword}}" }, "status": 429, "shape": { "$ref": "ApiErrorThrottle" } },
+      { "method": "POST", "path": "/api/auth/login", "as": "another", "repeat": 5, "body": { "email": "ghost-{{k1}}@example.test", "password": "wrong password!!" }, "status": 401 },
+      { "method": "POST", "path": "/api/auth/login", "as": "another", "body": { "email": "ghost-{{k1}}@example.test", "password": "wrong password!!" }, "status": 429, "shape": { "$ref": "ApiErrorThrottle" },
+        "asserts": [ { "op": "eq", "path": "error.message", "value": "Too many sign-in attempts. Please wait a minute and try again." } ] }
+  ] },
+  { "name": "auth: registration attempts from one address are limited, and every attempt counts", "as": "one-address", "steps": [
+      { "method": "POST", "path": "/api/auth/register", "repeat": 10, "body": { "name": "", "email": "nope", "password": "x" }, "status": 422 },
+      { "method": "POST", "path": "/api/auth/register", "body": { "name": "", "email": "nope", "password": "x" }, "status": 429, "shape": { "$ref": "ApiErrorThrottle" },
+        "asserts": [ { "op": "eq", "path": "error.code", "value": "too_many_attempts" }, { "op": "eq", "path": "error.message", "value": "Too many attempts. Please wait a minute and try again." }, { "op": "header", "name": "retry-after", "matches": "^\\d+$" } ] },
+      { "method": "POST", "path": "/api/auth/register", "as": "a-different-address", "body": { "name": "", "email": "nope", "password": "x" }, "status": 422 }
+  ] },
+
+  { "name": "auth: each customer sees only their own orders, in both directions", "customers": ["alice", "bob"], "keys": ["k1"], "steps": [
+      { "method": "GET", "path": "/api/orders", "as": "bob", "status": 200, "asserts": [ { "op": "eq", "path": "len:data", "value": 0 } ] },
+      { "method": "POST", "path": "/api/orders", "as": "alice", "headers": { "Idempotency-Key": "{{k1}}" },
+        "body": { "lines": [{ "sku": "{{isoSku1}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{isoSku1Price}}" },
+        "status": 201, "save": { "aliceOrder": "data.id" } },
+      { "method": "GET", "path": "/api/orders", "as": "bob", "status": 200, "asserts": [ { "op": "eq", "path": "len:data", "value": 0 } ] },
+      { "method": "GET", "path": "/api/orders/{{aliceOrder}}", "as": "bob", "status": 404, "shape": { "$ref": "ApiError" },
+        "asserts": [ { "op": "eq", "path": "error.code", "value": "not_found" }, { "op": "eq", "path": "error.message", "value": "No order \"{{aliceOrder}}\"" } ] },
+      { "method": "POST", "path": "/api/orders", "as": "bob", "headers": { "Idempotency-Key": "{{k1}}" },
+        "body": { "lines": [{ "sku": "{{isoSku2}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{isoSku2Price}}" },
+        "status": 201, "save": { "bobOrder": "data.id" }, "asserts": [ { "op": "eq", "path": "data.lines[0].sku", "value": "{{isoSku2}}" } ] },
+      { "method": "GET", "path": "/api/orders", "as": "alice", "status": 200, "asserts": [ { "op": "eq", "path": "data[*].id", "value": ["{{aliceOrder}}"] } ] },
+      { "method": "GET", "path": "/api/orders", "as": "bob", "status": 200, "asserts": [ { "op": "eq", "path": "data[*].id", "value": ["{{bobOrder}}"] } ] },
+      { "method": "GET", "path": "/api/orders/{{bobOrder}}", "as": "alice", "status": 404, "shape": { "$ref": "ApiError" } },
+      { "method": "GET", "path": "/api/orders/{{aliceOrder}}", "as": "alice", "status": 200, "asserts": [ { "op": "eq", "path": "data.id", "value": "{{aliceOrder}}" } ] },
+      { "method": "GET", "path": "/api/orders/{{bobOrder}}", "as": "bob", "status": 200, "asserts": [ { "op": "eq", "path": "data.id", "value": "{{bobOrder}}" } ] },
+      { "method": "GET", "path": "/api/orders/{{aliceOrder}}", "as": "a-stranger", "status": 401 }
+  ] },
+  { "name": "auth: after signing out, the orders are out of reach, with the old session too", "customers": ["eve"], "as": "eve", "keys": ["k1"], "steps": [
+      { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k1}}" },
+        "body": { "lines": [{ "sku": "{{isoSku1}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{isoSku1Price}}" },
+        "status": 201, "save": { "eveOrder": "data.id" } },
+      { "snapshot": "signed-in" },
+      { "method": "POST", "path": "/api/auth/logout", "status": 200 },
+      { "method": "GET", "path": "/api/orders", "status": 401 },
+      { "restore": "signed-in" },
+      { "method": "GET", "path": "/api/orders", "status": 401 },
+      { "method": "GET", "path": "/api/orders/{{eveOrder}}", "status": 401 },
+      { "method": "POST", "path": "/api/orders", "headers": { "Idempotency-Key": "{{k1}}" },
+        "body": { "lines": [{ "sku": "{{isoSku1}}", "quantity": 1 }], "delivery": "{{validDelivery}}", "paymentMethod": "cod", "quotedTotal": "{{isoSku1Price}}" }, "status": 401 },
+      { "method": "POST", "path": "/api/auth/login", "body": { "email": "{{eveEmail}}", "password": "{{evePassword}}" }, "status": 200 },
+      { "method": "GET", "path": "/api/orders", "status": 200, "asserts": [ { "op": "eq", "path": "data[*].id", "value": ["{{eveOrder}}"] } ] }
+  ] }
+]

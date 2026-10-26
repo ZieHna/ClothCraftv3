@@ -1,0 +1,22 @@
+[
+  { "name": "detail: the product with variants, colours and the numbers the server states", "method": "GET", "path": "/api/catalogue/products/{{firstProductId}}", "status": 200,
+    "shape": { "data": { "$ref": "ProductDetail" }, "simulation": { "$ref": "Simulation" } },
+    "asserts": [
+      { "op": "eq", "path": "data.id", "value": "{{firstProductId}}" },
+      { "op": "eqPath", "path": "data.stock", "other": "sum:data.variants[*].stock" },
+      { "op": "unique", "path": "data.variants[*].sku" },
+      { "op": "eachSum", "items": "data.variants[*]", "field": "price", "parts": ["$.priceExtra", "data.price"] },
+      { "op": "eqPath", "path": "data.colorOptions[*].id", "other": "data.colors" },
+      { "op": "each", "path": "data.variants[*].stock", "is": "gte", "value": 0 }
+    ] },
+  { "name": "detail: a variant's status follows its own stock", "method": "GET", "path": "/api/catalogue/products/{{firstProductId}}", "status": 200,
+    "asserts": [ { "op": "statusFollowsStock", "items": "data.variants[*]" } ] },
+  { "name": "detail: an unknown product is 404 not_found", "method": "GET", "path": "/api/catalogue/products/no-such-product", "status": 404,
+    "shape": { "$ref": "ApiError" }, "asserts": [ { "op": "eq", "path": "error.code", "value": "not_found" }, { "op": "eq", "path": "error.message", "value": "No product \"no-such-product\"" } ] },
+  { "name": "featured: the server's choice, never sold out", "method": "GET", "path": "/api/catalogue/featured", "status": 200,
+    "shape": { "data": { "$ref": "FeaturedList" }, "simulation": { "$ref": "Simulation" } },
+    "asserts": [
+      { "op": "gt", "path": "len:data.products", "value": 0 },
+      { "op": "each", "path": "data.products[*].status", "is": "ne", "value": "out_of_stock" }
+    ] }
+]
