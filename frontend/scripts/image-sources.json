@@ -1,0 +1,21 @@
+{
+  "m-tee": "Men/tshirt-3d.png",
+  "m-polo": "Men/Polo-shirt-3d.png",
+  "m-tank": "Men/tanktop-3d.png",
+  "m-lslv": "Men/long sleeve-3d.png",
+  "m-vnek": "Men/vneck-3d.png",
+  "w-crop": "Women/Cropped Plain Tee.png",
+  "w-hood": "Women/Hoodie.png",
+  "w-lslv": "Women/Long sleeves.png",
+  "w-polo": "Women/Polo Shirt.png",
+  "w-tee": "Women/T-shirt.png",
+  "w-tank": "Women/Tank Top.png",
+  "k-jkt": "Kids/kids jacket.png",
+  "k-polo": "Kids/Kids polo.png",
+  "k-tank": "Kids/Kids tank top.png",
+  "k-lslv": "Kids/Long Sleeve.png",
+  "b-ones": "Babies/baby_clothes-removebg-preview.png",
+  "b-lson": "Babies/baby_clothes_long_sleeve-removebg-preview.png",
+  "b-dres": "Babies/baby_Dress-removebg-preview.png",
+  "b-hood": "Babies/baby_hoodie-removebg-preview.png"
+}

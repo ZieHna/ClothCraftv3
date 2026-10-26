@@ -1,0 +1,338 @@
+/* Only scan the app's own source for class names (video-src/ and public/ hold scripts that are not part of the app). */
+@import 'tailwindcss' source('.');
+
+/* Design tokens: the same palette and fonts as the "How it works" video (video-src/timeline.js COLORS).
+   Contrast on the paper backgrounds (measured, WCAG 2.x):
+     ink / text ........ 13-17:1   body and headings
+     brown-dark ........ 5.8-6.2:1 fine for small text
+     sage-dark ......... 4.65-5.0:1 fine for small text, and for white text on a sage-dark button (5.2:1)
+     muted ............. 5.4:1     ADJUSTED from the video's #7A7068, which is only 4.26:1 on paper-warm and fails for small text
+     brown (#8B7355) ... 3.95-4.2:1 large text (24 px+) and decoration only
+     sage, sage-light, tan ... decoration only (below 3.5:1) */
+@theme {
+  --color-paper: #faf8f5;
+  --color-paper-warm: #f5f0e8;
+  --color-cream: #fffdf8;
+  --color-tan: #d4c4a8;
+  --color-brown: #8b7355;
+  --color-brown-dark: #6e5a41;
+  --color-sage: #6b8f71;
+  --color-sage-dark: #557358;
+  --color-sage-light: #a9c2ac;
+  --color-ink: #1a1714;
+  --color-text: #2c2825;
+  --color-muted: #6a6058;
+
+  /* the sticky header: its height (also what in-page links are offset by) and its two shadows, made of the ink token so a dark theme changes them with the palette */
+  --header-height: 4.25rem;
+  --shadow-header: 0 2px 10px color-mix(in srgb, var(--color-ink) 14%, transparent);
+  --shadow-menu: 0 8px 20px color-mix(in srgb, var(--color-ink) 18%, transparent);
+  /* loading skeletons (step B): the block colour and the shimmer's highlight, both made of palette tokens */
+  --color-skeleton: color-mix(in srgb, var(--color-tan) 38%, var(--color-paper));
+  --color-skeleton-shine: color-mix(in srgb, var(--color-cream) 75%, transparent);
+  --page-fade-ms: 180ms;
+
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Jost', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-paper-warm);
+    scroll-behavior: auto; /* smooth scrolling is asked for in code (src/lib/sections.ts), which leaves it off for reduced motion */
+    /* a link to a section, or focus moving to a heading, never lands it under the sticky header */
+    scroll-padding-top: var(--header-height);
+  }
+  /* the editor page (/design) keeps a header that scrolls away: nothing to clear there */
+  html[data-header='static'] {
+    scroll-padding-top: 0;
+  }
+  body {
+    margin: 0;
+    background: var(--color-paper-warm);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* paper grain over the whole page: faint brown noise, the same recipe as the video (video-src/scene.js 'grain'). It only
+     tints; text contrast was measured with it on. Never blocks clicks. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.55;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .30 0 0 0 0 .23 0 0 0 0 .16 1.1 0 0 0 -.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+  /* Keyboard focus: an ink ring with a cream halo, visible on paper, on photos and on the sage band alike. */
+  :focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-cream);
+  }
+  dialog::backdrop {
+    background: color-mix(in srgb, var(--color-ink) 55%, transparent);
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid transparent;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  /* white text on sage-dark: 5.2:1 */
+  .btn-primary {
+    background: var(--color-sage-dark);
+    color: var(--color-cream);
+    border-color: var(--color-sage-dark);
+  }
+  .btn-primary:hover {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+  .btn-secondary {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    border-color: var(--color-brown-dark);
+  }
+  .btn-secondary:hover {
+    background: var(--color-paper-warm);
+  }
+  .btn-small {
+    min-height: 2.5rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.9375rem;
+  }
+  @media (min-width: 40rem) {
+    .btn-small {
+      padding: 0.35rem 0.9rem;
+    }
+  }
+  /* the stitched edge: a dashed line set in from the border, like the paper tags in the video */
+  .stitched {
+    position: relative;
+  }
+  .stitched::after {
+    content: '';
+    position: absolute;
+    inset: 0.5rem;
+    border: 1.5px dashed color-mix(in srgb, var(--color-brown) 75%, transparent);
+    pointer-events: none;
+  }
+  /* a strip of tape across the top edge */
+  .taped::before {
+    content: '';
+    position: absolute;
+    top: -0.65rem;
+    left: 50%;
+    width: 5.5rem;
+    height: 1.3rem;
+    transform: translateX(-50%) rotate(-3deg);
+    background: color-mix(in srgb, var(--color-tan) 88%, transparent);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+  }
+  /* a card that is one big link: the focus ring goes round the whole card, not just the name */
+  .card-link a:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+  .card-link:has(a:focus-visible) {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-cream);
+  }
+  /* option buttons (colour, size) built on real radio inputs: the input is hidden, its label is the button */
+  .option {
+    display: inline-flex;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-brown-dark);
+    background: var(--color-cream);
+    padding: 0.25rem 0.9rem;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+  .option:hover {
+    background: var(--color-paper-warm);
+  }
+  input:checked + .option {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-cream);
+    box-shadow: inset 0 0 0 1px var(--color-cream);
+  }
+  input:focus-visible + .option {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-cream);
+  }
+  /* a sold-out size is always struck through, including when it is the one currently selected (opened from a link) */
+  .option.is-soldout {
+    text-decoration: line-through;
+  }
+  input:disabled + .option {
+    cursor: not-allowed;
+    border-style: dashed;
+    border-color: var(--color-muted);
+    background: var(--color-paper-warm);
+    color: var(--color-muted);
+    text-decoration: line-through;
+  }
+  input:disabled:checked + .option {
+    background: var(--color-paper-warm);
+    color: var(--color-muted);
+  }
+  .eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+  }
+}
+
+/* ---- loading skeletons and the page fade (step B) --------------------------------------------------------------------- */
+@layer components {
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-skeleton);
+  }
+  /* a skeleton that has been asked for but is still inside its show delay reserves its room and draws nothing */
+  [data-skeleton='wait'] {
+    visibility: hidden;
+  }
+  /* the shimmer: a soft band sliding across (compositor-only transform). Only for people who have not asked for less motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .skeleton:not(.skeleton-still)::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, var(--color-skeleton-shine), transparent);
+      animation: skeleton-shimmer 1.4s ease-in-out infinite;
+    }
+    @keyframes skeleton-shimmer {
+      to {
+        transform: translateX(100%);
+      }
+    }
+    /* a new page fades in (there is no exit fade: that would hold the new page back) */
+    .page-fade {
+      animation: page-in var(--page-fade-ms) ease-out;
+    }
+    @keyframes page-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ---- phone editor: bottom sheets and touch-size floors ------------------------------------------------------------ */
+@layer components {
+  /* Controls are never smaller than 44 CSS px where a finger is the pointer (a phone-width screen or a coarse pointer). */
+  @media (max-width: 39.99rem), (pointer: coarse) {
+    .btn,
+    .btn-small {
+      min-height: 2.75rem;
+    }
+  }
+
+  /* A bottom sheet is a modal <dialog> glued to the bottom edge. --vv-h and --vv-bottom come from useVisualViewport: they
+     keep the sheet above the on-screen keyboard and inside the visible area. */
+  .sheet {
+    position: fixed;
+    inset: auto 0 var(--vv-bottom, 0px) 0;
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    max-height: min(85dvh, calc(var(--vv-h, 100dvh) * 0.92));
+    padding: 0 0 env(safe-area-inset-bottom);
+    border: 0;
+    border-top: 1px solid var(--color-brown-dark);
+    border-radius: 0.75rem 0.75rem 0 0;
+    overflow: hidden;
+  }
+  .sheet[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  .sheet-body {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .sheet::backdrop {
+    background: color-mix(in srgb, var(--color-ink) 55%, transparent);
+  }
+  /* the slide-up is only for people who have not asked for less motion; with "reduce motion" it simply appears */
+  @media (prefers-reduced-motion: no-preference) {
+    .sheet[open] {
+      animation: sheet-up 0.18s ease-out;
+    }
+    @keyframes sheet-up {
+      from {
+        transform: translateY(1.5rem);
+        opacity: 0.6;
+      }
+      to {
+        transform: none;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* ---- desktop editor: columns that scroll inside themselves ---------------------------------------------------------- */
+@layer components {
+  .scroll-col {
+    overflow-y: auto;
+    overscroll-behavior: contain; /* reaching the end of a column never scrolls the page behind it */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-brown) var(--color-paper-warm);
+    scrollbar-gutter: stable;
+  }
+  .scroll-col::-webkit-scrollbar {
+    width: 0.625rem;
+  }
+  .scroll-col::-webkit-scrollbar-track {
+    background: var(--color-paper-warm);
+  }
+  .scroll-col::-webkit-scrollbar-thumb {
+    background: var(--color-brown);
+    border-radius: 0.3125rem;
+    border: 2px solid var(--color-paper-warm);
+  }
+}

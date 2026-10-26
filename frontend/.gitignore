@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.local
+.env.local
+*.tsbuildinfo
+# Vitest browser-mode failure screenshots
+.vitest/

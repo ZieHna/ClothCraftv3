@@ -1,0 +1,2520 @@
+{
+  "meta": {
+    "simulated": true,
+    "label": "Simulated",
+    "currency": "PHP",
+    "vatIncluded": true,
+    "seed": 7,
+    "source": "addons/clothcraft/sim/data.py",
+    "note": "Simulated catalogue. Prices are invented (VAT-inclusive PHP). Stock is a seeded mock, not a real inventory.",
+    "lowStockAt": 2
+  },
+  "groups": [
+    "Men",
+    "Women",
+    "Kids",
+    "Babies"
+  ],
+  "colors": [
+    {
+      "id": "black",
+      "name": "Black",
+      "hex": "#1F1D1B"
+    },
+    {
+      "id": "white",
+      "name": "White",
+      "hex": "#F4F1EA"
+    },
+    {
+      "id": "navy",
+      "name": "Navy",
+      "hex": "#243049"
+    },
+    {
+      "id": "red",
+      "name": "Red",
+      "hex": "#A8353A"
+    },
+    {
+      "id": "gray",
+      "name": "Gray",
+      "hex": "#8E8E8A"
+    }
+  ],
+  "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL"
+  ],
+  "products": [
+    {
+      "id": "m-tee",
+      "name": "Men Crew Tee",
+      "group": "Men",
+      "garmentType": {
+        "code": "TEE",
+        "name": "T-Shirt"
+      },
+      "price": 349.0,
+      "image": "/products/m-tee.webp",
+      "colors": [
+        "black",
+        "white",
+        "navy",
+        "gray"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "stock": 67,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-M-TEE-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 349.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 349.0,
+          "stock": 5,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 349.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-BLK-XL",
+          "color": "black",
+          "size": "XL",
+          "price": 349.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-BLK-XXL",
+          "color": "black",
+          "size": "XXL",
+          "price": 399.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 349.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 349.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-WHT-L",
+          "color": "white",
+          "size": "L",
+          "price": 349.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-WHT-XL",
+          "color": "white",
+          "size": "XL",
+          "price": 349.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-WHT-XXL",
+          "color": "white",
+          "size": "XXL",
+          "price": 399.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 349.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 349.0,
+          "stock": 8,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-NVY-L",
+          "color": "navy",
+          "size": "L",
+          "price": 349.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-NVY-XL",
+          "color": "navy",
+          "size": "XL",
+          "price": 349.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-NVY-XXL",
+          "color": "navy",
+          "size": "XXL",
+          "price": 399.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 349.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 349.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-GRY-L",
+          "color": "gray",
+          "size": "L",
+          "price": 349.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-GRY-XL",
+          "color": "gray",
+          "size": "XL",
+          "price": 349.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-TEE-GRY-XXL",
+          "color": "gray",
+          "size": "XXL",
+          "price": 399.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "m-lslv",
+      "name": "Men Long Sleeve Tee",
+      "group": "Men",
+      "garmentType": {
+        "code": "LSLV",
+        "name": "Long Sleeve"
+      },
+      "price": 449.0,
+      "image": "/products/m-lslv.webp",
+      "colors": [
+        "black",
+        "navy",
+        "gray"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "stock": 41,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-M-LSLV-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 449.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 449.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 449.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-BLK-XL",
+          "color": "black",
+          "size": "XL",
+          "price": 449.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-BLK-XXL",
+          "color": "black",
+          "size": "XXL",
+          "price": 499.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 449.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 449.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-NVY-L",
+          "color": "navy",
+          "size": "L",
+          "price": 449.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-NVY-XL",
+          "color": "navy",
+          "size": "XL",
+          "price": 449.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-NVY-XXL",
+          "color": "navy",
+          "size": "XXL",
+          "price": 499.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 449.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 449.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-GRY-L",
+          "color": "gray",
+          "size": "L",
+          "price": 449.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-GRY-XL",
+          "color": "gray",
+          "size": "XL",
+          "price": 449.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-LSLV-GRY-XXL",
+          "color": "gray",
+          "size": "XXL",
+          "price": 499.0,
+          "stock": 2,
+          "status": "low_stock"
+        }
+      ]
+    },
+    {
+      "id": "m-polo",
+      "name": "Men Polo Shirt",
+      "group": "Men",
+      "garmentType": {
+        "code": "POLO",
+        "name": "Polo Shirt"
+      },
+      "price": 549.0,
+      "image": "/products/m-polo.webp",
+      "colors": [
+        "black",
+        "white",
+        "navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "stock": 42,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-M-POLO-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 549.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 549.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 549.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-BLK-XL",
+          "color": "black",
+          "size": "XL",
+          "price": 549.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-BLK-XXL",
+          "color": "black",
+          "size": "XXL",
+          "price": 599.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 549.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 549.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-WHT-L",
+          "color": "white",
+          "size": "L",
+          "price": 549.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-WHT-XL",
+          "color": "white",
+          "size": "XL",
+          "price": 549.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-WHT-XXL",
+          "color": "white",
+          "size": "XXL",
+          "price": 599.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 549.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 549.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-NVY-L",
+          "color": "navy",
+          "size": "L",
+          "price": 549.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-NVY-XL",
+          "color": "navy",
+          "size": "XL",
+          "price": 549.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-POLO-NVY-XXL",
+          "color": "navy",
+          "size": "XXL",
+          "price": 599.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "m-tank",
+      "name": "Men Tank Top",
+      "group": "Men",
+      "garmentType": {
+        "code": "TANK",
+        "name": "Tank Top"
+      },
+      "price": 299.0,
+      "image": "/products/m-tank.webp",
+      "colors": [
+        "black",
+        "white",
+        "gray"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "stock": 34,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-M-TANK-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 299.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 299.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-BLK-XL",
+          "color": "black",
+          "size": "XL",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 299.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-WHT-L",
+          "color": "white",
+          "size": "L",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-WHT-XL",
+          "color": "white",
+          "size": "XL",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-GRY-L",
+          "color": "gray",
+          "size": "L",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-TANK-GRY-XL",
+          "color": "gray",
+          "size": "XL",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "m-vnek",
+      "name": "Men V-Neck Tee",
+      "group": "Men",
+      "garmentType": {
+        "code": "VNECK",
+        "name": "V-Neck Tee"
+      },
+      "price": 379.0,
+      "image": "/products/m-vnek.webp",
+      "colors": [
+        "black",
+        "white",
+        "red"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "stock": 37,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-M-VNEK-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 379.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 379.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 379.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-BLK-XL",
+          "color": "black",
+          "size": "XL",
+          "price": 379.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 379.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 379.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-WHT-L",
+          "color": "white",
+          "size": "L",
+          "price": 379.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-WHT-XL",
+          "color": "white",
+          "size": "XL",
+          "price": 379.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 379.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 379.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-RED-L",
+          "color": "red",
+          "size": "L",
+          "price": 379.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-M-VNEK-RED-XL",
+          "color": "red",
+          "size": "XL",
+          "price": 379.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "w-crop",
+      "name": "Women Cropped Tee",
+      "group": "Women",
+      "garmentType": {
+        "code": "CROP",
+        "name": "Cropped Tee"
+      },
+      "price": 329.0,
+      "image": "/products/w-crop.webp",
+      "colors": [
+        "black",
+        "white",
+        "red",
+        "gray"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "stock": 72,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-W-CROP-BLK-XS",
+          "color": "black",
+          "size": "XS",
+          "price": 329.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 329.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 329.0,
+          "stock": 12,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 329.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 329.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 329.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 329.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-WHT-L",
+          "color": "white",
+          "size": "L",
+          "price": 329.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 329.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 329.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 329.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-RED-L",
+          "color": "red",
+          "size": "L",
+          "price": 329.0,
+          "stock": 6,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-GRY-XS",
+          "color": "gray",
+          "size": "XS",
+          "price": 329.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 329.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 329.0,
+          "stock": 6,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-CROP-GRY-L",
+          "color": "gray",
+          "size": "L",
+          "price": 329.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "w-hood",
+      "name": "Women Hoodie",
+      "group": "Women",
+      "garmentType": {
+        "code": "HOOD",
+        "name": "Hoodie"
+      },
+      "price": 899.0,
+      "image": "/products/w-hood.webp",
+      "colors": [
+        "black",
+        "navy",
+        "red",
+        "gray"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "stock": 63,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-W-HOOD-BLK-XS",
+          "color": "black",
+          "size": "XS",
+          "price": 899.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 899.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 899.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 899.0,
+          "stock": 5,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-BLK-XL",
+          "color": "black",
+          "size": "XL",
+          "price": 899.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-NVY-XS",
+          "color": "navy",
+          "size": "XS",
+          "price": 899.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 899.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 899.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-NVY-L",
+          "color": "navy",
+          "size": "L",
+          "price": 899.0,
+          "stock": 5,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-NVY-XL",
+          "color": "navy",
+          "size": "XL",
+          "price": 899.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 899.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 899.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 899.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-RED-L",
+          "color": "red",
+          "size": "L",
+          "price": 899.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-RED-XL",
+          "color": "red",
+          "size": "XL",
+          "price": 899.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-GRY-XS",
+          "color": "gray",
+          "size": "XS",
+          "price": 899.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 899.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 899.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-GRY-L",
+          "color": "gray",
+          "size": "L",
+          "price": 899.0,
+          "stock": 6,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-HOOD-GRY-XL",
+          "color": "gray",
+          "size": "XL",
+          "price": 899.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "w-lslv",
+      "name": "Women Long Sleeve",
+      "group": "Women",
+      "garmentType": {
+        "code": "LSLV",
+        "name": "Long Sleeve"
+      },
+      "price": 429.0,
+      "image": "/products/w-lslv.webp",
+      "colors": [
+        "black",
+        "white",
+        "navy"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "stock": 44,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-W-LSLV-BLK-XS",
+          "color": "black",
+          "size": "XS",
+          "price": 429.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 429.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 429.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 429.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-BLK-XL",
+          "color": "black",
+          "size": "XL",
+          "price": 429.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-WHT-L",
+          "color": "white",
+          "size": "L",
+          "price": 429.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-WHT-XL",
+          "color": "white",
+          "size": "XL",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-NVY-XS",
+          "color": "navy",
+          "size": "XS",
+          "price": 429.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 429.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-NVY-L",
+          "color": "navy",
+          "size": "L",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-LSLV-NVY-XL",
+          "color": "navy",
+          "size": "XL",
+          "price": 429.0,
+          "stock": 4,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "w-polo",
+      "name": "Women Polo Shirt",
+      "group": "Women",
+      "garmentType": {
+        "code": "POLO",
+        "name": "Polo Shirt"
+      },
+      "price": 529.0,
+      "image": "/products/w-polo.webp",
+      "colors": [
+        "white",
+        "navy",
+        "red"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "stock": 34,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-W-POLO-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 529.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 529.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 529.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-WHT-L",
+          "color": "white",
+          "size": "L",
+          "price": 529.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-NVY-XS",
+          "color": "navy",
+          "size": "XS",
+          "price": 529.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 529.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 529.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-NVY-L",
+          "color": "navy",
+          "size": "L",
+          "price": 529.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 529.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 529.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 529.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-POLO-RED-L",
+          "color": "red",
+          "size": "L",
+          "price": 529.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "w-tank",
+      "name": "Women Tank Top",
+      "group": "Women",
+      "garmentType": {
+        "code": "TANK",
+        "name": "Tank Top"
+      },
+      "price": 289.0,
+      "image": "/products/w-tank.webp",
+      "colors": [
+        "black",
+        "white",
+        "red"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "stock": 29,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-W-TANK-BLK-XS",
+          "color": "black",
+          "size": "XS",
+          "price": 289.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 289.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 289.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 289.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 289.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 289.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 289.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-WHT-L",
+          "color": "white",
+          "size": "L",
+          "price": 289.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 289.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 289.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 289.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-TANK-RED-L",
+          "color": "red",
+          "size": "L",
+          "price": 289.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "w-tee",
+      "name": "Women Tee",
+      "group": "Women",
+      "garmentType": {
+        "code": "TEE",
+        "name": "T-Shirt"
+      },
+      "price": 339.0,
+      "image": "/products/w-tee.webp",
+      "colors": [
+        "black",
+        "white",
+        "navy",
+        "red",
+        "gray"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "stock": 69,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-W-TEE-BLK-XS",
+          "color": "black",
+          "size": "XS",
+          "price": 339.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 339.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 339.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-BLK-L",
+          "color": "black",
+          "size": "L",
+          "price": 339.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-BLK-XL",
+          "color": "black",
+          "size": "XL",
+          "price": 339.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 339.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 339.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 339.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-WHT-L",
+          "color": "white",
+          "size": "L",
+          "price": 339.0,
+          "stock": 8,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-WHT-XL",
+          "color": "white",
+          "size": "XL",
+          "price": 339.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-NVY-XS",
+          "color": "navy",
+          "size": "XS",
+          "price": 339.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 339.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 339.0,
+          "stock": 5,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-NVY-L",
+          "color": "navy",
+          "size": "L",
+          "price": 339.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-NVY-XL",
+          "color": "navy",
+          "size": "XL",
+          "price": 339.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 339.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 339.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 339.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-RED-L",
+          "color": "red",
+          "size": "L",
+          "price": 339.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-RED-XL",
+          "color": "red",
+          "size": "XL",
+          "price": 339.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-GRY-XS",
+          "color": "gray",
+          "size": "XS",
+          "price": 339.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 339.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 339.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-GRY-L",
+          "color": "gray",
+          "size": "L",
+          "price": 339.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-W-TEE-GRY-XL",
+          "color": "gray",
+          "size": "XL",
+          "price": 339.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "k-jkt",
+      "name": "Kids Jacket",
+      "group": "Kids",
+      "garmentType": {
+        "code": "JKT",
+        "name": "Jacket"
+      },
+      "price": 799.0,
+      "image": "/products/k-jkt.webp",
+      "colors": [
+        "black",
+        "navy",
+        "red"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "stock": 28,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-K-JKT-BLK-XS",
+          "color": "black",
+          "size": "XS",
+          "price": 799.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-K-JKT-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 799.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-JKT-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 799.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-K-JKT-NVY-XS",
+          "color": "navy",
+          "size": "XS",
+          "price": 799.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-JKT-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 799.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-JKT-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 799.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-JKT-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 799.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-JKT-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 799.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-JKT-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 799.0,
+          "stock": 3,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "k-lslv",
+      "name": "Kids Long Sleeve",
+      "group": "Kids",
+      "garmentType": {
+        "code": "LSLV",
+        "name": "Long Sleeve"
+      },
+      "price": 379.0,
+      "image": "/products/k-lslv.webp",
+      "colors": [
+        "black",
+        "navy",
+        "gray"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "stock": 32,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-K-LSLV-BLK-XS",
+          "color": "black",
+          "size": "XS",
+          "price": 379.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-LSLV-BLK-S",
+          "color": "black",
+          "size": "S",
+          "price": 379.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-LSLV-BLK-M",
+          "color": "black",
+          "size": "M",
+          "price": 379.0,
+          "stock": 5,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-LSLV-NVY-XS",
+          "color": "navy",
+          "size": "XS",
+          "price": 379.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-K-LSLV-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 379.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-LSLV-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 379.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-K-LSLV-GRY-XS",
+          "color": "gray",
+          "size": "XS",
+          "price": 379.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-LSLV-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 379.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-LSLV-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 379.0,
+          "stock": 8,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "k-polo",
+      "name": "Kids Polo",
+      "group": "Kids",
+      "garmentType": {
+        "code": "POLO",
+        "name": "Polo Shirt"
+      },
+      "price": 429.0,
+      "image": "/products/k-polo.webp",
+      "colors": [
+        "white",
+        "navy",
+        "red"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "stock": 25,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-K-POLO-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 429.0,
+          "stock": 2,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-K-POLO-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-POLO-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 429.0,
+          "stock": 7,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-POLO-NVY-XS",
+          "color": "navy",
+          "size": "XS",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-POLO-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-POLO-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 429.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-K-POLO-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 429.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-POLO-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 429.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-POLO-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 429.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        }
+      ]
+    },
+    {
+      "id": "k-tank",
+      "name": "Kids Tank Top",
+      "group": "Kids",
+      "garmentType": {
+        "code": "TANK",
+        "name": "Tank Top"
+      },
+      "price": 249.0,
+      "image": "/products/k-tank.webp",
+      "colors": [
+        "white",
+        "red",
+        "gray"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "stock": 22,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-K-TANK-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 249.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-TANK-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 249.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-TANK-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 249.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-TANK-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 249.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-K-TANK-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 249.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-TANK-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 249.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-TANK-GRY-XS",
+          "color": "gray",
+          "size": "XS",
+          "price": 249.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-K-TANK-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 249.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-K-TANK-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 249.0,
+          "stock": 2,
+          "status": "low_stock"
+        }
+      ]
+    },
+    {
+      "id": "b-dres",
+      "name": "Baby Dress",
+      "group": "Babies",
+      "garmentType": {
+        "code": "DRESS",
+        "name": "Dress"
+      },
+      "price": 399.0,
+      "image": "/products/b-dres.webp",
+      "colors": [
+        "white",
+        "red",
+        "gray"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "stock": 21,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-B-DRES-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 399.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-DRES-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 399.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-B-DRES-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 399.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-B-DRES-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 399.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-DRES-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 399.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-B-DRES-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 399.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-DRES-GRY-XS",
+          "color": "gray",
+          "size": "XS",
+          "price": 399.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-DRES-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 399.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-DRES-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 399.0,
+          "stock": 4,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "b-hood",
+      "name": "Baby Hoodie",
+      "group": "Babies",
+      "garmentType": {
+        "code": "HOOD",
+        "name": "Hoodie"
+      },
+      "price": 499.0,
+      "image": "/products/b-hood.webp",
+      "colors": [
+        "navy",
+        "red",
+        "gray"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "stock": 30,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-B-HOOD-NVY-XS",
+          "color": "navy",
+          "size": "XS",
+          "price": 499.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-HOOD-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 499.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-HOOD-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 499.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-B-HOOD-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 499.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-HOOD-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 499.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-HOOD-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 499.0,
+          "stock": 6,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-HOOD-GRY-XS",
+          "color": "gray",
+          "size": "XS",
+          "price": 499.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-HOOD-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 499.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-B-HOOD-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 499.0,
+          "stock": 5,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "b-lson",
+      "name": "Baby Long Sleeve Onesie",
+      "group": "Babies",
+      "garmentType": {
+        "code": "ONESIE",
+        "name": "Onesie"
+      },
+      "price": 299.0,
+      "image": "/products/b-lson.webp",
+      "colors": [
+        "white",
+        "navy",
+        "gray"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "stock": 35,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-B-LSON-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 299.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-B-LSON-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 299.0,
+          "stock": 1,
+          "status": "low_stock"
+        },
+        {
+          "sku": "SIM-B-LSON-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 299.0,
+          "stock": 8,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-LSON-NVY-XS",
+          "color": "navy",
+          "size": "XS",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-LSON-NVY-S",
+          "color": "navy",
+          "size": "S",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-LSON-NVY-M",
+          "color": "navy",
+          "size": "M",
+          "price": 299.0,
+          "stock": 5,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-LSON-GRY-XS",
+          "color": "gray",
+          "size": "XS",
+          "price": 299.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-LSON-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 299.0,
+          "stock": 4,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-LSON-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 299.0,
+          "stock": 7,
+          "status": "in_stock"
+        }
+      ]
+    },
+    {
+      "id": "b-ones",
+      "name": "Baby Onesie",
+      "group": "Babies",
+      "garmentType": {
+        "code": "ONESIE",
+        "name": "Onesie"
+      },
+      "price": 249.0,
+      "image": "/products/b-ones.webp",
+      "colors": [
+        "white",
+        "red",
+        "gray"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "stock": 52,
+      "status": "in_stock",
+      "variants": [
+        {
+          "sku": "SIM-B-ONES-WHT-XS",
+          "color": "white",
+          "size": "XS",
+          "price": 249.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-ONES-WHT-S",
+          "color": "white",
+          "size": "S",
+          "price": 249.0,
+          "stock": 9,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-ONES-WHT-M",
+          "color": "white",
+          "size": "M",
+          "price": 249.0,
+          "stock": 0,
+          "status": "out_of_stock"
+        },
+        {
+          "sku": "SIM-B-ONES-RED-XS",
+          "color": "red",
+          "size": "XS",
+          "price": 249.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-ONES-RED-S",
+          "color": "red",
+          "size": "S",
+          "price": 249.0,
+          "stock": 8,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-ONES-RED-M",
+          "color": "red",
+          "size": "M",
+          "price": 249.0,
+          "stock": 10,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-ONES-GRY-XS",
+          "color": "gray",
+          "size": "XS",
+          "price": 249.0,
+          "stock": 3,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-ONES-GRY-S",
+          "color": "gray",
+          "size": "S",
+          "price": 249.0,
+          "stock": 6,
+          "status": "in_stock"
+        },
+        {
+          "sku": "SIM-B-ONES-GRY-M",
+          "color": "gray",
+          "size": "M",
+          "price": 249.0,
+          "stock": 10,
+          "status": "in_stock"
+        }
+      ]
+    }
+  ]
+}
