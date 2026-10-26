@@ -1,0 +1,20 @@
+﻿slug,name,garment_type,list_price,designable,print_x,print_y,print_w,print_h,reference_sq_in
+m-tee,Men Crew Tee,TEE,349.00,yes,87.49,57.56,620.63,683.43,200.0000
+m-polo,Men Polo Shirt,POLO,549.00,yes,108.78,77.89,577.15,596.57,200.0000
+m-tank,Men Tank Top,TANK,299.00,yes,202.75,59.97,407.74,680.06,200.0000
+m-lslv,Men Long Sleeve Tee,LSLV,449.00,yes,49.49,108.51,682.08,574.23,200.0000
+m-vnek,Men V-Neck Tee,VNECK,379.00,yes,162.33,161.06,471.50,488.11,200.0000
+w-crop,Women Cropped Tee,CROP,329.00,yes,177.47,220.60,443.90,356.50,200.0000
+w-hood,Women Hoodie,HOOD,899.00,yes,124.00,124.57,552.00,552.00,200.0000
+w-lslv,Women Long Sleeve,LSLV,429.00,yes,106.75,79.72,587.65,621.00,200.0000
+w-polo,Women Polo Shirt,POLO,529.00,yes,125.23,38.13,544.64,720.05,200.0000
+w-tee,Women Tee,TEE,339.00,yes,111.73,121.96,586.76,554.04,200.0000
+w-tank,Women Tank Top,TANK,289.00,yes,217.15,168.27,363.40,468.05,200.0000
+k-jkt,Kids Jacket,JKT,799.00,yes,168.90,137.98,475.46,515.20,200.0000
+k-polo,Kids Polo,POLO,429.00,yes,112.30,73.59,577.71,663.21,200.0000
+k-tank,Kids Tank Top,TANK,249.00,yes,140.67,41.20,524.40,722.20,200.0000
+k-lslv,Kids Long Sleeve,LSLV,379.00,yes,122.70,87.46,560.38,628.55,200.0000
+b-ones,Baby Onesie,ONESIE,249.00,yes,218.30,202.77,355.35,395.60,200.0000
+b-lson,Baby Long Sleeve Onesie,ONESIE,299.00,yes,182.14,168.16,410.69,435.71,200.0000
+b-dres,Baby Dress,DRESS,399.00,yes,101.18,64.38,599.10,668.29,200.0000
+b-hood,Baby Hoodie,HOOD,499.00,yes,97.45,32.00,603.76,734.66,200.0000

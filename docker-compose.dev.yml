@@ -1,0 +1,25 @@
+# Dev override for the storefront API work (step 6). Use together with the base file:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build db odoo api
+# Odoo then serves ONLY one database, so clothcraft_sim, clothcraft and clothcraft_usd_old are not opened and their cron jobs do not run.
+# Which one (step 8b): DEV_DB, default clothcraft_shop (the shop's own clean catalogue, no simulated data). DEV_DB=clothcraft_dev serves
+# the simulated copy instead; the service then needs that database's API key in backend/.env (scripts/create_api_user.py).
+services:
+  odoo:
+    command: ["odoo", "-d", "${DEV_DB:-clothcraft_shop}", "--db-filter=^${DEV_DB:-clothcraft_shop}$$"]
+
+  # The storefront API (backend/). Reaches Odoo only through /json/2 with the API key in backend/.env (gitignored).
+  # Bound to this machine only: the Vite dev server proxies /api to it, so the browser sees one origin.
+  api:
+    build: ./backend
+    depends_on:
+      - odoo
+    env_file:
+      - ./backend/.env
+    environment:
+      ODOO_URL: http://odoo:8069
+      ODOO_DB: ${DEV_DB:-clothcraft_shop}
+      # browsers may send these origins on a state-changing request (the Vite dev server and previews); SESSION_SECRET and the
+      # Odoo key come from backend/.env. X-Forwarded-For is not trusted here: behind Docker every client looks like the gateway.
+      ALLOWED_ORIGINS: "http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://localhost:4174,http://localhost:4175"
+    ports:
+      - "127.0.0.1:8000:8000"

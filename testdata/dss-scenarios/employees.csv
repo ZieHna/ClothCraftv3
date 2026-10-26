@@ -1,0 +1,9 @@
+﻿employee_id,name,email,role,job_title,hired_at,left_at,work_days,shift_start,shift_end,status_at_end
+E01,Marco Dela Rosa,marco.delarosa@example.test,inventory,Inventory clerk,2025-09-15T08:30:00+08:00,,Mon-Fri,08:00,17:00,active
+E02,Liza Navarro,liza.navarro@example.test,inventory,Inventory clerk,2025-09-15T08:30:00+08:00,,Mon-Sat,09:00,18:00,active
+E03,Joaquin Ramos,joaquin.ramos@example.test,inventory,Packing lead,2025-09-22T08:30:00+08:00,,Mon-Fri,10:00,19:00,active
+E04,Patricia Villanueva,patricia.villanueva@example.test,inventory,Inventory clerk,2025-12-01T08:30:00+08:00,,Tue-Sat,08:00,17:00,active
+E05,Jerome Bautista,jerome.bautista@example.test,inventory,Inventory clerk,2026-04-06T08:30:00+08:00,,Mon-Fri,08:00,17:00,active
+E06,Teresa Aquino,teresa.aquino@example.test,admin,Operations manager,2025-09-10T08:30:00+08:00,,Mon-Fri,09:00,18:00,active
+E07,Rafael Mendoza,rafael.mendoza@example.test,admin,Shop owner,2025-09-10T08:30:00+08:00,,Mon-Sat,09:00,17:00,active
+E08,Cecilia Domingo,cecilia.domingo@example.test,inventory,Inventory clerk (left 2026-02-27),2025-09-15T08:30:00+08:00,2026-02-27T17:45:00+08:00,Mon-Fri,08:00,17:00,archived

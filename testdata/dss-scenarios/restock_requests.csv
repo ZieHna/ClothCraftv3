@@ -1,0 +1,32 @@
+﻿restock_id,supplier_id,requested_by,requested_at,expected_from,expected_to,shipping_on,shipping_fee,request_note,decision,decided_at,decided_by,decision_note,not_received_at,not_received_by,outcome,planned_as,actual_cost
+R001,SUP1,E01,2025-11-03T09:19:48+08:00,2025-11-08,2025-11-11,yes,150.00,Regular restock,approved,2025-11-03T15:53:05+08:00,E06,ok,,,received,normal,3399.00
+R002,SUP2,E01,2025-11-05T12:41:15+08:00,2025-11-12,2025-11-15,no,,Regular restock,approved,2025-11-06T12:59:06+08:00,E07,ok,,,received,normal,16860.00
+R003,SUP3,E08,2025-11-10T09:04:42+08:00,2025-11-14,2025-11-17,no,,Regular restock,approved,2025-11-10T14:51:35+08:00,E07,ok,,,received,normal,5200.00
+R004,SUP1,E03,2025-11-24T12:15:16+08:00,2025-11-29,2025-12-02,no,,Regular restock,approved,2025-11-25T09:30:45+08:00,E07,ok,,,received,normal,3533.00
+R005,SUP2,E01,2025-12-01T10:36:35+08:00,2025-12-08,2025-12-11,yes,250.00,Regular restock,approved,2025-12-02T09:10:01+08:00,E07,ok,,,received,normal,7458.00
+R006,SUP1,E01,2025-12-16T12:01:28+08:00,2025-12-21,2025-12-24,no,,Regular restock,approved,2025-12-17T11:12:44+08:00,E07,ok,,,received,normal,3840.00
+R007,SUP2,E02,2025-12-18T10:51:08+08:00,2025-12-25,2025-12-28,no,,Restock after the water damage: all baby hoodies,approved,2025-12-19T09:37:28+08:00,E06,ok,,,received,baby_hoodie,41472.00
+R008,SUP3,E04,2025-12-30T12:14:56+08:00,2026-01-03,2026-01-06,no,,Regular restock,approved,2025-12-31T15:52:23+08:00,E07,ok,,,received,normal,9672.00
+R009,SUP1,E08,2026-01-22T13:05:29+08:00,2026-01-27,2026-01-30,no,,Regular restock,approved,2026-01-22T15:20:51+08:00,E06,ok,,,received,normal,8221.00
+R010,SUP2,E08,2026-01-26T11:39:43+08:00,2026-02-02,2026-02-05,yes,250.00,Regular restock,approved,2026-01-27T17:33:32+08:00,E06,ok,,,received,normal,10294.00
+R011,SUP3,E04,2026-02-19T09:33:48+08:00,2026-02-23,2026-02-26,no,,Regular restock,approved,2026-02-20T10:22:06+08:00,E07,ok,,,received,normal,11800.00
+R012,SUP1,E01,2026-02-23T08:09:46+08:00,2026-02-28,2026-03-03,yes,150.00,Regular restock,approved,2026-02-24T14:14:35+08:00,E06,ok,,,received,normal,8791.00
+R013,SUP2,E03,2026-03-03T10:32:58+08:00,2026-03-10,2026-03-13,no,,Regular restock,approved,2026-03-04T09:49:46+08:00,E07,ok,2026-03-16T12:39:56+08:00,E07,received,not_received,13478.00
+R014,SUP1,E01,2026-03-24T11:22:44+08:00,2026-03-29,2026-04-01,yes,150.00,Regular restock,approved,2026-03-25T10:49:48+08:00,E06,ok,,,received,normal,10160.00
+R015,SUP2,E01,2026-04-07T10:12:32+08:00,2026-04-14,2026-04-17,yes,250.00,Regular restock,approved,2026-04-08T10:37:05+08:00,E06,ok,,,received,normal,7439.00
+R016,SUP3,E04,2026-04-15T10:23:55+08:00,2026-04-19,2026-04-22,no,,Regular restock,approved,2026-04-16T09:16:34+08:00,E07,ok,,,received,normal,9489.00
+R017,SUP1,E01,2026-04-28T09:09:41+08:00,2026-05-03,2026-05-06,no,,Regular restock,rejected,2026-04-28T14:37:37+08:00,E06,Stock is enough for this month,,,rejected,rejected,
+R018,SUP2,E04,2026-05-12T09:32:21+08:00,2026-05-19,2026-05-22,no,,Regular restock,rejected,2026-05-13T13:02:15+08:00,E07,Quantities too high for the sales we have; request again smaller,,,rejected,rejected,
+R019,SUP1,E04,2026-06-04T09:15:15+08:00,2026-06-09,2026-06-12,yes,150.00,Regular restock,approved,2026-06-05T15:03:15+08:00,E07,ok,,,received,normal,9810.00
+R020,SUP2,E04,2026-06-17T13:08:42+08:00,2026-06-24,2026-06-27,yes,250.00,Regular restock,approved,2026-06-18T11:25:26+08:00,E07,ok,,,received,normal,14412.00
+R021,SUP3,E04,2026-06-25T09:16:09+08:00,2026-06-29,2026-07-02,no,,Regular restock,approved,2026-06-26T09:27:37+08:00,E07,ok,,,received,normal,7313.00
+R022,SUP1,E05,2026-07-09T12:30:21+08:00,2026-07-14,2026-07-17,yes,150.00,Regular restock,approved,2026-07-10T14:12:35+08:00,E06,ok,,,received,normal,9511.00
+R023,SUP2,E05,2026-07-20T09:26:14+08:00,2026-07-27,2026-07-30,no,,Regular restock,approved,2026-07-21T10:48:25+08:00,E06,ok,,,received,normal,15412.00
+R024,SUP1,E03,2026-08-13T13:07:47+08:00,2026-08-18,2026-08-21,no,,Regular restock,approved,2026-08-14T13:25:37+08:00,E07,ok,,,received,normal,10232.00
+R025,SUP3,E02,2026-08-18T09:36:59+08:00,2026-08-22,2026-08-25,no,,Regular restock,approved,2026-08-19T11:09:25+08:00,E07,ok,,,received,normal,11570.00
+R026,SUP2,E04,2026-08-25T08:13:04+08:00,2026-09-01,2026-09-04,no,,Regular restock,approved,2026-08-26T19:02:22+08:00,E06,ok,,,received,normal,8018.00
+R027,SUP1,E04,2026-09-16T09:54:42+08:00,2026-09-21,2026-09-24,yes,150.00,Regular restock,approved,2026-09-17T11:34:15+08:00,E06,ok,,,received,normal,6842.00
+R028,SUP2,E03,2026-09-24T14:05:53+08:00,2026-10-01,2026-10-04,no,,Regular restock,approved,2026-09-25T11:53:49+08:00,E07,ok,,,approved,open_overdue,
+R029,SUP1,E03,2026-10-22T13:57:42+08:00,2026-11-02,2026-11-06,no,,Regular restock,approved,2026-10-23T12:48:29+08:00,E07,ok,,,approved,open_unavailable,
+R030,SUP3,E04,2026-10-23T12:30:11+08:00,2026-10-27,2026-10-30,no,,Regular restock,approved,2026-10-24T19:57:27+08:00,E07,ok,,,approved,open_ok,
+R031,SUP1,E04,2026-10-24T10:12:26+08:00,2026-10-29,2026-11-01,no,,Waiting for approval,,,,,,,requested,pending,

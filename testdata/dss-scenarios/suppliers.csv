@@ -1,0 +1,4 @@
+﻿supplier_id,name,ships,shipping_fee,promised_days_min,promised_days_max,planned_behaviour,typical_actual_days,unavailable_from,unavailable_to,unavailable_entered_at,entered_by
+SUP1,Marikina Knitworks Inc.,yes,150.00,5,8,Reliable: delivers about when promised.,5-11,2026-11-03,2026-11-10,2026-10-20T10:05:00+08:00,E07
+SUP2,Cebu Heritage Garments Corp.,yes,250.00,7,10,LATE: usually 14 to 21 days against a promised 7 to 10 (one 36-day delivery after the water damage).,14-21,,,,
+SUP3,Laguna Stitch & Thread Manufacturing,no,0.00,4,7,Reliable and quick; does not ship (no shipping fee).,4-7,2026-01-15,2026-01-24,2026-01-12T09:40:00+08:00,E07

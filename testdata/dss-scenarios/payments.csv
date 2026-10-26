@@ -1,0 +1,371 @@
+﻿order_id,method,amount,payment_state_at_end,paid_at,recorded_by_or_note
+O0001,bank_transfer,299.00,done,2025-10-03T15:34:22+08:00,E02
+O0002,cod,678.00,done,2025-10-08T09:37:29+08:00,cash collected at delivery
+O0003,cod,349.00,done,2025-10-08T10:39:58+08:00,cash collected at delivery
+O0004,cod,299.00,done,2025-10-07T11:55:41+08:00,cash collected at delivery
+O0005,bank_transfer,598.00,done,2025-10-07T12:22:44+08:00,E03
+O0006,cod,549.00,done,2025-10-09T14:26:48+08:00,cash collected at delivery
+O0007,bank_transfer,349.00,done,2025-10-13T11:52:42+08:00,E01
+O0008,bank_transfer,499.00,done,2025-10-14T10:59:34+08:00,E01
+O0009,cod,379.00,done,2025-10-18T20:31:02+08:00,cash collected at delivery
+O0010,cod,1328.00,done,2025-10-20T09:53:54+08:00,cash collected at delivery
+O0011,cod,3226.00,done,2025-10-22T09:55:54+08:00,cash collected at delivery
+O0012,cod,2854.00,done,2025-10-20T09:21:37+08:00,cash collected at delivery
+O0013,bank_transfer,339.00,done,2025-10-20T08:59:20+08:00,E01
+O0014,bank_transfer,838.00,done,2025-10-28T15:58:28+08:00,E02
+O0015,cod,299.00,done,2025-10-29T14:33:54+08:00,cash collected at delivery
+O0016,cod,349.00,done,2025-10-29T13:19:17+08:00,cash collected at delivery
+O0017,cod,299.00,done,2025-11-03T11:38:43+08:00,cash collected at delivery
+O0018,cod,1147.00,done,2025-11-03T08:56:24+08:00,cash collected at delivery
+O0019,bank_transfer,1127.00,done,2025-11-05T20:31:52+08:00,E03
+O0020,cod,1077.00,done,2025-11-11T12:11:08+08:00,cash collected at delivery
+O0021,cod,2245.00,done,2025-11-13T10:28:07+08:00,cash collected at delivery
+O0022,cod,2324.00,done,2025-11-12T20:33:48+08:00,cash collected at delivery
+O0023,bank_transfer,1107.00,done,2025-11-10T12:05:57+08:00,E01
+O0024,bank_transfer,2476.00,cancelled,,
+O0025,cod,499.34,done,2025-11-13T12:31:09+08:00,cash collected at delivery
+O0026,cod,978.00,done,2025-11-13T08:28:44+08:00,cash collected at delivery
+O0027,cod,475.10,done,2025-11-17T16:58:28+08:00,cash collected at delivery
+O0028,cod,299.00,done,2025-11-17T13:35:13+08:00,cash collected at delivery
+O0029,bank_transfer,299.00,done,2025-11-17T10:11:12+08:00,E08
+O0030,bank_transfer,1328.00,done,2025-11-15T10:17:49+08:00,E02
+O0031,bank_transfer,299.00,done,2025-11-17T11:09:59+08:00,E02
+O0032,cod,1127.00,done,2025-11-18T20:26:30+08:00,cash collected at delivery
+O0033,bank_transfer,1885.00,done,2025-11-17T13:01:08+08:00,E03
+O0034,bank_transfer,1798.00,cancelled,,
+O0035,cod,1340.94,done,2025-11-20T08:43:46+08:00,cash collected at delivery
+O0036,cod,329.00,done,2025-11-21T12:23:52+08:00,cash collected at delivery
+O0037,cod,449.00,done,2025-11-21T19:29:29+08:00,cash collected at delivery
+O0038,cod,349.00,done,2025-11-21T11:01:57+08:00,cash collected at delivery
+O0039,cod,748.00,done,2025-11-25T14:11:00+08:00,cash collected at delivery
+O0040,bank_transfer,339.00,done,2025-11-29T09:25:47+08:00,E02
+O0041,cod,799.00,done,2025-11-27T13:30:24+08:00,cash collected at delivery
+O0042,bank_transfer,1376.00,done,2025-11-25T14:24:59+08:00,E03
+O0043,bank_transfer,299.00,done,2025-11-27T08:49:15+08:00,E01
+O0044,cod,598.00,done,2025-12-01T08:53:02+08:00,cash collected at delivery
+O0045,bank_transfer,698.00,done,2025-12-01T17:15:18+08:00,E03
+O0046,cod,299.00,done,2025-12-08T10:22:10+08:00,cash collected at delivery
+O0047,cod,329.00,done,2025-12-09T11:44:28+08:00,cash collected at delivery
+O0048,cod,977.00,done,2025-12-10T12:50:52+08:00,cash collected at delivery
+O0049,cod,339.00,done,2025-12-10T15:40:28+08:00,cash collected at delivery
+O0050,cod,899.00,done,2025-12-10T12:52:25+08:00,cash collected at delivery
+O0051,bank_transfer,799.00,done,2025-12-09T10:45:08+08:00,E04
+O0052,cod,1636.00,done,2025-12-12T11:36:09+08:00,cash collected at delivery
+O0053,bank_transfer,379.00,done,2025-12-12T15:36:24+08:00,E02
+O0054,cod,299.00,done,2025-12-13T11:12:04+08:00,cash collected at delivery
+O0055,bank_transfer,349.00,done,2025-12-12T12:50:41+08:00,E01
+O0056,bank_transfer,349.00,done,2025-12-17T10:20:14+08:00,E02
+O0057,cod,848.00,done,2025-12-17T09:59:59+08:00,cash collected at delivery
+O0058,cod,429.00,done,2025-12-17T12:53:47+08:00,cash collected at delivery
+O0059,cod,339.00,done,2025-12-17T20:29:06+08:00,cash collected at delivery
+O0060,cod,1098.00,done,2025-12-18T12:42:37+08:00,cash collected at delivery
+O0061,cod,1127.00,done,2025-12-17T12:16:21+08:00,cash collected at delivery
+O0062,cod,1098.00,cancelled,,
+O0063,cod,1137.00,done,2025-12-18T12:12:39+08:00,cash collected at delivery
+O0064,cod,947.00,done,2025-12-19T10:27:50+08:00,cash collected at delivery
+O0065,bank_transfer,549.00,done,2025-12-17T12:09:37+08:00,E08
+O0066,cod,349.00,done,2025-12-22T10:31:33+08:00,cash collected at delivery
+O0067,cod,897.00,done,2025-12-25T09:16:54+08:00,cash collected at delivery
+O0068,bank_transfer,1328.00,done,2025-12-22T08:06:15+08:00,E01
+O0069,cod,1307.00,done,2025-12-23T14:38:15+08:00,cash collected at delivery
+O0070,bank_transfer,249.00,done,2025-12-23T12:16:37+08:00,E04
+O0071,cod,299.00,done,2025-12-23T13:26:38+08:00,cash collected at delivery
+O0072,bank_transfer,399.00,done,2025-12-22T14:03:45+08:00,E03
+O0073,bank_transfer,778.00,done,2025-12-29T13:52:35+08:00,E02
+O0074,cod,728.00,done,2025-12-26T09:34:39+08:00,cash collected at delivery
+O0075,bank_transfer,379.00,done,2025-12-25T13:58:33+08:00,E01
+O0076,cod,578.00,done,2025-12-31T11:28:56+08:00,cash collected at delivery
+O0077,cod,1798.00,done,2025-12-29T14:51:51+08:00,cash collected at delivery
+O0078,cod,947.00,done,2025-12-29T11:57:20+08:00,cash collected at delivery
+O0079,bank_transfer,1437.00,done,2025-12-26T13:19:52+08:00,E03
+O0080,bank_transfer,299.00,done,2025-12-29T11:46:14+08:00,E08
+O0081,cod,1078.00,done,2026-01-01T19:56:21+08:00,cash collected at delivery
+O0082,cod,688.00,done,2026-01-03T10:11:19+08:00,cash collected at delivery
+O0083,bank_transfer,429.00,done,2025-12-30T12:14:41+08:00,E02
+O0084,cod,1546.00,done,2026-01-02T11:01:40+08:00,cash collected at delivery
+O0085,bank_transfer,1727.00,done,2025-12-31T13:01:33+08:00,E03
+O0086,bank_transfer,429.00,done,2025-12-31T10:18:01+08:00,E04
+O0087,cod,461.48,done,2026-01-02T12:53:08+08:00,cash collected at delivery
+O0088,cod,549.00,done,2026-01-07T12:43:34+08:00,cash collected at delivery
+O0089,cod,728.00,done,2026-01-06T17:38:11+08:00,cash collected at delivery
+O0090,cod,678.00,done,2026-01-08T08:48:33+08:00,cash collected at delivery
+O0091,cod,1138.00,done,2026-01-08T10:16:57+08:00,cash collected at delivery
+O0092,cod,1248.00,done,2026-01-14T08:26:49+08:00,cash collected at delivery
+O0093,cod,249.00,done,2026-01-15T12:03:53+08:00,cash collected at delivery
+O0094,cod,527.76,done,2026-01-15T14:43:14+08:00,cash collected at delivery
+O0095,cod,349.00,done,2026-01-15T14:58:26+08:00,cash collected at delivery
+O0096,bank_transfer,349.00,done,2026-01-14T19:10:54+08:00,E02
+O0097,cod,899.00,done,2026-01-17T09:20:23+08:00,cash collected at delivery
+O0098,cod,299.00,done,2026-01-26T10:25:05+08:00,cash collected at delivery
+O0099,cod,878.00,done,2026-01-22T11:40:28+08:00,cash collected at delivery
+O0100,cod,2697.00,done,2026-01-23T11:45:09+08:00,cash collected at delivery
+O0101,cod,299.00,done,2026-01-22T14:10:31+08:00,cash collected at delivery
+O0102,bank_transfer,976.74,done,2026-01-21T10:22:02+08:00,E04
+O0103,cod,758.00,done,2026-01-27T08:44:38+08:00,cash collected at delivery
+O0104,cod,1696.00,done,2026-01-27T10:52:33+08:00,cash collected at delivery
+O0105,cod,429.00,done,2026-01-28T10:43:54+08:00,cash collected at delivery
+O0106,cod,598.00,done,2026-01-29T15:51:37+08:00,cash collected at delivery
+O0107,cod,799.00,done,2026-02-02T14:38:07+08:00,cash collected at delivery
+O0108,bank_transfer,838.00,done,2026-02-02T12:56:38+08:00,E03
+O0109,cod,818.00,done,2026-02-05T12:34:18+08:00,cash collected at delivery
+O0110,bank_transfer,484.56,done,2026-02-02T20:44:25+08:00,E02
+O0111,cod,299.00,done,2026-02-04T08:06:33+08:00,cash collected at delivery
+O0112,cod,1516.00,done,2026-02-09T10:45:41+08:00,cash collected at delivery
+O0113,cod,899.00,done,2026-02-09T11:49:41+08:00,cash collected at delivery
+O0114,bank_transfer,299.00,done,2026-02-09T19:15:02+08:00,E02
+O0115,cod,1047.00,done,2026-02-12T18:18:16+08:00,cash collected at delivery
+O0116,cod,329.00,done,2026-02-12T15:15:44+08:00,cash collected at delivery
+O0117,bank_transfer,669.32,done,2026-02-12T12:46:21+08:00,E08
+O0118,cod,529.00,done,2026-02-17T11:46:19+08:00,cash collected at delivery
+O0119,cod,698.00,done,2026-02-19T11:58:09+08:00,cash collected at delivery
+O0120,bank_transfer,688.00,done,2026-02-16T10:35:47+08:00,E01
+O0121,cod,249.00,done,2026-02-20T17:47:22+08:00,cash collected at delivery
+O0122,bank_transfer,299.00,done,2026-02-23T12:10:26+08:00,E08
+O0123,bank_transfer,678.00,done,2026-02-23T10:12:07+08:00,E01
+O0124,bank_transfer,971.86,done,2026-02-23T12:10:02+08:00,E03
+O0125,bank_transfer,499.00,done,2026-02-21T11:36:13+08:00,E02
+O0126,bank_transfer,549.00,done,2026-02-26T10:57:45+08:00,E08
+O0127,cod,1246.00,done,2026-02-26T12:26:04+08:00,cash collected at delivery
+O0128,cod,449.00,done,2026-02-27T20:16:17+08:00,cash collected at delivery
+O0129,cod,808.00,done,2026-02-26T11:58:08+08:00,cash collected at delivery
+O0130,bank_transfer,379.00,done,2026-02-26T11:06:43+08:00,E03
+O0131,cod,768.00,done,2026-02-28T11:23:33+08:00,cash collected at delivery
+O0132,cod,1297.00,done,2026-03-02T11:32:18+08:00,cash collected at delivery
+O0133,bank_transfer,598.00,done,2026-03-02T20:49:42+08:00,E02
+O0134,cod,249.00,done,2026-03-07T08:57:10+08:00,cash collected at delivery
+O0135,cod,399.00,done,2026-03-07T13:06:27+08:00,cash collected at delivery
+O0136,cod,349.00,done,2026-03-10T08:33:42+08:00,cash collected at delivery
+O0137,bank_transfer,1386.00,done,2026-03-07T09:16:49+08:00,E02
+O0138,cod,339.00,done,2026-03-11T12:28:18+08:00,cash collected at delivery
+O0139,cod,628.00,done,2026-03-11T20:07:31+08:00,cash collected at delivery
+O0140,bank_transfer,947.00,done,2026-03-10T08:37:55+08:00,E04
+O0141,bank_transfer,1058.00,done,2026-03-09T19:37:47+08:00,E03
+O0142,cod,1596.00,done,2026-03-13T08:38:15+08:00,cash collected at delivery
+O0143,bank_transfer,728.00,done,2026-03-12T12:38:59+08:00,E01
+O0144,cod,330.08,done,2026-03-16T09:39:50+08:00,cash collected at delivery
+O0145,cod,449.00,done,2026-03-17T09:12:07+08:00,cash collected at delivery
+O0146,bank_transfer,349.00,done,2026-03-20T14:28:53+08:00,E02
+O0147,cod,289.00,done,2026-03-19T12:56:49+08:00,cash collected at delivery
+O0148,bank_transfer,349.00,done,2026-03-16T09:27:56+08:00,E01
+O0149,cod,598.00,done,2026-03-19T15:14:16+08:00,cash collected at delivery
+O0150,bank_transfer,1845.00,done,2026-03-16T09:19:19+08:00,E02
+O0151,cod,688.00,cancelled,,
+O0152,cod,349.00,done,2026-03-21T12:12:04+08:00,cash collected at delivery
+O0153,cod,635.28,done,2026-03-25T13:58:49+08:00,cash collected at delivery
+O0154,bank_transfer,2177.00,done,2026-03-24T09:49:05+08:00,E04
+O0155,cod,698.00,done,2026-03-26T21:15:31+08:00,cash collected at delivery
+O0156,bank_transfer,1798.00,done,2026-03-25T11:27:35+08:00,E04
+O0157,cod,698.00,cancelled,,
+O0158,cod,1387.00,done,2026-03-30T09:40:03+08:00,cash collected at delivery
+O0159,cod,1506.00,done,2026-03-30T11:07:21+08:00,cash collected at delivery
+O0160,cod,379.00,done,2026-04-06T12:27:52+08:00,cash collected at delivery
+O0161,cod,1096.00,done,2026-03-30T09:17:57+08:00,cash collected at delivery
+O0162,bank_transfer,329.00,done,2026-03-30T12:22:05+08:00,E03
+O0163,bank_transfer,878.00,done,2026-03-31T12:21:26+08:00,E04
+O0164,cod,2198.08,done,2026-04-06T10:05:04+08:00,cash collected at delivery
+O0165,cod,339.00,done,2026-04-02T09:51:45+08:00,cash collected at delivery
+O0166,cod,758.00,done,2026-04-04T13:09:57+08:00,cash collected at delivery
+O0167,cod,339.00,done,2026-04-06T09:34:46+08:00,cash collected at delivery
+O0168,bank_transfer,598.00,done,2026-04-06T11:31:01+08:00,E01
+O0169,bank_transfer,549.00,done,2026-04-06T08:30:31+08:00,E01
+O0170,cod,329.00,done,2026-04-09T13:44:19+08:00,cash collected at delivery
+O0171,cod,1057.00,done,2026-04-08T10:53:29+08:00,cash collected at delivery
+O0172,cod,349.00,done,2026-04-10T10:25:43+08:00,cash collected at delivery
+O0173,bank_transfer,349.00,done,2026-04-08T16:03:11+08:00,E03
+O0174,bank_transfer,987.00,done,2026-04-11T10:19:33+08:00,E02
+O0175,bank_transfer,1246.00,done,2026-04-09T12:43:09+08:00,E05
+O0176,bank_transfer,1448.00,done,2026-04-13T10:19:06+08:00,E05
+O0177,cod,299.00,done,2026-04-15T14:48:56+08:00,cash collected at delivery
+O0178,cod,628.00,done,2026-04-17T10:52:11+08:00,cash collected at delivery
+O0179,cod,529.00,done,2026-04-20T08:21:59+08:00,cash collected at delivery
+O0180,cod,299.00,done,2026-04-21T10:57:37+08:00,cash collected at delivery
+O0181,cod,1487.00,done,2026-04-23T19:31:54+08:00,cash collected at delivery
+O0182,bank_transfer,1117.00,done,2026-04-24T13:01:31+08:00,E03
+O0183,cod,349.00,done,2026-04-29T12:01:51+08:00,cash collected at delivery
+O0184,cod,768.00,done,2026-04-29T19:09:55+08:00,cash collected at delivery
+O0185,bank_transfer,1607.00,done,2026-04-27T18:46:56+08:00,E03
+O0186,bank_transfer,948.00,done,2026-04-28T16:01:23+08:00,E05
+O0187,bank_transfer,299.00,done,2026-04-27T12:58:27+08:00,E02
+O0188,cod,2185.00,done,2026-04-30T12:18:50+08:00,cash collected at delivery
+O0189,bank_transfer,698.00,done,2026-04-28T10:55:15+08:00,E05
+O0190,bank_transfer,329.00,done,2026-04-30T09:54:34+08:00,E01
+O0191,cod,349.00,done,2026-05-04T12:04:21+08:00,cash collected at delivery
+O0192,bank_transfer,688.00,done,2026-05-01T11:52:20+08:00,E03
+O0193,cod,947.00,done,2026-05-05T08:55:01+08:00,cash collected at delivery
+O0194,bank_transfer,1157.00,done,2026-05-04T11:14:21+08:00,E01
+O0195,cod,758.00,done,2026-05-09T09:32:03+08:00,cash collected at delivery
+O0196,bank_transfer,379.00,done,2026-05-06T10:41:33+08:00,E04
+O0197,cod,299.00,done,2026-05-06T13:53:18+08:00,cash collected at delivery
+O0198,cod,887.00,done,2026-05-07T13:56:36+08:00,cash collected at delivery
+O0199,cod,349.00,done,2026-05-06T14:21:46+08:00,cash collected at delivery
+O0200,bank_transfer,899.00,done,2026-05-11T09:57:11+08:00,E01
+O0201,cod,481.98,done,2026-05-13T11:59:49+08:00,cash collected at delivery
+O0202,bank_transfer,678.00,done,2026-05-11T19:31:07+08:00,E02
+O0203,cod,1278.00,done,2026-05-14T08:57:07+08:00,cash collected at delivery
+O0204,bank_transfer,549.00,done,2026-05-12T10:18:03+08:00,E04
+O0205,cod,698.00,done,2026-05-15T11:33:40+08:00,cash collected at delivery
+O0206,bank_transfer,658.00,cancelled,,
+O0207,bank_transfer,1826.00,done,2026-05-18T08:24:06+08:00,E01
+O0208,bank_transfer,778.00,done,2026-05-18T13:39:43+08:00,E03
+O0209,cod,858.00,done,2026-05-20T15:13:18+08:00,cash collected at delivery
+O0210,cod,440.14,done,2026-05-20T12:43:35+08:00,cash collected at delivery
+O0211,bank_transfer,897.00,done,2026-05-18T11:51:36+08:00,E01
+O0212,cod,599.00,done,2026-05-20T13:23:38+08:00,cash collected at delivery
+O0213,bank_transfer,339.00,done,2026-05-20T11:28:56+08:00,E01
+O0214,cod,718.00,done,2026-05-25T13:38:27+08:00,cash collected at delivery
+O0215,cod,499.00,done,2026-05-28T09:58:01+08:00,cash collected at delivery
+O0216,cod,748.00,done,2026-05-27T13:17:05+08:00,cash collected at delivery
+O0217,cod,349.00,done,2026-05-29T09:54:27+08:00,cash collected at delivery
+O0218,cod,828.00,done,2026-05-28T12:41:48+08:00,cash collected at delivery
+O0219,cod,867.00,done,2026-06-01T12:21:47+08:00,cash collected at delivery
+O0220,cod,299.00,done,2026-06-03T08:12:50+08:00,cash collected at delivery
+O0221,bank_transfer,998.00,done,2026-06-01T10:30:48+08:00,E05
+O0222,cod,449.00,done,2026-06-04T11:34:53+08:00,cash collected at delivery
+O0223,cod,1247.00,done,2026-06-04T11:44:09+08:00,cash collected at delivery
+O0224,bank_transfer,698.00,done,2026-06-04T12:29:20+08:00,E04
+O0225,bank_transfer,429.00,done,2026-06-11T13:24:17+08:00,E04
+O0226,bank_transfer,289.00,done,2026-06-08T08:49:49+08:00,E01
+O0227,cod,688.00,done,2026-06-10T11:21:28+08:00,cash collected at delivery
+O0228,cod,1247.00,done,2026-06-10T12:03:52+08:00,cash collected at delivery
+O0229,bank_transfer,828.00,done,2026-06-09T20:06:32+08:00,E04
+O0230,cod,698.00,done,2026-06-09T14:46:50+08:00,cash collected at delivery
+O0231,cod,339.00,done,2026-06-12T10:29:07+08:00,cash collected at delivery
+O0232,bank_transfer,339.00,done,2026-06-15T10:55:33+08:00,E02
+O0233,cod,549.00,done,2026-06-17T16:39:07+08:00,cash collected at delivery
+O0234,cod,668.00,done,2026-06-19T12:12:16+08:00,cash collected at delivery
+O0235,cod,549.00,cancelled,,
+O0236,cod,289.00,done,2026-06-25T08:37:16+08:00,cash collected at delivery
+O0237,bank_transfer,349.00,done,2026-06-23T10:12:50+08:00,E04
+O0238,cod,429.00,done,2026-06-26T08:15:10+08:00,cash collected at delivery
+O0239,cod,429.00,done,2026-06-26T20:20:53+08:00,cash collected at delivery
+O0240,cod,1107.00,done,2026-06-29T11:23:45+08:00,cash collected at delivery
+O0241,cod,1187.00,done,2026-07-01T10:29:55+08:00,cash collected at delivery
+O0242,cod,1356.00,done,2026-07-02T12:11:38+08:00,cash collected at delivery
+O0243,cod,1027.00,done,2026-07-02T17:40:29+08:00,cash collected at delivery
+O0244,cod,549.00,done,2026-07-03T13:33:41+08:00,cash collected at delivery
+O0245,cod,339.00,done,2026-07-07T14:31:26+08:00,cash collected at delivery
+O0246,bank_transfer,349.00,done,2026-07-06T12:25:30+08:00,"E05 REFUND DUE: paid, then cancelled"
+O0247,bank_transfer,349.00,done,2026-07-06T14:10:32+08:00,E03
+O0248,bank_transfer,392.16,done,2026-07-13T20:42:59+08:00,E01
+O0249,cod,1598.00,done,2026-07-10T11:24:17+08:00,cash collected at delivery
+O0250,bank_transfer,947.00,done,2026-07-09T08:52:03+08:00,E05
+O0251,cod,339.00,done,2026-07-14T11:53:58+08:00,cash collected at delivery
+O0252,cod,2347.00,done,2026-07-17T10:04:00+08:00,cash collected at delivery
+O0253,bank_transfer,598.00,done,2026-07-13T13:46:28+08:00,E03
+O0254,cod,1547.00,done,2026-07-17T11:48:50+08:00,cash collected at delivery
+O0255,bank_transfer,2393.00,done,2026-07-14T09:54:12+08:00,E01
+O0256,cod,822.76,done,2026-07-20T08:03:48+08:00,cash collected at delivery
+O0257,bank_transfer,349.00,done,2026-07-15T12:08:46+08:00,E04
+O0258,cod,678.00,done,2026-07-18T08:00:01+08:00,cash collected at delivery
+O0259,bank_transfer,549.00,done,2026-07-17T12:35:23+08:00,E04
+O0260,cod,499.00,done,2026-07-17T12:57:28+08:00,cash collected at delivery
+O0261,cod,848.00,done,2026-07-21T09:37:30+08:00,cash collected at delivery
+O0262,bank_transfer,1547.00,done,2026-07-17T09:35:56+08:00,E04
+O0263,bank_transfer,668.00,done,2026-07-21T10:51:38+08:00,E04
+O0264,bank_transfer,1477.00,done,2026-07-23T14:52:02+08:00,E05
+O0265,bank_transfer,1298.00,done,2026-07-20T11:38:44+08:00,"E01 REFUND DUE: paid, then cancelled"
+O0266,cod,549.00,done,2026-07-22T10:13:10+08:00,cash collected at delivery
+O0267,bank_transfer,339.00,done,2026-07-27T10:11:15+08:00,E03
+O0268,bank_transfer,1017.00,cancelled,,
+O0269,cod,249.00,done,2026-07-29T12:29:03+08:00,cash collected at delivery
+O0270,cod,967.00,done,2026-07-29T09:27:05+08:00,cash collected at delivery
+O0271,cod,788.00,done,2026-07-28T11:52:16+08:00,cash collected at delivery
+O0272,bank_transfer,529.00,done,2026-07-27T12:13:21+08:00,E05
+O0273,cod,349.00,done,2026-07-29T12:04:53+08:00,cash collected at delivery
+O0274,cod,2095.00,done,2026-07-30T15:29:54+08:00,cash collected at delivery
+O0275,bank_transfer,339.00,cancelled,,
+O0276,cod,339.00,done,2026-08-05T16:41:04+08:00,cash collected at delivery
+O0277,bank_transfer,349.00,done,2026-08-03T14:10:34+08:00,E03
+O0278,cod,1348.00,done,2026-08-06T17:17:15+08:00,cash collected at delivery
+O0279,cod,339.00,done,2026-08-10T14:50:28+08:00,cash collected at delivery
+O0280,cod,379.00,done,2026-08-10T17:37:17+08:00,cash collected at delivery
+O0281,bank_transfer,349.00,done,2026-08-08T12:33:50+08:00,"E04 REFUND DUE: paid, then cancelled"
+O0282,cod,249.00,done,2026-08-12T13:44:42+08:00,cash collected at delivery
+O0283,cod,449.00,done,2026-08-12T14:51:15+08:00,cash collected at delivery
+O0284,cod,1198.00,done,2026-08-11T13:04:24+08:00,cash collected at delivery
+O0285,cod,898.00,done,2026-08-13T08:29:03+08:00,cash collected at delivery
+O0286,cod,529.00,done,2026-08-14T10:34:22+08:00,cash collected at delivery
+O0287,bank_transfer,598.00,done,2026-08-12T09:51:01+08:00,E01
+O0288,cod,549.00,done,2026-08-17T08:07:56+08:00,cash collected at delivery
+O0289,cod,1017.00,done,2026-08-17T12:52:05+08:00,cash collected at delivery
+O0290,cod,499.00,done,2026-08-17T09:37:51+08:00,cash collected at delivery
+O0291,bank_transfer,453.40,done,2026-08-14T14:15:48+08:00,E04
+O0292,cod,828.00,done,2026-08-24T12:43:17+08:00,cash collected at delivery
+O0293,cod,1687.00,done,2026-08-25T08:41:32+08:00,cash collected at delivery
+O0294,bank_transfer,339.00,done,2026-08-21T14:47:32+08:00,E02
+O0295,cod,678.00,done,2026-08-26T12:19:09+08:00,cash collected at delivery
+O0296,cod,379.00,done,2026-08-26T11:44:07+08:00,cash collected at delivery
+O0297,cod,1058.00,done,2026-09-02T09:49:38+08:00,cash collected at delivery
+O0298,cod,1048.00,done,2026-09-03T11:38:36+08:00,cash collected at delivery
+O0299,bank_transfer,858.00,done,2026-09-03T15:13:17+08:00,E05
+O0300,cod,429.00,done,2026-09-07T09:39:16+08:00,cash collected at delivery
+O0301,cod,339.00,done,2026-09-07T14:47:34+08:00,cash collected at delivery
+O0302,bank_transfer,2234.00,done,2026-09-07T12:31:41+08:00,E01
+O0303,bank_transfer,339.00,done,2026-09-07T09:41:21+08:00,E02
+O0304,bank_transfer,1886.00,done,2026-09-11T10:05:12+08:00,E02
+O0305,bank_transfer,648.00,done,2026-09-07T15:24:19+08:00,E01
+O0306,bank_transfer,648.00,done,2026-09-09T16:11:23+08:00,E03
+O0307,cod,1237.00,done,2026-09-17T13:22:33+08:00,cash collected at delivery
+O0308,bank_transfer,638.00,done,2026-09-14T13:05:08+08:00,E03
+O0309,bank_transfer,549.00,done,2026-09-14T13:51:57+08:00,E03
+O0310,cod,1227.00,done,2026-09-15T18:48:37+08:00,cash collected at delivery
+O0311,cod,399.00,cancelled,,
+O0312,cod,349.00,done,2026-09-17T13:15:46+08:00,cash collected at delivery
+O0313,cod,888.00,done,2026-09-17T15:49:05+08:00,cash collected at delivery
+O0314,cod,798.00,done,2026-09-18T15:40:39+08:00,cash collected at delivery
+O0315,cod,339.00,done,2026-09-21T14:40:49+08:00,cash collected at delivery
+O0316,bank_transfer,408.60,done,2026-09-21T10:23:39+08:00,E01
+O0317,cod,1407.00,done,2026-09-24T13:49:28+08:00,cash collected at delivery
+O0318,bank_transfer,249.00,done,2026-09-21T11:04:42+08:00,E05
+O0319,cod,399.00,done,2026-09-24T12:05:05+08:00,cash collected at delivery
+O0320,cod,339.00,done,2026-09-29T08:26:27+08:00,cash collected at delivery
+O0321,cod,349.00,done,2026-09-28T10:53:07+08:00,cash collected at delivery
+O0322,cod,863.74,done,2026-09-29T08:56:11+08:00,cash collected at delivery
+O0323,bank_transfer,339.00,done,2026-09-28T10:04:45+08:00,E05
+O0324,cod,441.54,done,2026-10-01T12:17:45+08:00,cash collected at delivery
+O0325,cod,510.34,done,2026-10-02T08:18:55+08:00,cash collected at delivery
+O0326,bank_transfer,1876.00,done,2026-09-29T09:50:23+08:00,E02
+O0327,bank_transfer,2197.00,done,2026-10-05T10:43:27+08:00,E01
+O0328,cod,529.00,done,2026-10-01T11:14:11+08:00,cash collected at delivery
+O0329,cod,678.00,done,2026-10-06T14:30:22+08:00,cash collected at delivery
+O0330,cod,289.00,done,2026-10-07T12:03:11+08:00,cash collected at delivery
+O0331,cod,1796.00,done,2026-10-07T09:01:38+08:00,cash collected at delivery
+O0332,cod,498.00,done,2026-10-07T19:36:44+08:00,cash collected at delivery
+O0333,cod,1057.00,done,2026-10-07T16:53:04+08:00,cash collected at delivery
+O0334,cod,339.00,done,2026-10-08T12:07:37+08:00,cash collected at delivery
+O0335,cod,339.00,done,2026-10-09T13:15:21+08:00,cash collected at delivery
+O0336,bank_transfer,329.00,pending,,
+O0337,cod,429.00,done,2026-10-12T12:24:22+08:00,cash collected at delivery
+O0338,bank_transfer,1607.00,done,2026-10-12T12:07:53+08:00,E05
+O0339,cod,698.00,done,2026-10-14T13:45:28+08:00,cash collected at delivery
+O0340,cod,628.00,done,2026-10-14T17:42:13+08:00,cash collected at delivery
+O0341,cod,249.00,done,2026-10-15T13:13:08+08:00,cash collected at delivery
+O0342,cod,429.30,done,2026-10-16T10:30:46+08:00,cash collected at delivery
+O0343,bank_transfer,339.00,done,2026-10-16T12:02:54+08:00,E05
+O0344,cod,529.00,done,2026-10-16T09:25:23+08:00,cash collected at delivery
+O0345,cod,1238.00,done,2026-10-17T13:49:42+08:00,cash collected at delivery
+O0346,cod,808.00,done,2026-10-20T14:57:51+08:00,cash collected at delivery
+O0347,bank_transfer,249.00,pending,,
+O0348,cod,349.00,done,2026-10-22T11:34:35+08:00,cash collected at delivery
+O0349,cod,289.00,done,2026-10-22T10:26:07+08:00,cash collected at delivery
+O0350,cod,499.00,done,2026-10-22T15:35:48+08:00,cash collected at delivery
+O0351,bank_transfer,476.94,done,2026-10-20T11:57:29+08:00,E04
+O0352,bank_transfer,1127.00,done,2026-10-21T20:46:35+08:00,E03
+O0353,bank_transfer,549.04,done,2026-10-21T13:53:43+08:00,E04
+O0354,bank_transfer,1047.00,done,2026-10-22T12:49:54+08:00,E01
+O0355,bank_transfer,349.00,pending,,
+O0356,cod,1077.00,pending,,
+O0357,cod,1057.00,pending,,
+O0358,cod,1347.00,pending,,
+O0359,bank_transfer,1037.00,done,2026-10-24T10:13:13+08:00,E04
+O0360,bank_transfer,449.00,done,2026-10-26T08:51:43+08:00,E01
+O0361,cod,1107.00,pending,,
+O0362,cod,668.00,pending,,
+O0363,cod,349.00,pending,,
+O0364,bank_transfer,1237.00,pending,,
+O0365,cod,349.00,pending,,
+O0366,cod,678.00,pending,,
+O0367,cod,449.00,pending,,
+O0368,cod,529.00,pending,,
+O0369,bank_transfer,799.00,pending,,
+O0370,cod,848.00,pending,,

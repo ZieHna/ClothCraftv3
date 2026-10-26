@@ -1,0 +1,358 @@
+﻿case_id,scenario,screen,view,subject_type,subject_key,metric,expected,rule_or_tolerance,basis,note
+GT0001,S17,DSS Health,/api/admin/dss/health,month,2025-10,revenue,13232.00,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0002,S17,DSS Health,/api/admin/dss/health,month,2025-10,closed_orders,16,count of Closed orders in that month,computed,
+GT0003,S17,DSS Health,/api/admin/dss/health,month,2025-10,closed_units,28,garment units of those orders (the print fee is not a unit),computed,
+GT0004,S17,DSS Health,/api/admin/dss/health,month,2025-10,spending,0.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0005,S17,DSS Health,/api/admin/dss/health,month,2025-10,cogs,7320.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0006,S17,DSS Health,/api/admin/dss/health,month,2025-11,revenue,19782.38,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0007,S17,DSS Health,/api/admin/dss/health,month,2025-11,closed_orders,21,count of Closed orders in that month,computed,
+GT0008,S17,DSS Health,/api/admin/dss/health,month,2025-11,closed_units,47,garment units of those orders (the print fee is not a unit),computed,
+GT0009,S17,DSS Health,/api/admin/dss/health,month,2025-11,spending,25459.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0010,S17,DSS Health,/api/admin/dss/health,month,2025-11,cogs,10645.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0011,S17,DSS Health,/api/admin/dss/health,month,2025-12,revenue,24131.00,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0012,S17,DSS Health,/api/admin/dss/health,month,2025-12,closed_orders,34,count of Closed orders in that month,computed,
+GT0013,S17,DSS Health,/api/admin/dss/health,month,2025-12,closed_units,59,garment units of those orders (the print fee is not a unit),computed,
+GT0014,S17,DSS Health,/api/admin/dss/health,month,2025-12,spending,14831.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0015,S17,DSS Health,/api/admin/dss/health,month,2025-12,cogs,13289.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0016,S17,DSS Health,/api/admin/dss/health,month,2026-01,revenue,25633.98,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0017,S17,DSS Health,/api/admin/dss/health,month,2026-01,closed_orders,30,count of Closed orders in that month,computed,
+GT0018,S17,DSS Health,/api/admin/dss/health,month,2026-01,closed_units,55,garment units of those orders (the print fee is not a unit),computed,
+GT0019,S17,DSS Health,/api/admin/dss/health,month,2026-01,spending,59365.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0020,S17,DSS Health,/api/admin/dss/health,month,2026-01,cogs,13378.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0021,S17,DSS Health,/api/admin/dss/health,month,2026-02,revenue,15232.74,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0022,S17,DSS Health,/api/admin/dss/health,month,2026-02,closed_orders,23,count of Closed orders in that month,computed,
+GT0023,S17,DSS Health,/api/admin/dss/health,month,2026-02,closed_units,38,garment units of those orders (the print fee is not a unit),computed,
+GT0024,S17,DSS Health,/api/admin/dss/health,month,2026-02,spending,22094.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0025,S17,DSS Health,/api/admin/dss/health,month,2026-02,cogs,8099.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0026,S13,DSS Health,/api/admin/dss/health,month,2026-03,revenue,20115.36,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0027,S13,DSS Health,/api/admin/dss/health,month,2026-03,closed_orders,27,count of Closed orders in that month,computed,
+GT0028,S13,DSS Health,/api/admin/dss/health,month,2026-03,closed_units,52,garment units of those orders (the print fee is not a unit),computed,
+GT0029,S13,DSS Health,/api/admin/dss/health,month,2026-03,spending,22269.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0030,S13,DSS Health,/api/admin/dss/health,month,2026-03,cogs,10954.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0031,S13,DSS Health,/api/admin/dss/health,month,2026-04,revenue,20023.08,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0032,S13,DSS Health,/api/admin/dss/health,month,2026-04,closed_orders,25,count of Closed orders in that month,computed,
+GT0033,S13,DSS Health,/api/admin/dss/health,month,2026-04,closed_units,50,garment units of those orders (the print fee is not a unit),computed,
+GT0034,S13,DSS Health,/api/admin/dss/health,month,2026-04,spending,27088.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0035,S13,DSS Health,/api/admin/dss/health,month,2026-04,cogs,10561.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0036,S17,DSS Health,/api/admin/dss/health,month,2026-05,revenue,25732.12,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0037,S17,DSS Health,/api/admin/dss/health,month,2026-05,closed_orders,31,count of Closed orders in that month,computed,
+GT0038,S17,DSS Health,/api/admin/dss/health,month,2026-05,closed_units,62,garment units of those orders (the print fee is not a unit),computed,
+GT0039,S17,DSS Health,/api/admin/dss/health,month,2026-05,spending,0.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0040,S17,DSS Health,/api/admin/dss/health,month,2026-05,cogs,14507.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0041,S17,DSS Health,/api/admin/dss/health,month,2026-06,revenue,14681.00,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0042,S17,DSS Health,/api/admin/dss/health,month,2026-06,closed_orders,24,count of Closed orders in that month,computed,
+GT0043,S17,DSS Health,/api/admin/dss/health,month,2026-06,closed_units,39,garment units of those orders (the print fee is not a unit),computed,
+GT0044,S17,DSS Health,/api/admin/dss/health,month,2026-06,spending,17123.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0045,S17,DSS Health,/api/admin/dss/health,month,2026-06,cogs,8212.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0046,S17,DSS Health,/api/admin/dss/health,month,2026-07,revenue,27902.92,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0047,S17,DSS Health,/api/admin/dss/health,month,2026-07,closed_orders,29,count of Closed orders in that month,computed,
+GT0048,S17,DSS Health,/api/admin/dss/health,month,2026-07,closed_units,64,garment units of those orders (the print fee is not a unit),computed,
+GT0049,S17,DSS Health,/api/admin/dss/health,month,2026-07,spending,23923.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0050,S17,DSS Health,/api/admin/dss/health,month,2026-07,cogs,15418.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0051,S17,DSS Health,/api/admin/dss/health,month,2026-08,revenue,12304.40,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0052,S17,DSS Health,/api/admin/dss/health,month,2026-08,closed_orders,21,count of Closed orders in that month,computed,
+GT0053,S17,DSS Health,/api/admin/dss/health,month,2026-08,closed_units,30,garment units of those orders (the print fee is not a unit),computed,
+GT0054,S17,DSS Health,/api/admin/dss/health,month,2026-08,spending,37214.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0055,S17,DSS Health,/api/admin/dss/health,month,2026-08,cogs,6789.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0056,S17,DSS Health,/api/admin/dss/health,month,2026-09,revenue,21028.60,sum of Closed orders by the Manila month of their closing line; VAT included,computed,
+GT0057,S17,DSS Health,/api/admin/dss/health,month,2026-09,closed_orders,26,count of Closed orders in that month,computed,
+GT0058,S17,DSS Health,/api/admin/dss/health,month,2026-09,closed_units,51,garment units of those orders (the print fee is not a unit),computed,
+GT0059,S17,DSS Health,/api/admin/dss/health,month,2026-09,spending,14860.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0060,S17,DSS Health,/api/admin/dss/health,month,2026-09,cogs,11477.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0061,S17,DSS Health,/api/admin/dss/health,month,2026-10,revenue,20242.92,sum of Closed orders by the Manila month of their closing line; VAT included,computed, (partial month: the run is for 26 October)
+GT0062,S17,DSS Health,/api/admin/dss/health,month,2026-10,closed_orders,28,count of Closed orders in that month,computed,
+GT0063,S17,DSS Health,/api/admin/dss/health,month,2026-10,closed_units,47,garment units of those orders (the print fee is not a unit),computed,
+GT0064,S17,DSS Health,/api/admin/dss/health,month,2026-10,spending,0.00,"received restocks by received_on month: goods + shipping, VAT included",computed,
+GT0065,S17,DSS Health,/api/admin/dss/health,month,2026-10,cogs,10727.00,"units x last purchase cost (latest received unit cost, else cheapest supply line); 0 units without a cost",computed,
+GT0066,S17,DSS Health,/api/admin/dss/health,trend,revenue,label,stable,least-squares slope of the last 6 complete months of 3-month average revenue / their mean; +-0.02 is the band,computed,
+GT0067,S17,DSS Health,/api/admin/dss/health,trend,revenue,revenue_rel_slope_pct,0.20,tolerance 0.05 percentage points,computed,
+GT0068,S05,DSS Segments,/api/admin/dss/segments,run,all,scored_customers,101,customers with at least one Closed order (the shop has 1 baseline customer),computed,
+GT0069,S08,DSS Segments,/api/admin/dss/segments,run,all,no_completed_order,4,"customers with a confirmed order but no Closed order (unpaid transfers, orders still on the way)",computed,
+GT0070,S05,DSS Segments,/api/admin/dss/segments,segment,champions,customers,17,count of scored customers in this segment,computed,
+GT0071,S05,DSS Segments,/api/admin/dss/segments,segment,loyal,customers,2,count of scored customers in this segment,computed,
+GT0072,S05,DSS Segments,/api/admin/dss/segments,segment,potential_loyalists,customers,8,count of scored customers in this segment,computed,
+GT0073,S05,DSS Segments,/api/admin/dss/segments,segment,new,customers,15,count of scored customers in this segment,computed,
+GT0074,S05,DSS Segments,/api/admin/dss/segments,segment,at_risk,customers,14,count of scored customers in this segment,computed,
+GT0075,S05,DSS Segments,/api/admin/dss/segments,segment,one_time_lapsed,customers,25,count of scored customers in this segment,computed,
+GT0076,S05,DSS Segments,/api/admin/dss/segments,segment,hibernating,customers,2,count of scored customers in this segment,computed,
+GT0077,S05,DSS Segments,/api/admin/dss/segments,segment,needs_attention,customers,18,count of scored customers in this segment,computed,
+GT0078,S05,DSS Segments,/api/admin/dss/segments,customer,BASE-B1,segment,new,"R=5 F=1 (recency 1 days, 1 Closed orders); plan=baseline",computed,(baseline customer B1)
+GT0079,S05,DSS Segments,/api/admin/dss/segments,customer,BASE-B1,monetary,349.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0080,S06,DSS Segments,/api/admin/dss/segments,customer,C074,segment,one_time_lapsed,"R=1 F=1 (recency 382 days, 1 Closed orders); plan=lapsed_one",computed,Carlo Concepcion
+GT0081,S06,DSS Segments,/api/admin/dss/segments,customer,C074,monetary,349.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0082,S07,DSS Segments,/api/admin/dss/segments,customer,C096,segment,at_risk,"R=1 F=4 (recency 289 days, 5 Closed orders); plan=lapsed_reg",computed,Vivian Quiambao
+GT0083,S07,DSS Segments,/api/admin/dss/segments,customer,C096,monetary,3832.48,"sum of the customer's Closed order totals, VAT included",computed,
+GT0084,S07,DSS Segments,/api/admin/dss/segments,customer,C099,segment,at_risk,"R=1 F=4 (recency 291 days, 5 Closed orders); plan=lapsed_reg",computed,Carlo Borromeo
+GT0085,S07,DSS Segments,/api/admin/dss/segments,customer,C099,monetary,3721.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0086,S05,DSS Segments,/api/admin/dss/segments,customer,C013,segment,champions,"R=4 F=4 (recency 20 days, 8 Closed orders); plan=loyal",computed,Jomar Galang
+GT0087,S05,DSS Segments,/api/admin/dss/segments,customer,C013,monetary,5331.74,"sum of the customer's Closed order totals, VAT included",computed,
+GT0088,S06,DSS Segments,/api/admin/dss/segments,customer,C077,segment,one_time_lapsed,"R=1 F=1 (recency 374 days, 1 Closed orders); plan=lapsed_one",computed,Luis Yap
+GT0089,S06,DSS Segments,/api/admin/dss/segments,customer,C077,monetary,598.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0090,S06,DSS Segments,/api/admin/dss/segments,customer,C085,segment,one_time_lapsed,"R=1 F=1 (recency 374 days, 1 Closed orders); plan=lapsed_one",computed,Harold Lacson
+GT0091,S06,DSS Segments,/api/admin/dss/segments,customer,C085,monetary,549.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0092,S07,DSS Segments,/api/admin/dss/segments,customer,C100,segment,at_risk,"R=1 F=3 (recency 308 days, 3 Closed orders); plan=lapsed_reg",computed,Gina Jacinto
+GT0093,S07,DSS Segments,/api/admin/dss/segments,customer,C100,monetary,1197.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0094,S05,DSS Segments,/api/admin/dss/segments,customer,C009,segment,champions,"R=4 F=4 (recency 31 days, 8 Closed orders); plan=loyal",computed,Sheila Valdez
+GT0095,S05,DSS Segments,/api/admin/dss/segments,customer,C009,monetary,7654.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0096,S07,DSS Segments,/api/admin/dss/segments,customer,C094,segment,at_risk,"R=1 F=3 (recency 298 days, 4 Closed orders); plan=lapsed_reg",computed,Tomas Cabrera
+GT0097,S07,DSS Segments,/api/admin/dss/segments,customer,C094,monetary,1525.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0098,S07,DSS Segments,/api/admin/dss/segments,customer,C095,segment,at_risk,"R=2 F=4 (recency 279 days, 5 Closed orders); plan=lapsed_reg",computed,Wendell Uy
+GT0099,S07,DSS Segments,/api/admin/dss/segments,customer,C095,monetary,2762.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0100,S05,DSS Segments,/api/admin/dss/segments,customer,C015,segment,champions,"R=4 F=4 (recency 53 days, 5 Closed orders); plan=loyal",computed,Olive Lacson
+GT0101,S05,DSS Segments,/api/admin/dss/segments,customer,C015,monetary,4132.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0102,S06,DSS Segments,/api/admin/dss/segments,customer,C070,segment,one_time_lapsed,"R=1 F=1 (recency 357 days, 1 Closed orders); plan=lapsed_one",computed,Olive Cabrera
+GT0103,S06,DSS Segments,/api/admin/dss/segments,customer,C070,monetary,299.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0104,S05,DSS Segments,/api/admin/dss/segments,customer,C054,segment,at_risk,"R=2 F=3 (recency 221 days, 4 Closed orders); plan=occasional",computed,Gina Dela Cruz
+GT0105,S05,DSS Segments,/api/admin/dss/segments,customer,C054,monetary,4418.74,"sum of the customer's Closed order totals, VAT included",computed,
+GT0106,S07,DSS Segments,/api/admin/dss/segments,customer,C097,segment,at_risk,"R=1 F=4 (recency 283 days, 5 Closed orders); plan=lapsed_reg",computed,Ana Valdez
+GT0107,S07,DSS Segments,/api/admin/dss/segments,customer,C097,monetary,3304.94,"sum of the customer's Closed order totals, VAT included",computed,
+GT0108,S06,DSS Segments,/api/admin/dss/segments,customer,C089,segment,one_time_lapsed,"R=1 F=1 (recency 341 days, 1 Closed orders); plan=lapsed_one",computed,Fidel Peña
+GT0109,S06,DSS Segments,/api/admin/dss/segments,customer,C089,monetary,1328.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0110,S05,DSS Segments,/api/admin/dss/segments,customer,C002,segment,champions,"R=5 F=5 (recency 10 days, 15 Closed orders); plan=vip",computed,Ramon Cabrera
+GT0111,S05,DSS Segments,/api/admin/dss/segments,customer,C002,monetary,11451.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0112,S05,DSS Segments,/api/admin/dss/segments,customer,C014,segment,champions,"R=5 F=4 (recency 15 days, 6 Closed orders); plan=loyal",computed,Ivy Lim
+GT0113,S05,DSS Segments,/api/admin/dss/segments,customer,C014,monetary,3962.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0114,S07,DSS Segments,/api/admin/dss/segments,customer,C098,segment,at_risk,"R=2 F=3 (recency 266 days, 3 Closed orders); plan=lapsed_reg",computed,Yvonne Lacson
+GT0115,S07,DSS Segments,/api/admin/dss/segments,customer,C098,monetary,2553.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0116,S05,DSS Segments,/api/admin/dss/segments,customer,C004,segment,champions,"R=4 F=5 (recency 17 days, 14 Closed orders); plan=vip",computed,Zandro Concepcion
+GT0117,S05,DSS Segments,/api/admin/dss/segments,customer,C004,monetary,10543.54,"sum of the customer's Closed order totals, VAT included",computed,
+GT0118,S06,DSS Segments,/api/admin/dss/segments,customer,C087,segment,one_time_lapsed,"R=1 F=1 (recency 349 days, 1 Closed orders); plan=lapsed_one",computed,Ramon Tan
+GT0119,S06,DSS Segments,/api/admin/dss/segments,customer,C087,monetary,1077.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0120,S06,DSS Segments,/api/admin/dss/segments,customer,C083,segment,one_time_lapsed,"R=1 F=1 (recency 340 days, 1 Closed orders); plan=lapsed_one",computed,Oscar Dela Cruz
+GT0121,S06,DSS Segments,/api/admin/dss/segments,customer,C083,monetary,2245.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0122,S05,DSS Segments,/api/admin/dss/segments,customer,C051,segment,at_risk,"R=2 F=3 (recency 223 days, 4 Closed orders); plan=occasional",computed,Kristine Guevarra
+GT0123,S05,DSS Segments,/api/admin/dss/segments,customer,C051,monetary,2186.08,"sum of the customer's Closed order totals, VAT included",computed,
+GT0124,S05,DSS Segments,/api/admin/dss/segments,customer,C003,segment,champions,"R=4 F=5 (recency 27 days, 14 Closed orders); plan=vip",computed,Olive Borromeo
+GT0125,S05,DSS Segments,/api/admin/dss/segments,customer,C003,monetary,13408.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0126,S05,DSS Segments,/api/admin/dss/segments,customer,C032,segment,hibernating,"R=2 F=2 (recency 235 days, 2 Closed orders); plan=occasional",computed,Wendell Rivera
+GT0127,S05,DSS Segments,/api/admin/dss/segments,customer,C032,monetary,1486.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0128,S05,DSS Segments,/api/admin/dss/segments,customer,C007,segment,champions,"R=5 F=4 (recency 4 days, 7 Closed orders); plan=loyal",computed,Luis Natividad
+GT0129,S05,DSS Segments,/api/admin/dss/segments,customer,C007,monetary,4447.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0130,S07,DSS Segments,/api/admin/dss/segments,customer,C093,segment,at_risk,"R=1 F=3 (recency 299 days, 3 Closed orders); plan=lapsed_reg",computed,Nico Aguilar
+GT0131,S07,DSS Segments,/api/admin/dss/segments,customer,C093,monetary,1677.34,"sum of the customer's Closed order totals, VAT included",computed,
+GT0132,S05,DSS Segments,/api/admin/dss/segments,customer,C001,segment,champions,"R=5 F=5 (recency 3 days, 14 Closed orders); plan=vip",computed,Olive Abad
+GT0133,S05,DSS Segments,/api/admin/dss/segments,customer,C001,monetary,9216.86,"sum of the customer's Closed order totals, VAT included",computed,
+GT0134,S06,DSS Segments,/api/admin/dss/segments,customer,C078,segment,one_time_lapsed,"R=1 F=1 (recency 343 days, 1 Closed orders); plan=lapsed_one",computed,Carlo Hernandez
+GT0135,S06,DSS Segments,/api/admin/dss/segments,customer,C078,monetary,299.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0136,S06,DSS Segments,/api/admin/dss/segments,customer,C076,segment,one_time_lapsed,"R=1 F=1 (recency 331 days, 1 Closed orders); plan=lapsed_one",computed,Yvonne Tan
+GT0137,S06,DSS Segments,/api/admin/dss/segments,customer,C076,monetary,449.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0138,S05,DSS Segments,/api/admin/dss/segments,customer,C042,segment,at_risk,"R=2 F=3 (recency 240 days, 4 Closed orders); plan=occasional",computed,Nino Concepcion
+GT0139,S05,DSS Segments,/api/admin/dss/segments,customer,C042,monetary,5132.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0140,S05,DSS Segments,/api/admin/dss/segments,customer,C011,segment,champions,"R=5 F=4 (recency 5 days, 8 Closed orders); plan=loyal",computed,Kristine Borromeo
+GT0141,S05,DSS Segments,/api/admin/dss/segments,customer,C011,monetary,6862.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0142,S05,DSS Segments,/api/admin/dss/segments,customer,C023,segment,at_risk,"R=2 F=3 (recency 225 days, 3 Closed orders); plan=occasional",computed,Ines Galang
+GT0143,S05,DSS Segments,/api/admin/dss/segments,customer,C023,monetary,1725.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0144,S05,DSS Segments,/api/admin/dss/segments,customer,C018,segment,champions,"R=5 F=4 (recency 4 days, 7 Closed orders); plan=loyal",computed,Maya Tolentino
+GT0145,S05,DSS Segments,/api/admin/dss/segments,customer,C018,monetary,4500.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0146,S06,DSS Segments,/api/admin/dss/segments,customer,C088,segment,one_time_lapsed,"R=1 F=1 (recency 318 days, 1 Closed orders); plan=lapsed_one",computed,Benji Yap
+GT0147,S06,DSS Segments,/api/admin/dss/segments,customer,C088,monetary,329.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0148,S05,DSS Segments,/api/admin/dss/segments,customer,C028,segment,at_risk,"R=2 F=3 (recency 196 days, 3 Closed orders); plan=occasional",computed,Benji Magsaysay
+GT0149,S05,DSS Segments,/api/admin/dss/segments,customer,C028,monetary,3766.40,"sum of the customer's Closed order totals, VAT included",computed,
+GT0150,S06,DSS Segments,/api/admin/dss/segments,customer,C090,segment,one_time_lapsed,"R=1 F=1 (recency 308 days, 1 Closed orders); plan=lapsed_one",computed,Nino Dizon
+GT0151,S06,DSS Segments,/api/admin/dss/segments,customer,C090,monetary,349.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0152,S05,DSS Segments,/api/admin/dss/segments,customer,C041,segment,needs_attention,"R=3 F=2 (recency 170 days, 2 Closed orders); plan=occasional",computed,Wendell Aguilar
+GT0153,S05,DSS Segments,/api/admin/dss/segments,customer,C041,monetary,1796.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0154,S06,DSS Segments,/api/admin/dss/segments,customer,C079,segment,one_time_lapsed,"R=1 F=1 (recency 298 days, 1 Closed orders); plan=lapsed_one",computed,Benji Salazar
+GT0155,S06,DSS Segments,/api/admin/dss/segments,customer,C079,monetary,897.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0156,S06,DSS Segments,/api/admin/dss/segments,customer,C075,segment,one_time_lapsed,"R=1 F=1 (recency 294 days, 1 Closed orders); plan=lapsed_one",computed,Wendell Manalo
+GT0157,S06,DSS Segments,/api/admin/dss/segments,customer,C075,monetary,429.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0158,S05,DSS Segments,/api/admin/dss/segments,customer,C043,segment,needs_attention,"R=3 F=3 (recency 179 days, 3 Closed orders); plan=occasional",computed,Nico Tan
+GT0159,S05,DSS Segments,/api/admin/dss/segments,customer,C043,monetary,1566.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0160,S05,DSS Segments,/api/admin/dss/segments,customer,C016,segment,champions,"R=4 F=4 (recency 53 days, 6 Closed orders); plan=loyal",computed,Zandro Quiambao
+GT0161,S05,DSS Segments,/api/admin/dss/segments,customer,C016,monetary,5507.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0162,S05,DSS Segments,/api/admin/dss/segments,customer,C012,segment,champions,"R=4 F=4 (recency 35 days, 6 Closed orders); plan=loyal",computed,Ivy Muñoz
+GT0163,S05,DSS Segments,/api/admin/dss/segments,customer,C012,monetary,3350.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0164,S06,DSS Segments,/api/admin/dss/segments,customer,C073,segment,one_time_lapsed,"R=1 F=1 (recency 299 days, 1 Closed orders); plan=lapsed_one",computed,Benji Galang
+GT0165,S06,DSS Segments,/api/admin/dss/segments,customer,C073,monetary,1437.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0166,S05,DSS Segments,/api/admin/dss/segments,customer,C008,segment,loyal,"R=3 F=5 (recency 144 days, 9 Closed orders); plan=loyal",computed,Karla Tolentino
+GT0167,S05,DSS Segments,/api/admin/dss/segments,customer,C008,monetary,7351.76,"sum of the customer's Closed order totals, VAT included",computed,
+GT0168,S05,DSS Segments,/api/admin/dss/segments,customer,C022,segment,hibernating,"R=2 F=2 (recency 257 days, 2 Closed orders); plan=occasional",computed,Fidel Uy
+GT0169,S05,DSS Segments,/api/admin/dss/segments,customer,C022,monetary,1798.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0170,S05,DSS Segments,/api/admin/dss/segments,customer,C047,segment,one_time_lapsed,"R=1 F=1 (recency 291 days, 1 Closed orders); plan=occasional",computed,Fidel Muñoz
+GT0171,S05,DSS Segments,/api/admin/dss/segments,customer,C047,monetary,549.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0172,S05,DSS Segments,/api/admin/dss/segments,customer,C005,segment,champions,"R=4 F=4 (recency 32 days, 6 Closed orders); plan=loyal",computed,Marites Natividad
+GT0173,S05,DSS Segments,/api/admin/dss/segments,customer,C005,monetary,3711.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0174,S05,DSS Segments,/api/admin/dss/segments,customer,C050,segment,needs_attention,"R=3 F=3 (recency 130 days, 4 Closed orders); plan=occasional",computed,Vivian Castillo
+GT0175,S05,DSS Segments,/api/admin/dss/segments,customer,C050,monetary,3681.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0176,S05,DSS Segments,/api/admin/dss/segments,customer,C006,segment,loyal,"R=3 F=4 (recency 96 days, 6 Closed orders); plan=loyal",computed,Wendell Natividad
+GT0177,S05,DSS Segments,/api/admin/dss/segments,customer,C006,monetary,3600.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0178,S06,DSS Segments,/api/admin/dss/segments,customer,C092,segment,one_time_lapsed,"R=2 F=1 (recency 258 days, 1 Closed orders); plan=lapsed_one",computed,Carlo Lopez
+GT0179,S06,DSS Segments,/api/admin/dss/segments,customer,C092,monetary,799.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0180,S06,DSS Segments,/api/admin/dss/segments,customer,C069,segment,one_time_lapsed,"R=2 F=1 (recency 271 days, 1 Closed orders); plan=lapsed_one",computed,Bea Soriano
+GT0181,S06,DSS Segments,/api/admin/dss/segments,customer,C069,monetary,1696.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0182,S05,DSS Segments,/api/admin/dss/segments,customer,C037,segment,at_risk,"R=2 F=3 (recency 197 days, 3 Closed orders); plan=occasional",computed,Angeli Castillo
+GT0183,S05,DSS Segments,/api/admin/dss/segments,customer,C037,monetary,2214.42,"sum of the customer's Closed order totals, VAT included",computed,
+GT0184,S05,DSS Segments,/api/admin/dss/segments,customer,C027,segment,needs_attention,"R=3 F=3 (recency 184 days, 3 Closed orders); plan=occasional",computed,Jun Peña
+GT0185,S05,DSS Segments,/api/admin/dss/segments,customer,C027,monetary,1406.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0186,S06,DSS Segments,/api/admin/dss/segments,customer,C084,segment,one_time_lapsed,"R=2 F=1 (recency 238 days, 1 Closed orders); plan=lapsed_one",computed,Dante Urbano
+GT0187,S06,DSS Segments,/api/admin/dss/segments,customer,C084,monetary,549.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0188,S05,DSS Segments,/api/admin/dss/segments,customer,C010,segment,champions,"R=4 F=4 (recency 39 days, 7 Closed orders); plan=loyal",computed,Cheska Yap
+GT0189,S05,DSS Segments,/api/admin/dss/segments,customer,C010,monetary,5272.40,"sum of the customer's Closed order totals, VAT included",computed,
+GT0190,S05,DSS Segments,/api/admin/dss/segments,customer,C017,segment,champions,"R=4 F=4 (recency 48 days, 8 Closed orders); plan=loyal",computed,Jomar Tan
+GT0191,S05,DSS Segments,/api/admin/dss/segments,customer,C017,monetary,5396.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0192,S05,DSS Segments,/api/admin/dss/segments,customer,C048,segment,needs_attention,"R=3 F=3 (recency 151 days, 3 Closed orders); plan=occasional",computed,Erika Estrada
+GT0193,S05,DSS Segments,/api/admin/dss/segments,customer,C048,monetary,2125.14,"sum of the customer's Closed order totals, VAT included",computed,
+GT0194,S06,DSS Segments,/api/admin/dss/segments,customer,C071,segment,one_time_lapsed,"R=2 F=1 (recency 241 days, 1 Closed orders); plan=lapsed_one",computed,Wendell Lacson
+GT0195,S06,DSS Segments,/api/admin/dss/segments,customer,C071,monetary,499.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0196,S06,DSS Segments,/api/admin/dss/segments,customer,C086,segment,one_time_lapsed,"R=2 F=1 (recency 221 days, 1 Closed orders); plan=lapsed_one",computed,Ivy Manalo
+GT0197,S06,DSS Segments,/api/admin/dss/segments,customer,C086,monetary,628.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0198,S06,DSS Segments,/api/admin/dss/segments,customer,C082,segment,one_time_lapsed,"R=2 F=1 (recency 228 days, 1 Closed orders); plan=lapsed_one",computed,Jun Pascual
+GT0199,S06,DSS Segments,/api/admin/dss/segments,customer,C082,monetary,1058.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0200,S06,DSS Segments,/api/admin/dss/segments,customer,C072,segment,one_time_lapsed,"R=2 F=1 (recency 213 days, 1 Closed orders); plan=lapsed_one",computed,Karla Zamora
+GT0201,S06,DSS Segments,/api/admin/dss/segments,customer,C072,monetary,598.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0202,S05,DSS Segments,/api/admin/dss/segments,customer,C024,segment,needs_attention,"R=3 F=3 (recency 166 days, 3 Closed orders); plan=occasional",computed,Erika Galang
+GT0203,S05,DSS Segments,/api/admin/dss/segments,customer,C024,monetary,2076.98,"sum of the customer's Closed order totals, VAT included",computed,
+GT0204,S06,DSS Segments,/api/admin/dss/segments,customer,C081,segment,one_time_lapsed,"R=2 F=1 (recency 203 days, 1 Closed orders); plan=lapsed_one",computed,Carlo Yap
+GT0205,S06,DSS Segments,/api/admin/dss/segments,customer,C081,monetary,1096.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0206,S05,DSS Segments,/api/admin/dss/segments,customer,C052,segment,needs_attention,"R=3 F=3 (recency 157 days, 3 Closed orders); plan=occasional",computed,Dante Castillo
+GT0207,S05,DSS Segments,/api/admin/dss/segments,customer,C052,monetary,2696.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0208,S05,DSS Segments,/api/admin/dss/segments,customer,C038,segment,needs_attention,"R=3 F=3 (recency 138 days, 3 Closed orders); plan=occasional",computed,Luis Castillo
+GT0209,S05,DSS Segments,/api/admin/dss/segments,customer,C038,monetary,2421.28,"sum of the customer's Closed order totals, VAT included",computed,
+GT0210,S06,DSS Segments,/api/admin/dss/segments,customer,C080,segment,one_time_lapsed,"R=2 F=1 (recency 201 days, 1 Closed orders); plan=lapsed_one",computed,Oscar Zamora
+GT0211,S06,DSS Segments,/api/admin/dss/segments,customer,C080,monetary,379.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0212,S05,DSS Segments,/api/admin/dss/segments,customer,C019,segment,champions,"R=5 F=4 (recency 7 days, 5 Closed orders); plan=occasional",computed,Wendell Yap
+GT0213,S05,DSS Segments,/api/admin/dss/segments,customer,C019,monetary,3958.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0214,S05,DSS Segments,/api/admin/dss/segments,customer,C044,segment,needs_attention,"R=3 F=3 (recency 89 days, 4 Closed orders); plan=occasional",computed,Xavi Bautista
+GT0215,S05,DSS Segments,/api/admin/dss/segments,customer,C044,monetary,4131.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0216,S06,DSS Segments,/api/admin/dss/segments,customer,C091,segment,one_time_lapsed,"R=2 F=1 (recency 203 days, 1 Closed orders); plan=lapsed_one",computed,Carlo Zamora
+GT0217,S06,DSS Segments,/api/admin/dss/segments,customer,C091,monetary,1387.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0218,S05,DSS Segments,/api/admin/dss/segments,customer,C020,segment,needs_attention,"R=3 F=3 (recency 55 days, 3 Closed orders); plan=occasional",computed,Irene Borromeo
+GT0219,S05,DSS Segments,/api/admin/dss/segments,customer,C020,monetary,3861.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0220,S05,DSS Segments,/api/admin/dss/segments,customer,C046,segment,needs_attention,"R=3 F=3 (recency 87 days, 4 Closed orders); plan=occasional",computed,Fidel Fernandez
+GT0221,S05,DSS Segments,/api/admin/dss/segments,customer,C046,monetary,2005.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0222,S05,DSS Segments,/api/admin/dss/segments,customer,C029,segment,needs_attention,"R=3 F=3 (recency 63 days, 4 Closed orders); plan=occasional",computed,Vera Florentino
+GT0223,S05,DSS Segments,/api/admin/dss/segments,customer,C029,monetary,2165.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0224,S05,DSS Segments,/api/admin/dss/segments,customer,C030,segment,needs_attention,"R=3 F=3 (recency 89 days, 4 Closed orders); plan=occasional",computed,Wendell Castillo
+GT0225,S05,DSS Segments,/api/admin/dss/segments,customer,C030,monetary,2697.16,"sum of the customer's Closed order totals, VAT included",computed,
+GT0226,S05,DSS Segments,/api/admin/dss/segments,customer,C031,segment,potential_loyalists,"R=4 F=3 (recency 45 days, 4 Closed orders); plan=occasional",computed,Ana Ilagan
+GT0227,S05,DSS Segments,/api/admin/dss/segments,customer,C031,monetary,4738.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0228,S05,DSS Segments,/api/admin/dss/segments,customer,C036,segment,needs_attention,"R=3 F=2 (recency 90 days, 2 Closed orders); plan=occasional",computed,Dino Ilagan
+GT0229,S05,DSS Segments,/api/admin/dss/segments,customer,C036,monetary,2175.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0230,S05,DSS Segments,/api/admin/dss/segments,customer,C049,segment,needs_attention,"R=3 F=3 (recency 66 days, 3 Closed orders); plan=occasional",computed,Kristine Tan
+GT0231,S05,DSS Segments,/api/admin/dss/segments,customer,C049,monetary,1706.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0232,S05,DSS Segments,/api/admin/dss/segments,customer,C039,segment,potential_loyalists,"R=4 F=3 (recency 41 days, 4 Closed orders); plan=occasional",computed,Marites Fernandez
+GT0233,S05,DSS Segments,/api/admin/dss/segments,customer,C039,monetary,2513.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0234,S05,DSS Segments,/api/admin/dss/segments,customer,C026,segment,needs_attention,"R=3 F=2 (recency 100 days, 2 Closed orders); plan=occasional",computed,Kristine Dela Cruz
+GT0235,S05,DSS Segments,/api/admin/dss/segments,customer,C026,monetary,1937.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0236,S05,DSS Segments,/api/admin/dss/segments,customer,C035,segment,needs_attention,"R=3 F=2 (recency 62 days, 2 Closed orders); plan=occasional",computed,Ines Fernandez
+GT0237,S05,DSS Segments,/api/admin/dss/segments,customer,C035,monetary,1266.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0238,S05,DSS Segments,/api/admin/dss/segments,customer,C040,segment,needs_attention,"R=3 F=2 (recency 81 days, 2 Closed orders); plan=occasional",computed,Maya Quiambao
+GT0239,S05,DSS Segments,/api/admin/dss/segments,customer,C040,monetary,1456.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0240,S05,DSS Segments,/api/admin/dss/segments,customer,C025,segment,potential_loyalists,"R=5 F=3 (recency 10 days, 3 Closed orders); plan=occasional",computed,Yvonne Tolentino
+GT0241,S05,DSS Segments,/api/admin/dss/segments,customer,C025,monetary,3511.30,"sum of the customer's Closed order totals, VAT included",computed,
+GT0242,S05,DSS Segments,/api/admin/dss/segments,customer,C053,segment,potential_loyalists,"R=5 F=3 (recency 11 days, 4 Closed orders); plan=occasional",computed,Lorenzo Abad
+GT0243,S05,DSS Segments,/api/admin/dss/segments,customer,C053,monetary,4020.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0244,S05,DSS Segments,/api/admin/dss/segments,customer,C021,segment,potential_loyalists,"R=4 F=2 (recency 45 days, 2 Closed orders); plan=occasional",computed,Bea Enriquez
+GT0245,S05,DSS Segments,/api/admin/dss/segments,customer,C021,monetary,2686.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0246,S05,DSS Segments,/api/admin/dss/segments,customer,C045,segment,potential_loyalists,"R=4 F=3 (recency 35 days, 3 Closed orders); plan=occasional",computed,Hector Uy
+GT0247,S05,DSS Segments,/api/admin/dss/segments,customer,C045,monetary,1237.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0248,S05,DSS Segments,/api/admin/dss/segments,customer,C034,segment,potential_loyalists,"R=4 F=2 (recency 30 days, 2 Closed orders); plan=occasional",computed,Tomas Bautista
+GT0249,S05,DSS Segments,/api/admin/dss/segments,customer,C034,monetary,2954.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0250,S05,DSS Segments,/api/admin/dss/segments,customer,C033,segment,potential_loyalists,"R=4 F=2 (recency 32 days, 2 Closed orders); plan=occasional",computed,Quinn Tan
+GT0251,S05,DSS Segments,/api/admin/dss/segments,customer,C033,monetary,857.60,"sum of the customer's Closed order totals, VAT included",computed,
+GT0252,S06,DSS Segments,/api/admin/dss/segments,customer,C061,segment,new,"R=4 F=1 (recency 17 days, 1 Closed orders); plan=new",computed,Nico Urbano
+GT0253,S06,DSS Segments,/api/admin/dss/segments,customer,C061,monetary,529.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0254,S06,DSS Segments,/api/admin/dss/segments,customer,C059,segment,new,"R=5 F=1 (recency 13 days, 1 Closed orders); plan=new",computed,Dino Bautista
+GT0255,S06,DSS Segments,/api/admin/dss/segments,customer,C059,monetary,429.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0256,S06,DSS Segments,/api/admin/dss/segments,customer,C062,segment,new,"R=4 F=1 (recency 24 days, 1 Closed orders); plan=new",computed,Ivy Guevarra
+GT0257,S06,DSS Segments,/api/admin/dss/segments,customer,C062,monetary,510.34,"sum of the customer's Closed order totals, VAT included",computed,
+GT0258,S06,DSS Segments,/api/admin/dss/segments,customer,C063,segment,new,"R=5 F=1 (recency 15 days, 1 Closed orders); plan=new",computed,Irene Soriano
+GT0259,S06,DSS Segments,/api/admin/dss/segments,customer,C063,monetary,1876.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0260,S06,DSS Segments,/api/admin/dss/segments,customer,C067,segment,new,"R=4 F=1 (recency 17 days, 1 Closed orders); plan=new",computed,Tomas Enriquez
+GT0261,S06,DSS Segments,/api/admin/dss/segments,customer,C067,monetary,2197.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0262,S06,DSS Segments,/api/admin/dss/segments,customer,C058,segment,new,"R=4 F=1 (recency 19 days, 1 Closed orders); plan=new",computed,Xavi Natividad
+GT0263,S06,DSS Segments,/api/admin/dss/segments,customer,C058,monetary,678.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0264,S06,DSS Segments,/api/admin/dss/segments,customer,C060,segment,new,"R=5 F=1 (recency 12 days, 1 Closed orders); plan=new",computed,Jomar Quiambao
+GT0265,S06,DSS Segments,/api/admin/dss/segments,customer,C060,monetary,1796.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0266,S06,DSS Segments,/api/admin/dss/segments,customer,C064,segment,new,"R=5 F=1 (recency 3 days, 1 Closed orders); plan=new",computed,Wilma Jacinto
+GT0267,S06,DSS Segments,/api/admin/dss/segments,customer,C064,monetary,339.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0268,S06,DSS Segments,/api/admin/dss/segments,customer,C056,segment,new,"R=5 F=1 (recency 11 days, 1 Closed orders); plan=new",computed,Grace Peña
+GT0269,S06,DSS Segments,/api/admin/dss/segments,customer,C056,monetary,1057.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0270,S06,DSS Segments,/api/admin/dss/segments,customer,C068,segment,new,"R=5 F=1 (recency 15 days, 1 Closed orders); plan=new",computed,Ines Valdez
+GT0271,S06,DSS Segments,/api/admin/dss/segments,customer,C068,monetary,339.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0272,S06,DSS Segments,/api/admin/dss/segments,customer,C066,segment,new,"R=5 F=1 (recency 17 days, 1 Closed orders); plan=new",computed,Jomar Ocampo
+GT0273,S06,DSS Segments,/api/admin/dss/segments,customer,C066,monetary,339.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0274,S06,DSS Segments,/api/admin/dss/segments,customer,C057,segment,new,"R=5 F=1 (recency 11 days, 1 Closed orders); plan=new",computed,Dino Jacinto
+GT0275,S06,DSS Segments,/api/admin/dss/segments,customer,C057,monetary,1607.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0276,S06,DSS Segments,/api/admin/dss/segments,customer,C055,segment,new,"R=5 F=1 (recency 9 days, 1 Closed orders); plan=new",computed,Elena Lopez
+GT0277,S06,DSS Segments,/api/admin/dss/segments,customer,C055,monetary,249.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0278,S06,DSS Segments,/api/admin/dss/segments,customer,C065,segment,new,"R=5 F=1 (recency 8 days, 1 Closed orders); plan=new",computed,Rina Guevarra
+GT0279,S06,DSS Segments,/api/admin/dss/segments,customer,C065,monetary,1238.00,"sum of the customer's Closed order totals, VAT included",computed,
+GT0280,S09,DSS Overview (alerts),/api/admin/dss/alerts,order,O0336,unpaid_bank_transfer,admin_decide;critical;20.5,band;severity;age in days at the end of 2026-10-26 (3 / 7 / 14 days = info / warning / critical); age tolerance 0.1,computed,run on 2026-10-26
+GT0281,S09,DSS Overview (alerts),/api/admin/dss/alerts,order,O0347,unpaid_bank_transfer,stuck;warning;10.5,band;severity;age in days at the end of 2026-10-26 (3 / 7 / 14 days = info / warning / critical); age tolerance 0.1,computed,run on 2026-10-26
+GT0282,S09,DSS Overview (alerts),/api/admin/dss/alerts,order,O0355,unpaid_bank_transfer,follow_up;info;5.5,band;severity;age in days at the end of 2026-10-26 (3 / 7 / 14 days = info / warning / critical); age tolerance 0.1,computed,run on 2026-10-26
+GT0283,S09,DSS Overview (alerts),/api/admin/dss/alerts,order,O0364,unpaid_bank_transfer,no alert,age 2.5 days is under 3,computed,run on 2026-10-26
+GT0284,S09,DSS Overview (alerts),/api/admin/dss/alerts,order,O0369,unpaid_bank_transfer,no alert,age 0.6 days is under 3,computed,run on 2026-10-26
+GT0285,S11,DSS Overview (alerts),/api/admin/dss/alerts,restock,R028,restock_overdue,present;22,open and past its expected range; days overdue at 2026-10-26,computed,SUP2
+GT0286,S11,DSS Overview (alerts),/api/admin/dss/alerts,restock,R029,restock_supplier,present,supplier unavailable during the expected arrival,computed,SUP1
+GT0287,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP1,receipts,10,received restocks,computed,Marikina Knitworks Inc.
+GT0288,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP1,lead_p50_days,7.5,"days from the approval day to received_on (Manila), needs 3 receipts; used lead = p90 rounded up",computed,Marikina Knitworks Inc.
+GT0289,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP1,lead_p90_days,8.0,"days from the approval day to received_on (Manila), needs 3 receipts; used lead = p90 rounded up",computed,Marikina Knitworks Inc.
+GT0290,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP1,lead_days_used,8,"days from the approval day to received_on (Manila), needs 3 receipts; used lead = p90 rounded up",computed,Marikina Knitworks Inc.
+GT0291,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP2,receipts,9,received restocks,computed,Cebu Heritage Garments Corp.
+GT0292,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP2,lead_p50_days,20.0,"days from the approval day to received_on (Manila), needs 3 receipts; used lead = p90 rounded up",computed,Cebu Heritage Garments Corp.
+GT0293,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP2,lead_p90_days,23.2,"days from the approval day to received_on (Manila), needs 3 receipts; used lead = p90 rounded up",computed,Cebu Heritage Garments Corp.
+GT0294,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP2,lead_days_used,24,"days from the approval day to received_on (Manila), needs 3 receipts; used lead = p90 rounded up",computed,Cebu Heritage Garments Corp.
+GT0295,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP3,receipts,6,received restocks,computed,Laguna Stitch & Thread Manufacturing
+GT0296,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP3,lead_p50_days,5.0,"days from the approval day to received_on (Manila), needs 3 receipts; used lead = p90 rounded up",computed,Laguna Stitch & Thread Manufacturing
+GT0297,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP3,lead_p90_days,6.5,"days from the approval day to received_on (Manila), needs 3 receipts; used lead = p90 rounded up",computed,Laguna Stitch & Thread Manufacturing
+GT0298,S11,DSS Restock,/api/admin/dss/restock,supplier,SUP3,lead_days_used,7,"days from the approval day to received_on (Manila), needs 3 receipts; used lead = p90 rounded up",computed,Laguna Stitch & Thread Manufacturing
+GT0299,S12,DSS Forecast,/api/admin/dss/forecast,total,all,units_through_2026-10-25,662,garment units of non-cancelled orders; the print fee line is never a unit; includes the two shop test orders,computed,
+GT0300,S12,DSS Forecast,/api/admin/dss/forecast,product,b-dres,units_through_2026-10-25,5,garment units of non-cancelled orders,computed,
+GT0301,S12,DSS Forecast,/api/admin/dss/forecast,product,b-hood,units_through_2026-10-25,18,garment units of non-cancelled orders,computed,
+GT0302,S12,DSS Forecast,/api/admin/dss/forecast,product,b-lson,units_through_2026-10-25,13,garment units of non-cancelled orders,computed,
+GT0303,S12,DSS Forecast,/api/admin/dss/forecast,product,b-ones,units_through_2026-10-25,10,garment units of non-cancelled orders,computed,
+GT0304,S12,DSS Forecast,/api/admin/dss/forecast,product,k-jkt,units_through_2026-10-25,14,garment units of non-cancelled orders,computed,
+GT0305,S12,DSS Forecast,/api/admin/dss/forecast,product,k-lslv,units_through_2026-10-25,24,garment units of non-cancelled orders,computed,
+GT0306,S12,DSS Forecast,/api/admin/dss/forecast,product,k-polo,units_through_2026-10-25,13,garment units of non-cancelled orders,computed,
+GT0307,S12,DSS Forecast,/api/admin/dss/forecast,product,k-tank,units_through_2026-10-25,19,garment units of non-cancelled orders,computed,
+GT0308,S12,DSS Forecast,/api/admin/dss/forecast,product,m-lslv,units_through_2026-10-25,36,garment units of non-cancelled orders,computed,
+GT0309,S12,DSS Forecast,/api/admin/dss/forecast,product,m-polo,units_through_2026-10-25,44,garment units of non-cancelled orders,computed,
+GT0310,S12,DSS Forecast,/api/admin/dss/forecast,product,m-tank,units_through_2026-10-25,81,garment units of non-cancelled orders,computed,
+GT0311,S12,DSS Forecast,/api/admin/dss/forecast,product,m-tee,units_through_2026-10-25,118,garment units of non-cancelled orders,computed,
+GT0312,S12,DSS Forecast,/api/admin/dss/forecast,product,m-vnek,units_through_2026-10-25,27,garment units of non-cancelled orders,computed,
+GT0313,S12,DSS Forecast,/api/admin/dss/forecast,product,w-crop,units_through_2026-10-25,24,garment units of non-cancelled orders,computed,
+GT0314,S12,DSS Forecast,/api/admin/dss/forecast,product,w-hood,units_through_2026-10-25,32,garment units of non-cancelled orders,computed,
+GT0315,S12,DSS Forecast,/api/admin/dss/forecast,product,w-lslv,units_through_2026-10-25,32,garment units of non-cancelled orders,computed,
+GT0316,S12,DSS Forecast,/api/admin/dss/forecast,product,w-polo,units_through_2026-10-25,39,garment units of non-cancelled orders,computed,
+GT0317,S12,DSS Forecast,/api/admin/dss/forecast,product,w-tank,units_through_2026-10-25,21,garment units of non-cancelled orders,computed,
+GT0318,S12,DSS Forecast,/api/admin/dss/forecast,product,w-tee,units_through_2026-10-25,92,garment units of non-cancelled orders,computed,
+GT0319,S02,DSS Forecast,/api/admin/dss/forecast,product,w-tee,direction,up,the forecast mean of the next 8 weeks is at least 1.5x the mean of the first 26 weeks,planted,"first-26-week mean 0.81, last-8-week mean 4.00, all-weeks mean 1.64 units a week; the CSV itself meets the rule; small volumes make this noisy"
+GT0320,S03,DSS Forecast,/api/admin/dss/forecast,product,m-tank,direction,down,the forecast mean of the next 8 weeks is at most 0.6x the mean of the first 26 weeks,planted,"first-26-week mean 1.92, last-8-week mean 0.50, all-weeks mean 1.45 units a week; the CSV itself meets the rule; small volumes make this noisy"
+GT0321,S04,DSS Forecast,/api/admin/dss/forecast,product,m-tee,direction,flat,the forecast mean of the next 8 weeks is within 0.65x to 1.35x of the 52-week mean,planted,"first-26-week mean 2.04, last-8-week mean 2.88, all-weeks mean 2.11 units a week; the CSV itself does NOT meet the rule; small volumes make this noisy"
+GT0322,S01,DSS Forecast,/api/admin/dss/forecast,product-week,b-hood:2025-12-22,censored_and_zero_units,true;0,every variant at zero on hand all week: the week is censored (demand understated) and has no sales,computed,from the generator's own stock ledger
+GT0323,S01,DSS Forecast,/api/admin/dss/forecast,product-week,b-hood:2025-12-29,censored_and_zero_units,true;0,every variant at zero on hand all week: the week is censored (demand understated) and has no sales,computed,from the generator's own stock ledger
+GT0324,S01,DSS Forecast,/api/admin/dss/forecast,product-week,b-hood:2026-01-05,censored_and_zero_units,true;0,every variant at zero on hand all week: the week is censored (demand understated) and has no sales,computed,from the generator's own stock ledger
+GT0325,S01,DSS Forecast,/api/admin/dss/forecast,product-week,b-hood:2026-01-12,censored_and_zero_units,true;0,every variant at zero on hand all week: the week is censored (demand understated) and has no sales,computed,from the generator's own stock ledger
+GT0326,S10,DSS Overview (alerts),/api/admin/dss/alerts,variant,W-TEE-BLK-M,forecast_stockout,present,"1 unit(s) on hand at the end, 9 sold in the last 8 weeks; run-out inside the lead time + review window (L + 7 days)",planted,
+GT0327,S10,DSS Overview (alerts),/api/admin/dss/alerts,variant,W-TEE-BLK-M,low_stock_risk,present,1 unit(s) is below the low-stock level 5 and the variant is forecast to run out,planted,
+GT0328,S10,DSS Restock,/api/admin/dss/restock,variant,W-TEE-BLK-M,urgency,order_now or stockout_before_arrival,the position falls to the safety stock before an order placed today could arrive,planted,
+GT0329,S10,Staff stock,/api/staff/stock,variant,W-TEE-BLK-M,on_hand,1,"end of the year, from the generator's ledger",computed,
+GT0330,S10,Staff stock,/api/staff/stock?low=true,run,all,low_variants,9,variants with fewer than 5 on hand at the end (global level 5): K-JKT-BLK-XS K-JKT-NVY-XS K-JKT-RED-S K-JKT-RED-XS K-TANK-RED-XS M-TANK-GRY-XL W-POLO-NVY-S W-POLO-NVY-XS W-TEE-BLK-M,computed,
+GT0331,S19,Admin orders summary,/api/admin/orders/summary,state,awaiting_payment,orders_at_cutoff,5,"orders by fulfilment state at 2026-10-26 09:00 including the two shop test orders (one delivered, one closed)",computed,counts of the dashboard may differ by orders moved after the cutoff
+GT0332,S19,Admin orders summary,/api/admin/orders/summary,state,confirmed,orders_at_cutoff,10,"orders by fulfilment state at 2026-10-26 09:00 including the two shop test orders (one delivered, one closed)",computed,counts of the dashboard may differ by orders moved after the cutoff
+GT0333,S19,Admin orders summary,/api/admin/orders/summary,state,shipped,orders_at_cutoff,3,"orders by fulfilment state at 2026-10-26 09:00 including the two shop test orders (one delivered, one closed)",computed,counts of the dashboard may differ by orders moved after the cutoff
+GT0334,S19,Admin orders summary,/api/admin/orders/summary,state,out_for_delivery,orders_at_cutoff,2,"orders by fulfilment state at 2026-10-26 09:00 including the two shop test orders (one delivered, one closed)",computed,counts of the dashboard may differ by orders moved after the cutoff
+GT0335,S19,Admin orders summary,/api/admin/orders/summary,state,delivered,orders_at_cutoff,4,"orders by fulfilment state at 2026-10-26 09:00 including the two shop test orders (one delivered, one closed)",computed,counts of the dashboard may differ by orders moved after the cutoff
+GT0336,S19,Admin orders summary,/api/admin/orders/summary,state,closed,orders_at_cutoff,335,"orders by fulfilment state at 2026-10-26 09:00 including the two shop test orders (one delivered, one closed)",computed,counts of the dashboard may differ by orders moved after the cutoff
+GT0337,S19,Admin orders summary,/api/admin/orders/summary,state,cancelled,orders_at_cutoff,13,"orders by fulfilment state at 2026-10-26 09:00 including the two shop test orders (one delivered, one closed)",computed,counts of the dashboard may differ by orders moved after the cutoff
+GT0338,S19,Admin dashboard,/api/admin/dashboard,kpi,deliveredAwaiting,orders,4,"delivered, waiting for the customer to confirm (not earnings); includes S00001",computed,
+GT0339,S19,Admin dashboard,/api/admin/dashboard,kpi,deliveredAwaiting,total,1833.52,VAT included; includes S00001 (518.54),computed,
+GT0340,S12,Admin dashboard,/api/admin/dashboard?range=all,kpi,revenue,total,260042.50,"earned revenue: Closed orders only, all time, including the shop test order S00002 (349.00)",computed,
+GT0341,S14,Staff order history,/api/staff/orders/{id},order,O0121,step_back_lines,1,"one history line ""out for delivery -> shipped"" flagged as a step back, with the Administrator's note",computed,
+GT0342,S14,Staff order history,/api/staff/orders/{id},order,O0136,step_back_lines,1,"one history line ""out for delivery -> shipped"" flagged as a step back, with the Administrator's note",computed,
+GT0343,S16,Staff order history,/api/staff/orders/{id},order,O0236,shipped_lines,1,the second staff member's identical move is refused (state_changed): only one history line for shipped,computed,
+GT0344,S16,Staff order history,/api/staff/orders/{id},order,O0243,shipped_lines,1,the second staff member's identical move is refused (state_changed): only one history line for shipped,computed,
+GT0345,S15,Staff order history,/api/staff/orders/{id},order,O0246,refund_due_note,REFUND DUE. Customer asked to cancel; the bank refund is to be sent by Rafael,"a paid bank transfer cancelled by an Administrator: state cancelled, not demand, not revenue",computed,
+GT0346,S15,Staff order history,/api/staff/orders/{id},order,O0265,refund_due_note,REFUND DUE. Wrong size ordered; refund to be arranged by the owner,"a paid bank transfer cancelled by an Administrator: state cancelled, not demand, not revenue",computed,
+GT0347,S15,Staff order history,/api/staff/orders/{id},order,O0281,refund_due_note,REFUND DUE. Customer asked to cancel; the bank refund is to be sent by Rafael,"a paid bank transfer cancelled by an Administrator: state cancelled, not demand, not revenue",computed,
+GT0348,S20,Admin employees,/api/admin/employees,employee,E01,status,active,Marco Dela Rosa; 283 recorded actions in this pack,constant,
+GT0349,S20,Admin employees,/api/admin/employees,employee,E02,status,active,Liza Navarro; 241 recorded actions in this pack,constant,
+GT0350,S20,Admin employees,/api/admin/employees,employee,E03,status,active,Joaquin Ramos; 276 recorded actions in this pack,constant,
+GT0351,S20,Admin employees,/api/admin/employees,employee,E04,status,active,Patricia Villanueva; 216 recorded actions in this pack,constant,
+GT0352,S20,Admin employees,/api/admin/employees,employee,E05,status,active,Jerome Bautista; 117 recorded actions in this pack,constant,
+GT0353,S20,Admin employees,/api/admin/employees,employee,E06,status,active,Teresa Aquino; 24 recorded actions in this pack,constant,
+GT0354,S20,Admin employees,/api/admin/employees,employee,E07,status,active,Rafael Mendoza; 37 recorded actions in this pack,constant,
+GT0355,S20,Admin employees,/api/admin/employees,employee,E08,status,inactive,"Cecilia Domingo (archived, left 2026-02-27); 91 recorded actions in this pack",constant,
+GT0356,S20,Admin employees,/api/admin/employees?status=all,run,all,employees_in_list,10,"the pack's 8 employees plus the shop's two test staff accounts; the Odoo administrator, the superuser and the API service user are never listed there",constant,
+GT0357,S21,DSS Overview,/api/admin/dss/overview,run,all,kind,real,"the pack's run is REAL: no simulation marker, orders count as they are",constant,

@@ -1,0 +1,13 @@
+{
+  "name": "clothcraft-mcp-dev",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Read-only MCP server for planning: clothcraft_sim2 and clothcraft_throwaway_* copies only. Not part of the product.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1"
+  }
+}

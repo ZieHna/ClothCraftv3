@@ -1,0 +1,4 @@
+﻿supplier_id,name,ships,shipping_fee,opening_balance,active,permanently_off
+SUP1,Marikina Knitworks Inc.,yes,150.00,317068.00,yes,no
+SUP2,Cebu Heritage Garments Corp.,yes,250.00,488862.00,yes,no
+SUP3,Laguna Stitch & Thread Manufacturing,no,0.00,63934.00,yes,no

@@ -1,0 +1,39 @@
+﻿adjustment_id,at,employee_id,sku,old_quantity,new_quantity,reason,scenario
+A001,2025-11-10T10:09:32+08:00,E08,M-TEE-NVY-M,28,25,Cycle count: one damaged unit written off,
+A002,2025-11-13T12:30:01+08:00,E01,M-VNEK-BLK-S,13,11,Cycle count: a unit lost in transit to a customer is written off,
+A003,2025-11-17T11:14:33+08:00,E08,W-LSLV-BLK-S,13,10,Cycle count: a unit lost in transit to a customer is written off,
+A004,2025-12-03T14:10:00+08:00,E01,B-HOOD-GRY-M,17,1,Water damage in the storage room: damaged units written off,S01
+A005,2025-12-03T14:12:00+08:00,E01,B-HOOD-GRY-S,13,1,Water damage in the storage room: damaged units written off,S01
+A006,2025-12-03T14:14:00+08:00,E01,B-HOOD-GRY-XS,8,0,Water damage in the storage room: damaged units written off,S01
+A007,2025-12-03T14:16:00+08:00,E01,B-HOOD-NVY-M,17,1,Water damage in the storage room: damaged units written off,S01
+A008,2025-12-03T14:18:00+08:00,E01,B-HOOD-NVY-S,13,0,Water damage in the storage room: damaged units written off,S01
+A009,2025-12-03T14:20:00+08:00,E01,B-HOOD-NVY-XS,8,0,Water damage in the storage room: damaged units written off,S01
+A010,2025-12-03T14:22:00+08:00,E01,B-HOOD-RED-M,17,0,Water damage in the storage room: damaged units written off,S01
+A011,2025-12-03T14:24:00+08:00,E01,B-HOOD-RED-S,13,0,Water damage in the storage room: damaged units written off,S01
+A012,2025-12-03T14:26:00+08:00,E01,B-HOOD-RED-XS,14,0,Water damage in the storage room: damaged units written off,S01
+A013,2025-12-09T09:34:02+08:00,E04,W-TEE-GRY-XL,19,18,Cycle count: one unit found stained in packing,
+A014,2025-12-12T13:03:16+08:00,E03,M-LSLV-BLK-S,12,9,Cycle count: one unit found stained in packing,
+A015,2025-12-15T13:49:50+08:00,E02,W-CROP-RED-XS,14,12,Cycle count: one unit found stained in packing,
+A016,2025-12-17T16:02:00+08:00,E01,B-HOOD-GRY-S,1,0,Cycle count: the last packs were water stained and written off,S01
+A017,2025-12-17T16:06:00+08:00,E01,B-HOOD-NVY-M,1,0,Cycle count: the last packs were water stained and written off,S01
+A018,2025-12-22T12:28:39+08:00,E08,B-DRES-RED-M,10,11,Cycle count: one unit found on the wrong shelf,
+A019,2026-02-12T11:43:22+08:00,E01,M-POLO-BLK-L,15,13,Cycle count: one damaged unit written off,
+A020,2026-02-19T12:57:37+08:00,E02,B-LSON-GRY-S,12,11,Cycle count: a unit lost in transit to a customer is written off,
+A021,2026-03-23T09:30:27+08:00,E01,W-TANK-WHT-L,15,14,Cycle count: one unit found stained in packing,
+A022,2026-03-25T11:10:47+08:00,E02,B-LSON-NVY-XS,8,9,Cycle count: an unrecorded unit found while packing,
+A023,2026-03-26T12:17:37+08:00,E04,W-TEE-WHT-S,22,23,Cycle count: an unrecorded unit found while packing,
+A024,2026-04-14T11:48:40+08:00,E04,M-VNEK-RED-S,13,15,Cycle count: an unrecorded unit found while packing,
+A025,2026-04-20T10:15:19+08:00,E03,W-LSLV-WHT-S,18,19,Cycle count: one unit found on the wrong shelf,
+A026,2026-05-14T12:35:32+08:00,E05,W-CROP-WHT-XS,13,12,Cycle count: a unit lost in transit to a customer is written off,
+A027,2026-05-18T11:33:00+08:00,E05,M-TEE-GRY-XL,17,19,Cycle count: an unrecorded unit found while packing,
+A028,2026-06-01T13:35:47+08:00,E02,K-TANK-RED-XS,5,4,Cycle count: a unit lost in transit to a customer is written off,
+A029,2026-06-17T13:03:49+08:00,E05,M-POLO-WHT-XXL,6,5,Cycle count: a unit lost in transit to a customer is written off,
+A030,2026-07-01T10:37:17+08:00,E01,W-TANK-BLK-S,9,8,Cycle count: one damaged unit written off,
+A031,2026-07-03T10:13:10+08:00,E04,W-LSLV-WHT-S,19,16,Cycle count: one unit found stained in packing,
+A032,2026-07-24T10:02:15+08:00,E01,M-LSLV-GRY-M,17,15,Cycle count: one damaged unit written off,
+A033,2026-08-07T11:13:47+08:00,E04,B-HOOD-RED-XS,12,14,Cycle count: an unrecorded unit found while packing,
+A034,2026-09-01T11:31:58+08:00,E02,K-JKT-RED-S,6,4,Cycle count: one damaged unit written off,
+A035,2026-09-21T13:51:44+08:00,E02,M-POLO-WHT-M,14,12,Cycle count: a unit lost in transit to a customer is written off,
+A036,2026-10-08T10:21:30+08:00,E03,B-HOOD-RED-XS,14,13,Cycle count: one unit found stained in packing,
+A037,2026-10-14T13:17:16+08:00,E04,B-DRES-WHT-M,10,12,Cycle count: an unrecorded unit found while packing,
+A038,2026-10-24T16:30:00+08:00,E02,W-TEE-BLK-M,45,1,Cycle count: damaged and missing units written off; one sellable unit left,S10

@@ -1,0 +1,9 @@
+# B8 S4a: the read-only DSS bundle folder for the Odoo service (bundle import, clothcraft_dss). Use ONLY when importing a simulated
+# bundle on clothcraft_demo, as an extra -f after the others, with DSS_BUNDLES_DIR set to a short folder outside the repo:
+#   $env:DSS_BUNDLES_DIR = "C:\ccb"
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.dss-bundles.yml up -d odoo
+# Without DSS_BUNDLES_DIR the command stops with the message below; no existing compose file mounts it.
+services:
+  odoo:
+    volumes:
+      - ${DSS_BUNDLES_DIR:?Set DSS_BUNDLES_DIR}:/mnt/dss-bundles:ro
