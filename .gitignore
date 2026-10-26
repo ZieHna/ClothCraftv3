@@ -3,3 +3,26 @@ __pycache__/
 *.pyc
 *.log
 seed_output/
+
+# database dumps (customers, password hashes): never in git
+backups/
+*.dump
+
+# local-only account lists and scratch output, at any depth
+_local/
+*.zip
+*.tar.gz
+
+# test and tool output, editor folders, OS junk
+.pytest_cache/
+test-results/
+playwright-report/
+coverage/
+.vscode/
+.idea/
+.claude/
+.DS_Store
+Thumbs.db
+
+# throwaway editor spike, not part of the project
+frontend/spike-editor/
