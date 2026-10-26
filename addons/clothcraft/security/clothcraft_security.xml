@@ -30,6 +30,12 @@
         <field name="user_ids" eval="[Command.link(ref('base.user_admin'))]"/>
     </record>
 
+    <!-- The storefront API service (backend/). Not a person's role: it only holds the rights the facade (models/api.py)
+         needs, which tests/test_api.py proves. They grow only when a test shows a call failing without them. -->
+    <record id="group_api" model="res.groups">
+        <field name="name">Storefront API service</field>
+        <field name="privilege_id" ref="res_groups_privilege_clothcraft"/>
+    </record>
     <!-- Record rules -->
     <record id="garment_type_company_rule" model="ir.rule">
         <field name="name">Garment Type: multi-company</field>
@@ -47,5 +53,201 @@
         <field name="name">Stock Listing: multi-company</field>
         <field name="model_id" ref="model_clothcraft_stock_listing"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Suppliers. Staff read them all. Inventory Staff change a supplier, its supply lines and its unavailable dates only while the
+         supplier is active and not permanently off; the Administrator is not limited. Nobody may delete a supplier (no unlink in the ACLs
+         and the model refuses it): it is deactivated instead. Who may change `active` / `permanently_off` is checked in the model's write(),
+         because ACLs and rules cannot tell fields apart. -->
+    <record id="supplier_company_rule" model="ir.rule">
+        <field name="name">Supplier: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_supplier"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="supplier_line_company_rule" model="ir.rule">
+        <field name="name">Supply line: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_supplier_line"/>
+        <field name="domain_force">[('supplier_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="supplier_range_company_rule" model="ir.rule">
+        <field name="name">Supplier unavailable dates: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_supplier_unavailability"/>
+        <field name="domain_force">[('supplier_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="supplier_inventory_read_rule" model="ir.rule">
+        <field name="name">Supplier: inventory staff read all</field>
+        <field name="model_id" ref="model_clothcraft_supplier"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="supplier_inventory_edit_rule" model="ir.rule">
+        <field name="name">Supplier: inventory staff change only active, switched-on suppliers</field>
+        <field name="model_id" ref="model_clothcraft_supplier"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[('active', '=', True), ('permanently_off', '=', False)]</field>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="supplier_admin_rule" model="ir.rule">
+        <field name="name">Supplier: administrator</field>
+        <field name="model_id" ref="model_clothcraft_supplier"/>
+        <field name="groups" eval="[Command.link(ref('group_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="supplier_line_inventory_read_rule" model="ir.rule">
+        <field name="name">Supply line: inventory staff read all</field>
+        <field name="model_id" ref="model_clothcraft_supplier_line"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="supplier_line_inventory_edit_rule" model="ir.rule">
+        <field name="name">Supply line: inventory staff change only for active, switched-on suppliers</field>
+        <field name="model_id" ref="model_clothcraft_supplier_line"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[('supplier_id.active', '=', True), ('supplier_id.permanently_off', '=', False)]</field>
+        <field name="perm_read" eval="False"/>
+    </record>
+    <record id="supplier_line_admin_rule" model="ir.rule">
+        <field name="name">Supply line: administrator</field>
+        <field name="model_id" ref="model_clothcraft_supplier_line"/>
+        <field name="groups" eval="[Command.link(ref('group_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="supplier_range_inventory_read_rule" model="ir.rule">
+        <field name="name">Supplier unavailable dates: inventory staff read all</field>
+        <field name="model_id" ref="model_clothcraft_supplier_unavailability"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="supplier_range_inventory_edit_rule" model="ir.rule">
+        <field name="name">Supplier unavailable dates: inventory staff change only for active, switched-on suppliers</field>
+        <field name="model_id" ref="model_clothcraft_supplier_unavailability"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[('supplier_id.active', '=', True), ('supplier_id.permanently_off', '=', False)]</field>
+        <field name="perm_read" eval="False"/>
+    </record>
+    <record id="supplier_range_admin_rule" model="ir.rule">
+        <field name="name">Supplier unavailable dates: administrator</field>
+        <field name="model_id" ref="model_clothcraft_supplier_unavailability"/>
+        <field name="groups" eval="[Command.link(ref('group_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <!-- Restocks. Staff read them all. Inventory Staff create a request and change it (and its lines) only while it is `requested`; the
+         Administrator's moves (approve, reject, receive, not received) are made by the restock's own methods, which the model guards,
+         because rules cannot tell fields apart. Nobody deletes a restock or touches its history except to read it. -->
+    <record id="restock_company_rule" model="ir.rule">
+        <field name="name">Restock: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_restock"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="restock_line_company_rule" model="ir.rule">
+        <field name="name">Restock line: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_restock_line"/>
+        <field name="domain_force">[('restock_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="restock_history_company_rule" model="ir.rule">
+        <field name="name">Restock history: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_restock_history"/>
+        <field name="domain_force">[('restock_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="restock_inventory_read_rule" model="ir.rule">
+        <field name="name">Restock: inventory staff read all</field>
+        <field name="model_id" ref="model_clothcraft_restock"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="restock_inventory_edit_rule" model="ir.rule">
+        <field name="name">Restock: inventory staff change only a request still `requested`</field>
+        <field name="model_id" ref="model_clothcraft_restock"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[('state', '=', 'requested')]</field>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="restock_admin_rule" model="ir.rule">
+        <field name="name">Restock: administrator</field>
+        <field name="model_id" ref="model_clothcraft_restock"/>
+        <field name="groups" eval="[Command.link(ref('group_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="restock_line_inventory_read_rule" model="ir.rule">
+        <field name="name">Restock line: inventory staff read all</field>
+        <field name="model_id" ref="model_clothcraft_restock_line"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="restock_line_inventory_edit_rule" model="ir.rule">
+        <field name="name">Restock line: inventory staff change only while the request is `requested`</field>
+        <field name="model_id" ref="model_clothcraft_restock_line"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[('restock_id.state', '=', 'requested')]</field>
+        <field name="perm_read" eval="False"/>
+    </record>
+    <!-- Phase 3: low-stock levels (read by staff, written by the Administrator: the ACLs), the stock edit history (read only) and the bell. A
+         notification is read only by the person it is for; nobody else's, not even an Administrator's, and nobody writes one from the screens
+         (the staff API writes with sudo after checking the role). The low-stock state table has no access line at all. -->
+    <record id="stock_threshold_company_rule" model="ir.rule">
+        <field name="name">Low-stock level: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_stock_threshold"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="stock_edit_company_rule" model="ir.rule">
+        <field name="name">Stock edit: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_stock_edit"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="notification_company_rule" model="ir.rule">
+        <field name="name">Notification: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_notification"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="notification_own_rule" model="ir.rule">
+        <field name="name">Notification: staff read only their own</field>
+        <field name="model_id" ref="model_clothcraft_notification"/>
+        <field name="groups" eval="[Command.link(ref('group_inventory'))]"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="restock_line_admin_rule" model="ir.rule">
+        <field name="name">Restock line: administrator</field>
+        <field name="model_id" ref="model_clothcraft_restock_line"/>
+        <field name="groups" eval="[Command.link(ref('group_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
     </record>
 </odoo>

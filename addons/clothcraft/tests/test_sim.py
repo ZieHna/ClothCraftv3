@@ -210,6 +210,15 @@ class TestSimSeed(SimCase):
         self.assertEqual(transactions.filtered(lambda t: not t.is_post_processed).ids, [])
         self.assertGreater(self.world.transaction_changes, 0)
 
+    def test_every_simulated_delivery_ends_closed_and_leaves_no_history_line(self):
+        # step 11: a validated delivery alone reads as "shipped"; a simulated sale is a finished one
+        self.assertEqual(self._scalar("""
+            SELECT COUNT(*) FROM sale_order so WHERE so.id > %s AND so.state = 'sale'
+               AND EXISTS (SELECT 1 FROM stock_picking p WHERE p.sale_id = so.id AND p.state = 'done')
+               AND so.clothcraft_state IS DISTINCT FROM 'closed'""", (self.max_order,)), 0)
+        self.assertEqual(self._scalar("SELECT COUNT(*) FROM sale_order WHERE id > %s AND clothcraft_state = 'closed'", (self.max_order,)), self.result['deliveries'])
+        self.assertEqual(self._scalar("SELECT COUNT(*) FROM clothcraft_order_audit a JOIN sale_order so ON so.id = a.order_id WHERE so.id > %s", (self.max_order,)), 0)
+
     def test_no_simulated_row_is_dated_at_or_after_the_seed_start(self):
         now = {table: count for table, count in backfill.unstamped(self.env).items()}
         newly_stale = {t: n - self.stale_before.get(t, 0) for t, n in now.items() if n > self.stale_before.get(t, 0)}

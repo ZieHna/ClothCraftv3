@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Odoo screens: read, create, and change while `requested`. The Administrator's moves (approve, reject, receive, not received) are made
+         through the staff API, which the later staff screens use. -->
+    <record id="restock_view_list" model="ir.ui.view">
+        <field name="name">clothcraft.restock.list</field>
+        <field name="model">clothcraft.restock</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="overdue" decoration-muted="state == 'rejected'">
+                <field name="name"/>
+                <field name="supplier_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'received'" decoration-warning="state in ('requested', 'not_received')" decoration-info="state == 'approved'"/>
+                <field name="expected_from"/>
+                <field name="expected_to"/>
+                <field name="estimate_total"/>
+                <field name="actual_cost" optional="show"/>
+                <field name="received_late" optional="show"/>
+                <field name="overdue" optional="show"/>
+                <field name="requested_by" optional="show"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="restock_view_form" model="ir.ui.view">
+        <field name="name">clothcraft.restock.form</field>
+        <field name="model">clothcraft.restock</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="requested,approved,received"/>
+                </header>
+                <sheet>
+                    <field name="currency_id" invisible="1"/>
+                    <widget name="web_ribbon" title="Received late" bg_color="text-bg-warning" invisible="not received_late"/>
+                    <widget name="web_ribbon" title="Overdue" bg_color="text-bg-danger" invisible="not overdue"/>
+                    <field name="received_late" invisible="1"/>
+                    <field name="overdue" invisible="1"/>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="supplier_id" readonly="state != 'requested' or id"/>
+                            <field name="expected_from" readonly="state != 'requested'"/>
+                            <field name="expected_to" readonly="state != 'requested'"/>
+                        </group>
+                        <group>
+                            <field name="shipping_on" readonly="state != 'requested'"/>
+                            <field name="shipping_fee" readonly="state != 'requested'" invisible="not shipping_on"/>
+                            <field name="shipping_applied"/>
+                            <field name="estimate_total"/>
+                        </group>
+                    </group>
+                    <field name="request_note" placeholder="Why this restock..." readonly="state != 'requested'"/>
+                    <notebook>
+                        <page string="Lines" name="lines">
+                            <field name="line_ids" readonly="state != 'requested'">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="garment_type_id" optional="show"/>
+                                    <field name="size_value_id" optional="show"/>
+                                    <field name="color_value_id" optional="show"/>
+                                    <field name="quantity"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="unit_cost"/>
+                                    <field name="quantity_received" column_invisible="parent.state != 'received'"/>
+                                    <field name="lot_id" column_invisible="parent.state != 'received'"/>
+                                    <field name="received_cost" column_invisible="parent.state != 'received'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Decision and receipt" name="receipt">
+                            <group>
+                                <group>
+                                    <field name="requested_by"/>
+                                    <field name="requested_at"/>
+                                    <field name="decided_by"/>
+                                    <field name="decided_at"/>
+                                    <field name="decision_note"/>
+                                </group>
+                                <group>
+                                    <field name="received_by"/>
+                                    <field name="received_on"/>
+                                    <field name="received_at"/>
+                                    <field name="picking_id"/>
+                                    <field name="goods_cost"/>
+                                    <field name="shipping_cost"/>
+                                    <field name="actual_cost"/>
+                                    <field name="actual_vat"/>
+                                    <field name="actual_net"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="History" name="history">
+                            <field name="history_ids" readonly="1">
+                                <list>
+                                    <field name="create_date" string="When"/>
+                                    <field name="event"/>
+                                    <field name="from_state"/>
+                                    <field name="to_state"/>
+                                    <field name="staff_name"/>
+                                    <field name="note"/>
+                                    <field name="via"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="restock_view_search" model="ir.ui.view">
+        <field name="name">clothcraft.restock.search</field>
+        <field name="model">clothcraft.restock</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('supplier_id', 'ilike', self)]" string="Reference or supplier"/>
+                <filter name="requested" string="Requested" domain="[('state', '=', 'requested')]"/>
+                <filter name="approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="not_received" string="Not received" domain="[('state', '=', 'not_received')]"/>
+                <filter name="received" string="Received" domain="[('state', '=', 'received')]"/>
+                <filter name="rejected" string="Rejected" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter name="received_late" string="Received late" domain="[('received_late', '=', True)]"/>
+                <group>
+                    <filter name="by_supplier" string="Supplier" context="{'group_by': 'supplier_id'}"/>
+                    <filter name="by_state" string="State" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="restock_action" model="ir.actions.act_window">
+        <field name="name">Restocks</field>
+        <field name="res_model">clothcraft.restock</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

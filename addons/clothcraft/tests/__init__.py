@@ -10,3 +10,11 @@ from . import test_stock_listing
 from . import test_vat
 from . import test_checkout_stock
 from . import test_sim
+from . import test_api
+from . import test_api_auth
+from . import test_staff
+from . import test_catalogue_fields
+from . import test_design_fee
+from . import test_designs
+from . import test_tracking
+from . import test_cart

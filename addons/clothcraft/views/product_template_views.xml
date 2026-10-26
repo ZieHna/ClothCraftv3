@@ -7,7 +7,28 @@
         <field name="arch" type="xml">
             <field name="categ_id" position="after">
                 <field name="garment_type_id" groups="clothcraft.group_inventory"/>
+                <!-- the storefront facts (step 8b): where the shop lists the garment, its address there, and whether it is featured -->
+                <field name="clothcraft_group" groups="clothcraft.group_inventory" invisible="not garment_type_id"/>
+                <field name="clothcraft_slug" groups="clothcraft.group_inventory" invisible="not garment_type_id" placeholder="e.g. m-tee"/>
+                <field name="clothcraft_featured" groups="clothcraft.group_inventory" invisible="not garment_type_id"/>
             </field>
+            <!-- the print box (step 9a): no box, no customizing; the warning says so where staff will see it -->
+            <sheet position="before">
+                <div class="alert alert-warning mb-0" role="alert" groups="clothcraft.group_inventory"
+                     invisible="not garment_type_id or clothcraft_designable">
+                    Customers cannot customize this garment: it has no print box. Set the print box on the General Information tab
+                    (run frontend/scripts/measure-garment-bounds.mjs for its numbers).
+                </div>
+            </sheet>
+            <page name="general_information" position="inside">
+                <group string="Print box (design units, 800 x 800)" name="clothcraft_print_box" groups="clothcraft.group_inventory" invisible="not garment_type_id">
+                    <field name="clothcraft_designable"/>
+                    <field name="clothcraft_print_x"/>
+                    <field name="clothcraft_print_y"/>
+                    <field name="clothcraft_print_w"/>
+                    <field name="clothcraft_print_h"/>
+                </group>
+            </page>
         </field>
     </record>
 </odoo>

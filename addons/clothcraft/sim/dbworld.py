@@ -111,6 +111,8 @@ class DbWorld:
             picking.with_context(skip_sms=True, skip_immediate=True, skip_backorder=True).button_validate()
             for transaction in order.transaction_ids.filtered(lambda t: t.state == 'pending'):
                 self._change_transaction(transaction, '_set_done')     # cash collected at the door
+            # step 11: a validated delivery alone reads as "shipped"; a simulated sale is a finished one, so it ends closed
+            order.clothcraft_state = 'closed'
         return True
 
     def cancel(self, order_id, when):

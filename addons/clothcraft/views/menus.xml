@@ -6,7 +6,27 @@
     <menuitem id="menu_clothcraft_stock" name="Stock"
               parent="menu_clothcraft_root" action="stock_listing_action" sequence="15"
               groups="group_inventory,group_admin"/>
+    <menuitem id="menu_clothcraft_suppliers" name="Suppliers"
+              parent="menu_clothcraft_root" action="supplier_action" sequence="17"
+              groups="group_inventory,group_admin"/>
+    <menuitem id="menu_clothcraft_restocks" name="Restocks"
+              parent="menu_clothcraft_root" action="restock_action" sequence="18"
+              groups="group_inventory,group_admin"/>
+    <menuitem id="menu_clothcraft_stock_edits" name="Stock edits"
+              parent="menu_clothcraft_root" action="stock_edit_action" sequence="16"
+              groups="group_inventory,group_admin"/>
     <menuitem id="menu_clothcraft_price_history" name="Price History"
               parent="menu_clothcraft_root" action="price_history_action" sequence="20"
               groups="group_inventory,group_admin"/>
+    <menuitem id="menu_clothcraft_designs" name="Customer Designs"
+              parent="menu_clothcraft_root" action="design_action" sequence="25"
+              groups="group_inventory,group_admin"/>
+    <menuitem id="menu_clothcraft_configuration" name="Configuration"
+              parent="menu_clothcraft_root" sequence="90" groups="group_admin"/>
+    <menuitem id="menu_clothcraft_stock_levels" name="Low-stock levels"
+              parent="menu_clothcraft_configuration" action="stock_threshold_action" sequence="20"
+              groups="group_admin"/>
+    <menuitem id="menu_clothcraft_design_pricing" name="Customization pricing"
+              parent="menu_clothcraft_configuration" action="design_pricing_action" sequence="10"
+              groups="group_admin"/>
 </odoo>

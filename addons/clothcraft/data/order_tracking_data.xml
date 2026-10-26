@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Step 11: a delivered order the customer has not confirmed closes by itself N days after delivery
+         (Sales settings, "Close delivered orders after", default 7; 0 turns it off). Audited as automatic. -->
+    <record id="ir_cron_order_auto_close" model="ir.cron">
+        <field name="name">ClothCraft: close delivered orders automatically</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_clothcraft_auto_close()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+</odoo>

@@ -35,10 +35,10 @@ def at(when):
 
 
 def quiet(env):
-    """No chatter, no tracking, no invitation emails: one message per record instead of five."""
+    """No chatter, no tracking, no invitation emails: one message per record instead of five. No low-stock alerts or stock-edit history either."""
     return env(context=dict(
         env.context, tracking_disable=True, mail_notrack=True, mail_create_nolog=True,
-        mail_auto_subscribe_no_notify=True, no_reset_password=True))
+        mail_auto_subscribe_no_notify=True, no_reset_password=True, clothcraft_no_alerts=True))
 
 
 def read_image(assets_dir, relative_path):

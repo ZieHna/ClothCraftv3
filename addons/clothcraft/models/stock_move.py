@@ -30,3 +30,11 @@ class StockMove(models.Model):
             (product_id, ', '.join(names),
              next(iter(vendors[product_id])) if len(vendors[product_id]) == 1 else 0)
             for product_id, names in refs.items())
+
+    def _action_done(self, cancel_backorder=False):
+        """Phase 3: after stock really moves, bring the low-stock state up to date (and write the history of an adjustment made in the Odoo
+        screens). It exits early for a move that does not cross the internal boundary and for products that are not garments, and it
+        never raises: see clothcraft.stock.alert._after_moves."""
+        moves = super()._action_done(cancel_backorder=cancel_backorder)
+        self.env['clothcraft.stock.alert']._after_moves(moves)
+        return moves

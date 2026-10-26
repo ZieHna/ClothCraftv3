@@ -10,3 +10,5 @@ class AccountChartTemplate(models.AbstractModel):
         # settings_data.xml runs too early; apply the VAT-included setting as the chart loads.
         if template_code == 'ph':
             self.env['account.tax']._clothcraft_set_ph_vat_included(company or self.env.company)
+            # the same for the customization fee (step 9a): its sale tax is the chart's 12% VAT, which did not exist when its data loaded
+            self.env['product.template'].with_company(company or self.env.company)._clothcraft_fee_product_taxes()

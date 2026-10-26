@@ -8,6 +8,13 @@ from odoo.tools import SQL
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    def init(self):
+        """One order per idempotency key: client_order_ref 'api:<partner id>:<key>' is set by clothcraft.api.place_order."""
+        super().init()
+        self.env.cr.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS sale_order_clothcraft_api_key_uniq "
+            "ON sale_order (client_order_ref) WHERE client_order_ref LIKE 'api:%'")
+
     def action_confirm(self):
         self._clothcraft_check_stock()
         return super().action_confirm()

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="supplier_view_list" model="ir.ui.view">
+        <field name="name">clothcraft.supplier.list</field>
+        <field name="model">clothcraft.supplier</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not active" decoration-danger="permanently_off">
+                <field name="name"/>
+                <field name="contact_name"/>
+                <field name="city"/>
+                <field name="phone" optional="show"/>
+                <field name="ships" optional="show"/>
+                <field name="shipping_fee" optional="show"/>
+                <field name="status" widget="badge"/>
+                <field name="active" column_invisible="True"/>
+                <field name="permanently_off" column_invisible="True"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="supplier_view_form" model="ir.ui.view">
+        <field name="name">clothcraft.supplier.form</field>
+        <field name="model">clothcraft.supplier</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_switch_off" type="object" string="Switch off permanently" groups="clothcraft.group_admin"
+                            invisible="permanently_off or not active" confirm="Switch this supplier off for good? It stays unavailable until an Administrator switches it back on."/>
+                    <button name="action_switch_on" type="object" string="Switch back on" groups="clothcraft.group_admin"
+                            invisible="not permanently_off or not active"/>
+                    <button name="action_deactivate" type="object" string="Deactivate" groups="clothcraft.group_admin"
+                            invisible="not active" confirm="Deactivate this supplier? Its history is kept."/>
+                    <button name="action_reactivate" type="object" string="Reactivate" groups="clothcraft.group_admin"
+                            invisible="active"/>
+                    <field name="status" widget="statusbar" options="{'clickable': False}"/>
+                </header>
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <field name="permanently_off" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <widget name="web_ribbon" title="Inactive" bg_color="text-bg-secondary" invisible="active"/>
+                    <widget name="web_ribbon" title="Switched off" bg_color="text-bg-danger" invisible="not active or not permanently_off"/>
+                    <group>
+                        <group string="Supplier">
+                            <field name="name"/>
+                            <field name="contact_name"/>
+                            <field name="phone"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Address">
+                            <field name="street" placeholder="Street..."/>
+                            <field name="street2" placeholder="Street 2..."/>
+                            <field name="city"/>
+                            <field name="zip"/>
+                            <field name="country_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Shipping (per restock, VAT included)">
+                            <field name="ships"/>
+                            <field name="shipping_fee" invisible="not ships"/>
+                            <field name="shipping_fee_vat" invisible="not ships"/>
+                            <field name="shipping_fee_net" invisible="not ships"/>
+                        </group>
+                        <group string="Spent (received restocks only)">
+                            <field name="received_count"/>
+                            <field name="total_spent"/>
+                            <field name="total_spent_vat"/>
+                            <field name="total_spent_net"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Opening balance (existing stock: a starting investment, never a monthly cost)">
+                            <field name="opening_balance"/>
+                            <field name="opening_balance_vat"/>
+                            <field name="opening_balance_net"/>
+                        </group>
+                        <group string="Combined (opening balance + received restocks)">
+                            <field name="combined_total"/>
+                            <field name="combined_total_vat"/>
+                            <field name="combined_total_net"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Last change (from the staff app)">
+                            <field name="last_edited_by"/>
+                            <field name="last_edited_at"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Supply lines" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="garment_type_id"/>
+                                    <field name="size_value_id" domain="[('attribute_id', '=', %(clothcraft.attribute_size)d)]" options="{'no_create': True}"/>
+                                    <field name="color_value_id" domain="[('attribute_id', '=', %(clothcraft.attribute_color)d)]" options="{'no_create': True}"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="unit_cost"/>
+                                    <field name="unit_cost_vat"/>
+                                    <field name="unit_cost_net"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Unavailable dates" name="ranges">
+                            <field name="unavailability_ids">
+                                <list editable="bottom">
+                                    <field name="date_from"/>
+                                    <field name="date_to"/>
+                                    <field name="reason"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="supplier_view_search" model="ir.ui.view">
+        <field name="name">clothcraft.supplier.search</field>
+        <field name="model">clothcraft.supplier</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('contact_name', 'ilike', self)]" string="Company or contact"/>
+                <filter name="available_now" string="Available now" domain="[('available_now', '=', True)]"/>
+                <filter name="unavailable_now" string="Unavailable now" domain="[('active', '=', True), ('available_now', '=', False)]"/>
+                <separator/>
+                <filter name="shipping" string="Ships to us" domain="[('ships', '=', True)]"/>
+                <separator/>
+                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="supplier_action" model="ir.actions.act_window">
+        <field name="name">Suppliers</field>
+        <field name="res_model">clothcraft.supplier</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

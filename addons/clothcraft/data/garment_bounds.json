@@ -1,0 +1,298 @@
+{
+  "version": 1,
+  "designSize": 800,
+  "fit": 0.92,
+  "alphaThreshold": 16,
+  "products": {
+    "b-dres": {
+      "x": 101.18,
+      "y": 64.38,
+      "width": 599.1,
+      "height": 668.29,
+      "colours": [
+        "gray",
+        "red",
+        "white"
+      ],
+      "picture": [
+        500,
+        500
+      ]
+    },
+    "b-hood": {
+      "x": 97.45,
+      "y": 32,
+      "width": 603.76,
+      "height": 734.66,
+      "colours": [
+        "gray",
+        "navy",
+        "red"
+      ],
+      "picture": [
+        453,
+        551
+      ]
+    },
+    "b-lson": {
+      "x": 182.14,
+      "y": 168.16,
+      "width": 410.69,
+      "height": 435.71,
+      "colours": [
+        "gray",
+        "navy",
+        "white"
+      ],
+      "picture": [
+        500,
+        499
+      ]
+    },
+    "b-ones": {
+      "x": 218.3,
+      "y": 202.77,
+      "width": 355.35,
+      "height": 395.6,
+      "colours": [
+        "gray",
+        "red",
+        "white"
+      ],
+      "picture": [
+        640,
+        357
+      ]
+    },
+    "k-jkt": {
+      "x": 168.9,
+      "y": 137.98,
+      "width": 475.46,
+      "height": 515.2,
+      "colours": [
+        "black",
+        "navy",
+        "red"
+      ],
+      "picture": [
+        500,
+        500
+      ]
+    },
+    "k-lslv": {
+      "x": 122.7,
+      "y": 87.46,
+      "width": 560.38,
+      "height": 628.55,
+      "colours": [
+        "black",
+        "gray",
+        "navy"
+      ],
+      "picture": [
+        512,
+        637
+      ]
+    },
+    "k-polo": {
+      "x": 112.3,
+      "y": 73.59,
+      "width": 577.71,
+      "height": 663.21,
+      "colours": [
+        "navy",
+        "red",
+        "white"
+      ],
+      "picture": [
+        512,
+        637
+      ]
+    },
+    "k-tank": {
+      "x": 140.67,
+      "y": 41.2,
+      "width": 524.4,
+      "height": 722.2,
+      "colours": [
+        "gray",
+        "red",
+        "white"
+      ],
+      "picture": [
+        515,
+        640
+      ]
+    },
+    "m-lslv": {
+      "x": 49.49,
+      "y": 108.51,
+      "width": 682.08,
+      "height": 574.23,
+      "colours": [
+        "black",
+        "gray",
+        "navy"
+      ],
+      "picture": [
+        505,
+        494
+      ]
+    },
+    "m-polo": {
+      "x": 108.78,
+      "y": 77.89,
+      "width": 577.15,
+      "height": 596.57,
+      "colours": [
+        "black",
+        "navy",
+        "white"
+      ],
+      "picture": [
+        396,
+        417
+      ]
+    },
+    "m-tank": {
+      "x": 202.75,
+      "y": 59.97,
+      "width": 407.74,
+      "height": 680.06,
+      "colours": [
+        "black",
+        "gray",
+        "white"
+      ],
+      "picture": [
+        500,
+        500
+      ]
+    },
+    "m-tee": {
+      "x": 87.49,
+      "y": 57.56,
+      "width": 620.63,
+      "height": 683.43,
+      "colours": [
+        "black",
+        "gray",
+        "navy",
+        "white"
+      ],
+      "picture": [
+        504,
+        495
+      ]
+    },
+    "m-vnek": {
+      "x": 162.33,
+      "y": 161.06,
+      "width": 471.5,
+      "height": 488.11,
+      "colours": [
+        "black",
+        "red",
+        "white"
+      ],
+      "picture": [
+        576,
+        434
+      ]
+    },
+    "w-crop": {
+      "x": 177.47,
+      "y": 220.6,
+      "width": 443.9,
+      "height": 356.5,
+      "colours": [
+        "black",
+        "gray",
+        "red",
+        "white"
+      ],
+      "picture": [
+        427,
+        640
+      ]
+    },
+    "w-hood": {
+      "x": 124,
+      "y": 124.57,
+      "width": 552,
+      "height": 552,
+      "colours": [
+        "black",
+        "gray",
+        "navy",
+        "red"
+      ],
+      "picture": [
+        640,
+        639
+      ]
+    },
+    "w-lslv": {
+      "x": 106.75,
+      "y": 79.72,
+      "width": 587.65,
+      "height": 621,
+      "colours": [
+        "black",
+        "navy",
+        "white"
+      ],
+      "picture": [
+        640,
+        639
+      ]
+    },
+    "w-polo": {
+      "x": 125.23,
+      "y": 38.13,
+      "width": 544.64,
+      "height": 720.05,
+      "colours": [
+        "navy",
+        "red",
+        "white"
+      ],
+      "picture": [
+        600,
+        600
+      ]
+    },
+    "w-tank": {
+      "x": 217.15,
+      "y": 168.27,
+      "width": 363.4,
+      "height": 468.05,
+      "colours": [
+        "black",
+        "red",
+        "white"
+      ],
+      "picture": [
+        640,
+        639
+      ]
+    },
+    "w-tee": {
+      "x": 111.73,
+      "y": 121.96,
+      "width": 586.76,
+      "height": 554.04,
+      "colours": [
+        "black",
+        "gray",
+        "navy",
+        "red",
+        "white"
+      ],
+      "picture": [
+        360,
+        360
+      ]
+    }
+  }
+}

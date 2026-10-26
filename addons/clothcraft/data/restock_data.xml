@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- The restock reference: RS00001, RS00002... One sequence for every company. -->
+    <record id="seq_restock" model="ir.sequence">
+        <field name="name">Restock request</field>
+        <field name="code">clothcraft.restock</field>
+        <field name="prefix">RS</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

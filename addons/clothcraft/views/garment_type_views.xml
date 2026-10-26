@@ -21,6 +21,7 @@
                     <group>
                         <field name="name"/>
                         <field name="code"/>
+                        <field name="reference_area_sq_in"/>
                         <field name="active"/>
                         <field name="company_id" groups="base.group_multi_company"/>
                     </group>

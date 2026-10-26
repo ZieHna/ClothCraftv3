@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_clothcraft" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.clothcraft</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='sale_management']" position="inside">
+                <block title="ClothCraft orders" name="clothcraft_orders">
+                    <setting id="clothcraft_auto_close" string="Close delivered orders automatically"
+                             help="A delivered order the customer has not confirmed closes by itself this many days after delivery. 0 turns it off.">
+                        <field name="clothcraft_auto_close_days"/>
+                    </setting>
+                    <setting id="clothcraft_cart_expiry" string="Remove saved carts"
+                             help="A customer's saved cart that has not changed for this many days is removed. 0 keeps carts for ever.">
+                        <field name="clothcraft_cart_expiry_days"/>
+                    </setting>
+                    <setting id="clothcraft_notification_retention" string="Remove notifications after"
+                             help="A notification in the bell, read or not, is removed this many days after it was made. 0 keeps them for ever.">
+                        <field name="clothcraft_notification_days"/>
+                    </setting>
+                    <setting id="clothcraft_employee_dashboard_only" string="Employee dashboard is employee-only"
+                             help="On: an Administrator who signs in at the employee dashboard (/staff) works there as an employee, and every admin action (approvals, receiving, supplier status, opening balances, stock levels, employees, customers) is only at the admin dashboard (/admin). Off by default. Before turning it on, check that Admin login works.">
+                        <field name="clothcraft_employee_dashboard_only"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

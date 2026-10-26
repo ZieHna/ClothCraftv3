@@ -1,3 +1,5 @@
+import contextlib
+
 from odoo import Command
 
 from .data import CATEGORY_NAME, COLORS, GARMENT_TYPES, PRODUCTS, SIZES, SUPPLIERS, XXL_EXTRA
@@ -19,15 +21,18 @@ def build_suppliers(env, cfg, labels):
     return suppliers
 
 
-def build_catalogue(env, cfg, labels, suppliers, assets_dir, when):
-    """Garment types, one category with average costing, products with Color x Size variants.
+def build_catalogue(env, cfg, labels, suppliers, assets_dir, when, code_of=variant_code, category_name=CATEGORY_NAME):
+    """Garment types, one category with average costing, products with Color x Size variants, and the storefront facts (shop
+    group, storefront id, featured: the best sellers, tier A).
 
     The garment type is set at creation, so B6 makes every product storable and not sellable out of stock.
+    The simulation passes its labels, suppliers, a launch time and SIM- codes. The shop's own catalogue (scripts/seed_catalogue.py) passes
+    labels=None, suppliers=None, when=None and plain codes: no simulation tag, no supplier, no time travel.
     Returns {product key: {'template': template, 'variants': [(variant, color, size)]}}.
     """
     env = quiet(env)
-    with at(when):
-        category = env['product.category'].create({'name': CATEGORY_NAME, 'property_cost_method': 'average'})
+    with (at(when) if when is not None else contextlib.nullcontext()):
+        category = env['product.category'].create({'name': category_name, 'property_cost_method': 'average'})
         types = {}
         for code, name in GARMENT_TYPES.items():
             types[code] = env['clothcraft.garment.type'].search([('code', '=', code)], limit=1) \
@@ -42,7 +47,8 @@ def build_catalogue(env, cfg, labels, suppliers, assets_dir, when):
                 'name': spec['name'], 'garment_type_id': types[spec['gt']].id, 'categ_id': category.id,
                 'list_price': float(spec['price']), 'tracking': 'lot', 'website_published': True,
                 'sale_ok': True, 'purchase_ok': True,
-                'product_tag_ids': [Command.set(labels['product'].ids)],
+                'clothcraft_group': spec['group'], 'clothcraft_slug': key.lower(), 'clothcraft_featured': spec['tier'] == 'A',
+                **({'product_tag_ids': [Command.set(labels['product'].ids)]} if labels else {}),
                 'image_1920': read_image(assets_dir, spec['image']),
                 'attribute_line_ids': [
                     Command.create({'attribute_id': color_attr.id, 'value_ids': [Command.set(color_values.ids)]}),
@@ -53,12 +59,12 @@ def build_catalogue(env, cfg, labels, suppliers, assets_dir, when):
                 ptavs = variant.product_template_attribute_value_ids
                 color = next(c for c in spec['colors'] if env.ref(COLORS[c]) in ptavs.product_attribute_value_id)
                 size = next(s for s in spec['sizes'] if env.ref(SIZES[s]) in ptavs.product_attribute_value_id)
-                variant.default_code = variant_code(key, color, size)
+                variant.default_code = code_of(key, color, size)
                 rows.append((variant, color, size))
             if "XXL" in spec['sizes']:
                 template.attribute_line_ids.product_template_value_ids.filtered(
                     lambda v: v.product_attribute_value_id == env.ref(SIZES["XXL"])).price_extra = XXL_EXTRA
-            for supplier_key in spec['suppliers']:
+            for supplier_key in (spec['suppliers'] if suppliers else ()):
                 spec_s = SUPPLIERS[supplier_key]
                 env['product.supplierinfo'].create({
                     'partner_id': suppliers[supplier_key].id, 'product_tmpl_id': template.id,

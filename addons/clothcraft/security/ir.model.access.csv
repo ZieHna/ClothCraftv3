@@ -5,3 +5,37 @@ access_price_history_inventory,clothcraft.price.history inventory,model_clothcra
 access_price_history_admin,clothcraft.price.history admin,model_clothcraft_price_history,group_admin,1,0,0,0
 access_stock_listing_inventory,clothcraft.stock.listing inventory,model_clothcraft_stock_listing,group_inventory,1,0,0,0
 access_stock_listing_admin,clothcraft.stock.listing admin,model_clothcraft_stock_listing,group_admin,1,0,0,0
+access_garment_type_api,clothcraft.garment.type api,model_clothcraft_garment_type,group_api,1,0,0,0
+access_sale_order_api,sale.order api (read),sale.model_sale_order,group_api,1,0,0,0
+access_sale_order_line_api,sale.order.line api (read),sale.model_sale_order_line,group_api,1,0,0,0
+access_api_session_admin,clothcraft.api.session admin (read),model_clothcraft_api_session,group_admin,1,0,0,0
+access_api_throttle_admin,clothcraft.api.throttle admin (read),model_clothcraft_api_throttle,group_admin,1,0,0,0
+access_order_audit_inventory,clothcraft.order.audit inventory (read),model_clothcraft_order_audit,group_inventory,1,0,0,0
+access_order_audit_admin,clothcraft.order.audit admin (read),model_clothcraft_order_audit,group_admin,1,0,0,0
+access_design_pricing_inventory,clothcraft.design.pricing inventory (read),model_clothcraft_design_pricing,group_inventory,1,0,0,0
+access_design_pricing_admin,clothcraft.design.pricing admin,model_clothcraft_design_pricing,group_admin,1,1,0,0
+access_design_inventory,clothcraft.design inventory (read),model_clothcraft_design,group_inventory,1,0,0,0
+access_design_admin,clothcraft.design admin (read),model_clothcraft_design,group_admin,1,0,0,0
+access_cart_admin,clothcraft.cart admin (read),model_clothcraft_cart,group_admin,1,0,0,0
+access_cart_line_admin,clothcraft.cart.line admin (read),model_clothcraft_cart_line,group_admin,1,0,0,0
+access_supplier_inventory,clothcraft.supplier inventory,model_clothcraft_supplier,group_inventory,1,1,1,0
+access_supplier_admin,clothcraft.supplier admin,model_clothcraft_supplier,group_admin,1,1,1,0
+access_supplier_line_inventory,clothcraft.supplier.line inventory,model_clothcraft_supplier_line,group_inventory,1,1,1,1
+access_supplier_line_admin,clothcraft.supplier.line admin,model_clothcraft_supplier_line,group_admin,1,1,1,1
+access_supplier_range_inventory,clothcraft.supplier.unavailability inventory,model_clothcraft_supplier_unavailability,group_inventory,1,1,1,1
+access_supplier_range_admin,clothcraft.supplier.unavailability admin,model_clothcraft_supplier_unavailability,group_admin,1,1,1,1
+access_restock_inventory,clothcraft.restock inventory,model_clothcraft_restock,group_inventory,1,1,1,0
+access_restock_admin,clothcraft.restock admin,model_clothcraft_restock,group_admin,1,1,1,0
+access_restock_line_inventory,clothcraft.restock.line inventory,model_clothcraft_restock_line,group_inventory,1,1,1,1
+access_restock_line_admin,clothcraft.restock.line admin,model_clothcraft_restock_line,group_admin,1,1,1,1
+access_restock_history_inventory,clothcraft.restock.history inventory (read),model_clothcraft_restock_history,group_inventory,1,0,0,0
+access_restock_history_admin,clothcraft.restock.history admin (read),model_clothcraft_restock_history,group_admin,1,0,0,0
+access_stock_threshold_inventory,clothcraft.stock.threshold inventory (read),model_clothcraft_stock_threshold,group_inventory,1,0,0,0
+access_stock_threshold_admin,clothcraft.stock.threshold admin,model_clothcraft_stock_threshold,group_admin,1,1,1,1
+access_stock_edit_inventory,clothcraft.stock.edit inventory (read),model_clothcraft_stock_edit,group_inventory,1,0,0,0
+access_stock_edit_admin,clothcraft.stock.edit admin (read),model_clothcraft_stock_edit,group_admin,1,0,0,0
+access_notification_inventory,clothcraft.notification inventory (read own),model_clothcraft_notification,group_inventory,1,0,0,0
+access_notification_admin,clothcraft.notification admin (read own),model_clothcraft_notification,group_admin,1,0,0,0
+access_employee_audit_admin,clothcraft.employee.audit admin (read),model_clothcraft_employee_audit,group_admin,1,0,0,0
+access_customer_audit_admin,clothcraft.customer.audit admin (read),model_clothcraft_customer_audit,group_admin,1,0,0,0
+access_stock_alert_none,clothcraft.stock.alert (system only: no rights),model_clothcraft_stock_alert,group_admin,0,0,0,0

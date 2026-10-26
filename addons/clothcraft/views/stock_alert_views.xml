@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Odoo screens for phase 3: the low-stock levels (the Administrator changes them) and the stock edit history (read only). Stock edits
+         and the bell are made through the staff API. -->
+    <record id="stock_threshold_view_list" model="ir.ui.view">
+        <field name="name">clothcraft.stock.threshold.list</field>
+        <field name="model">clothcraft.stock.threshold</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="scope"/>
+                <field name="product_id" required="scope == 'variant'" readonly="scope == 'global'"/>
+                <field name="threshold"/>
+                <field name="set_by"/>
+                <field name="set_at"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="stock_threshold_action" model="ir.actions.act_window">
+        <field name="name">Low-stock levels</field>
+        <field name="res_model">clothcraft.stock.threshold</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="stock_edit_view_list" model="ir.ui.view">
+        <field name="name">clothcraft.stock.edit.list</field>
+        <field name="model">clothcraft.stock.edit</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="create_date" string="When"/>
+                <field name="product_id"/>
+                <field name="old_qty"/>
+                <field name="new_qty"/>
+                <field name="delta"/>
+                <field name="reason"/>
+                <field name="detail" optional="show"/>
+                <field name="staff_name"/>
+                <field name="via"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="stock_edit_view_search" model="ir.ui.view">
+        <field name="name">clothcraft.stock.edit.search</field>
+        <field name="model">clothcraft.stock.edit</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="staff_name"/>
+                <field name="reason"/>
+                <filter name="via_odoo" string="Made in Odoo" domain="[('via', '=', 'odoo')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="stock_edit_action" model="ir.actions.act_window">
+        <field name="name">Stock edits</field>
+        <field name="res_model">clothcraft.stock.edit</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

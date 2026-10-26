@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Step 9a. The print fee of a customized garment is a line of this service product, right after the garment line (models/sale_order_line.py).
+         Not stock, not on the shop, VAT 12% included like every price. It is NOT demand: leave it out of demand forecasts (README). -->
+    <record id="product_customization_fee" model="product.template">
+        <field name="name">Customization fee</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="is_published" eval="False"/>
+        <field name="list_price">0.0</field>
+        <field name="invoice_policy">order</field>
+        <field name="description_sale">Printing a customer's design on a garment, priced by the area it covers and the garment size.</field>
+    </record>
+    <function model="product.template" name="_clothcraft_fee_product_taxes"/>
+
+    <record id="design_pricing_main" model="clothcraft.design.pricing">
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="ir_cron_design_cleanup" model="ir.cron">
+        <field name="name">ClothCraft: remove unused designs</field>
+        <field name="model_id" ref="model_clothcraft_design"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_cleanup()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

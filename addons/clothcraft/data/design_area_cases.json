@@ -1,0 +1,747 @@
+{
+  "version": 1,
+  "note": "Shared by addons/clothcraft/design_fee.py (Odoo tests) and frontend/src/pricing/designFee.ts (Vitest). analyticUnits is the exact area; units is what the scanline gives (both implementations within 1e-6); expected fees per size are rounded from coveredSqIn.",
+  "tolerance": {
+    "implementationsUnits": 1e-06,
+    "analyticSqIn": 0.05
+  },
+  "box": {
+    "x": 100,
+    "y": 100,
+    "width": 600,
+    "height": 600
+  },
+  "referenceSqIn": 200,
+  "rate": 2,
+  "sizeStep": 20,
+  "cases": [
+    {
+      "name": "single rectangle",
+      "elements": [
+        {
+          "x": 400,
+          "y": 400,
+          "width": 180,
+          "height": 120,
+          "rotation": 0
+        }
+      ],
+      "analyticUnits": 21600,
+      "units": 21600.0,
+      "coveredSqIn": 12.0,
+      "fees": {
+        "XS": 24.0,
+        "S": 24.0,
+        "M": 44.0,
+        "L": 64.0,
+        "XL": 84.0,
+        "XXL": 104.0
+      },
+      "quantity2LineTotal": 88.0
+    },
+    {
+      "name": "two overlapping squares count the overlap once",
+      "elements": [
+        {
+          "x": 300,
+          "y": 300,
+          "width": 200,
+          "height": 200,
+          "rotation": 0
+        },
+        {
+          "x": 400,
+          "y": 400,
+          "width": 200,
+          "height": 200,
+          "rotation": 0
+        }
+      ],
+      "analyticUnits": 70000,
+      "units": 70000.0,
+      "coveredSqIn": 38.89,
+      "fees": {
+        "XS": 77.78,
+        "S": 77.78,
+        "M": 97.78,
+        "L": 117.78,
+        "XL": 137.78,
+        "XXL": 157.78
+      },
+      "quantity2LineTotal": 195.56
+    },
+    {
+      "name": "a square inside another adds nothing",
+      "elements": [
+        {
+          "x": 400,
+          "y": 400,
+          "width": 300,
+          "height": 300,
+          "rotation": 0
+        },
+        {
+          "x": 400,
+          "y": 400,
+          "width": 100,
+          "height": 100,
+          "rotation": 20
+        }
+      ],
+      "analyticUnits": 90000,
+      "units": 90000.0,
+      "coveredSqIn": 50.0,
+      "fees": {
+        "XS": 100.0,
+        "S": 100.0,
+        "M": 120.0,
+        "L": 140.0,
+        "XL": 160.0,
+        "XXL": 180.0
+      },
+      "quantity2LineTotal": 240.0
+    },
+    {
+      "name": "rotated 45 degrees keeps its area",
+      "elements": [
+        {
+          "x": 400,
+          "y": 400,
+          "width": 120,
+          "height": 120,
+          "rotation": 45
+        }
+      ],
+      "analyticUnits": 14400,
+      "units": 14399.978858669,
+      "coveredSqIn": 8.0,
+      "fees": {
+        "XS": 16.0,
+        "S": 16.0,
+        "M": 36.0,
+        "L": 56.0,
+        "XL": 76.0,
+        "XXL": 96.0
+      },
+      "quantity2LineTotal": 72.0
+    },
+    {
+      "name": "rotated 30 degrees keeps its area",
+      "elements": [
+        {
+          "x": 400,
+          "y": 400,
+          "width": 180,
+          "height": 60,
+          "rotation": 30
+        }
+      ],
+      "analyticUnits": 10800,
+      "units": 10800.0,
+      "coveredSqIn": 6.0,
+      "fees": {
+        "XS": 12.0,
+        "S": 12.0,
+        "M": 32.0,
+        "L": 52.0,
+        "XL": 72.0,
+        "XXL": 92.0
+      },
+      "quantity2LineTotal": 64.0
+    },
+    {
+      "name": "rotated 90 degrees",
+      "elements": [
+        {
+          "x": 400,
+          "y": 400,
+          "width": 300,
+          "height": 50,
+          "rotation": 90
+        }
+      ],
+      "analyticUnits": 15000,
+      "units": 15000.0,
+      "coveredSqIn": 8.33,
+      "fees": {
+        "XS": 16.66,
+        "S": 16.66,
+        "M": 36.66,
+        "L": 56.66,
+        "XL": 76.66,
+        "XXL": 96.66
+      },
+      "quantity2LineTotal": 73.32
+    },
+    {
+      "name": "clipped by the left edge of the garment",
+      "elements": [
+        {
+          "x": 100,
+          "y": 400,
+          "width": 200,
+          "height": 100,
+          "rotation": 0
+        }
+      ],
+      "analyticUnits": 10000,
+      "units": 10000.0,
+      "coveredSqIn": 5.56,
+      "fees": {
+        "XS": 11.12,
+        "S": 11.12,
+        "M": 31.12,
+        "L": 51.12,
+        "XL": 71.12,
+        "XXL": 91.12
+      },
+      "quantity2LineTotal": 62.24
+    },
+    {
+      "name": "clipped at a corner",
+      "elements": [
+        {
+          "x": 100,
+          "y": 100,
+          "width": 200,
+          "height": 200,
+          "rotation": 0
+        }
+      ],
+      "analyticUnits": 10000,
+      "units": 10000.0,
+      "coveredSqIn": 5.56,
+      "fees": {
+        "XS": 11.12,
+        "S": 11.12,
+        "M": 31.12,
+        "L": 51.12,
+        "XL": 71.12,
+        "XXL": 91.12
+      },
+      "quantity2LineTotal": 62.24
+    },
+    {
+      "name": "fully off the garment counts nothing",
+      "elements": [
+        {
+          "x": 50,
+          "y": 50,
+          "width": 60,
+          "height": 60,
+          "rotation": 0
+        }
+      ],
+      "analyticUnits": 0,
+      "units": 0.0,
+      "coveredSqIn": 0.0,
+      "fees": {
+        "XS": 0.0,
+        "S": 0.0,
+        "M": 0.0,
+        "L": 0.0,
+        "XL": 0.0,
+        "XXL": 0.0
+      },
+      "quantity2LineTotal": 0.0
+    },
+    {
+      "name": "hidden element counts nothing",
+      "elements": [
+        {
+          "x": 400,
+          "y": 400,
+          "width": 180,
+          "height": 120,
+          "rotation": 0,
+          "visible": false
+        }
+      ],
+      "analyticUnits": 0,
+      "units": 0.0,
+      "coveredSqIn": 0.0,
+      "fees": {
+        "XS": 0.0,
+        "S": 0.0,
+        "M": 0.0,
+        "L": 0.0,
+        "XL": 0.0,
+        "XXL": 0.0
+      },
+      "quantity2LineTotal": 0.0
+    },
+    {
+      "name": "opacity 0 counts nothing",
+      "elements": [
+        {
+          "x": 400,
+          "y": 400,
+          "width": 180,
+          "height": 120,
+          "rotation": 0,
+          "opacity": 0
+        }
+      ],
+      "analyticUnits": 0,
+      "units": 0.0,
+      "coveredSqIn": 0.0,
+      "fees": {
+        "XS": 0.0,
+        "S": 0.0,
+        "M": 0.0,
+        "L": 0.0,
+        "XL": 0.0,
+        "XXL": 0.0
+      },
+      "quantity2LineTotal": 0.0
+    },
+    {
+      "name": "no elements",
+      "elements": [],
+      "analyticUnits": 0,
+      "units": 0.0,
+      "coveredSqIn": 0.0,
+      "fees": {
+        "XS": 0.0,
+        "S": 0.0,
+        "M": 0.0,
+        "L": 0.0,
+        "XL": 0.0,
+        "XXL": 0.0
+      },
+      "quantity2LineTotal": 0.0
+    },
+    {
+      "name": "thin line",
+      "elements": [
+        {
+          "x": 400,
+          "y": 400,
+          "width": 300,
+          "height": 2,
+          "rotation": 0
+        }
+      ],
+      "analyticUnits": 600,
+      "units": 600.0,
+      "coveredSqIn": 0.33,
+      "fees": {
+        "XS": 0.66,
+        "S": 0.66,
+        "M": 20.66,
+        "L": 40.66,
+        "XL": 60.66,
+        "XXL": 80.66
+      },
+      "quantity2LineTotal": 41.32
+    },
+    {
+      "name": "50 separate elements",
+      "elements": [
+        {
+          "x": 150,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 200,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 250,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 300,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 350,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 400,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 450,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 500,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 550,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 600,
+          "y": 150,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 150,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 200,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 250,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 300,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 350,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 400,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 450,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 500,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 550,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 600,
+          "y": 200,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 150,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 200,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 250,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 300,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 350,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 400,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 450,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 500,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 550,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 600,
+          "y": 250,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 150,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 200,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 250,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 300,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 350,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 400,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 450,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 500,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 550,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 600,
+          "y": 300,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 150,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 200,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 250,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 300,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 350,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 400,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 450,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 500,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 550,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        },
+        {
+          "x": 600,
+          "y": 350,
+          "width": 40,
+          "height": 40,
+          "rotation": 0
+        }
+      ],
+      "analyticUnits": 80000,
+      "units": 80000.0,
+      "coveredSqIn": 44.44,
+      "fees": {
+        "XS": 88.88,
+        "S": 88.88,
+        "M": 108.88,
+        "L": 128.88,
+        "XL": 148.88,
+        "XXL": 168.88
+      },
+      "quantity2LineTotal": 217.76
+    },
+    {
+      "name": "text, circle and star are priced by their box",
+      "elements": [
+        {
+          "x": 250,
+          "y": 250,
+          "width": 160,
+          "height": 40,
+          "rotation": 0,
+          "type": "text"
+        },
+        {
+          "x": 500,
+          "y": 300,
+          "width": 100,
+          "height": 100,
+          "rotation": 0,
+          "type": "circle"
+        },
+        {
+          "x": 400,
+          "y": 550,
+          "width": 120,
+          "height": 120,
+          "rotation": 0,
+          "type": "star"
+        }
+      ],
+      "analyticUnits": 30800,
+      "units": 30800.0,
+      "coveredSqIn": 17.11,
+      "fees": {
+        "XS": 34.22,
+        "S": 34.22,
+        "M": 54.22,
+        "L": 74.22,
+        "XL": 94.22,
+        "XXL": 114.22
+      },
+      "quantity2LineTotal": 108.44
+    }
+  ]
+}
