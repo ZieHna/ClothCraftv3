@@ -1,0 +1,1607 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClothCraft System Documentation</title>
+<meta name="description" content="How ClothCraft is built: the storefront, editor, admin, Business Intelligence methods and the Decision Support System, with the evidence behind each statement.">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<style>
+/* =========================================================================================================
+   ClothCraft documentation: one static page. No framework, no external files, no network requests.
+   Order: 1 tokens, 2 base, 3 layout, 4 text, 5 tables, 6 components, 7 diagrams, 8 small screens, 9 print.
+   ========================================================================================================= */
+
+/* 1. tokens (light, then dark) */
+:root {
+  --bg: #fbf8f2;
+  --panel: #f3ede1;
+  --ink: #1d1916;
+  --muted: #554c44;
+  --line: #d6c9b3;
+  --accent: #6a4220;
+  --link: #1d4f91;
+  --ok-bg: #dcebd8;  --ok-ink: #1f4a1b;
+  --warn-bg: #f7e6c0; --warn-ink: #5c3d00;
+  --off-bg: #e7e2da; --off-ink: #3c352e;
+  --bad-bg: #f6d9d3; --bad-ink: #7a1f12;
+  --focus: #b3410f;
+  --code-bg: #ece4d3;
+  --diagram-box: #fffdf8;
+  --diagram-alt: #e9efe3;
+  --diagram-warn: #fbefd0;
+  --shadow: 0 1px 0 rgba(0,0,0,.04);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17130f;
+    --panel: #221c16;
+    --ink: #f1ebe0;
+    --muted: #cbbfae;
+    --line: #4a3f33;
+    --accent: #e0b27c;
+    --link: #8fc0ff;
+    --ok-bg: #20361d;  --ok-ink: #bfe6b8;
+    --warn-bg: #44330c; --warn-ink: #f5d98a;
+    --off-bg: #343029; --off-ink: #ddd5c8;
+    --bad-bg: #4a2018; --bad-ink: #f6b9ad;
+    --focus: #ffb27a;
+    --code-bg: #2d251c;
+    --diagram-box: #211b15;
+    --diagram-alt: #1f2a1d;
+    --diagram-warn: #3a2d10;
+    color-scheme: dark;
+  }
+}
+
+/* 2. base */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 1rem; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 1rem/1.65 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+a { color: var(--link); text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+code, kbd, pre, .mono { font-family: ui-monospace, "Cascadia Code", Consolas, "Liberation Mono", monospace; font-size: .92em; }
+code { background: var(--code-bg); padding: .05em .35em; border-radius: 3px; overflow-wrap: anywhere; }
+pre { background: var(--code-bg); padding: .9rem 1rem; overflow-x: auto; border-radius: 4px; line-height: 1.5; }
+pre code { background: none; padding: 0; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--bg); padding: .6rem 1rem; z-index: 10; }
+.skip:focus { left: 0; }
+
+/* 3. layout: a left table of contents on wide screens, a compact one above the text on small screens */
+.page { display: grid; grid-template-columns: 1fr; max-width: 1240px; margin: 0 auto; }
+.toc-wrap { padding: .75rem 1rem 0; }
+.toc { border: 1px solid var(--line); background: var(--panel); border-radius: 6px; }
+.toc summary { cursor: pointer; padding: .7rem 1rem; font-weight: 700; min-height: 44px; display: flex; align-items: center; }
+.toc ol { list-style: none; margin: 0; padding: 0 .5rem .75rem; }
+.toc a { display: block; padding: .38rem .6rem; border-radius: 4px; text-decoration: none; color: var(--ink); font-size: .95rem; line-height: 1.35; }
+.toc a:hover { background: var(--bg); text-decoration: underline; }
+.toc a[aria-current="true"] { background: var(--bg); box-shadow: inset 3px 0 0 var(--accent); font-weight: 650; }
+.toc .letter { display: inline-block; min-width: 1.5em; font-weight: 700; color: var(--accent); }
+main { padding: 0 1rem 4rem; min-width: 0; overflow-wrap: break-word; }
+.mono li { overflow-wrap: anywhere; }
+.nowrap { white-space: nowrap; }
+@media (min-width: 62rem) {
+  .page { grid-template-columns: 19rem minmax(0, 1fr); column-gap: 2rem; }
+  .toc-wrap { grid-column: 1; grid-row: 1 / span 2; position: sticky; top: 0; align-self: start; max-height: 100vh; overflow-y: auto; padding: 1.5rem 0 1.5rem 1rem; }
+  header.top { grid-column: 2; grid-row: 1; }
+  main { grid-column: 2; grid-row: 2; }
+  .toc summary { pointer-events: none; cursor: default; }
+  .toc summary::marker, .toc summary::-webkit-details-marker { display: none; }
+  main { padding: 0 1.5rem 5rem 0; }
+}
+
+/* 4. text */
+header.top { padding: 1.5rem 1rem 0; min-width: 0; overflow-wrap: break-word; }
+@media (min-width: 62rem) { header.top { padding: 1.5rem 1.5rem 0 0; } }
+h1 { font-size: clamp(1.9rem, 4.2vw, 2.8rem); line-height: 1.15; margin: .4rem 0 .6rem; letter-spacing: -.01em; }
+h2 { font-size: clamp(1.45rem, 2.8vw, 1.9rem); line-height: 1.25; margin: 0 0 .75rem; padding-top: 1rem; border-top: 3px solid var(--accent); }
+h3 { font-size: 1.2rem; line-height: 1.3; margin: 1.8rem 0 .5rem; }
+h4 { font-size: 1.02rem; margin: 1.3rem 0 .3rem; }
+section { margin-top: 3rem; scroll-margin-top: 1rem; }
+section > h2 .letter { color: var(--accent); margin-right: .45rem; }
+p, ul, ol, dl, table, figure, details.note { margin: 0 0 1rem; }
+ul, ol { padding-left: 1.4rem; }
+li { margin: .25rem 0; }
+.lede { font-size: 1.12rem; max-width: 62ch; }
+.muted { color: var(--muted); }
+.small { font-size: .9rem; }
+.meta { display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; margin: 0 0 1rem; padding: 0; list-style: none; color: var(--muted); font-size: .95rem; }
+.meta li { margin: 0; }
+.meta strong { color: var(--ink); }
+
+/* 5. tables: they scroll inside their own box, never the page */
+.tablebox { overflow-x: auto; margin: 0 0 1.25rem; border: 1px solid var(--line); border-radius: 4px; }
+.tablebox:focus-visible { outline-offset: 0; }
+table { border-collapse: collapse; width: 100%; font-size: .93rem; margin: 0; }
+caption { text-align: left; font-weight: 700; padding: .6rem .75rem; background: var(--panel); border-bottom: 1px solid var(--line); }
+th, td { text-align: left; vertical-align: top; padding: .5rem .75rem; border-bottom: 1px solid var(--line); }
+th { background: var(--panel); font-weight: 700; white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.tablebox table { min-width: 34rem; }
+
+.toc ol.sub { padding: 0 0 0 .9rem; }
+.toc ol.sub a { font-size: .88rem; padding: .25rem .6rem; }
+section section { margin-top: 2.25rem; }
+section section > h3 { margin-top: 0; padding-top: .8rem; border-top: 2px solid var(--line); }
+
+/* 6. components */
+.pill { display: inline-block; padding: .05rem .55rem; border-radius: 999px; font-size: .78rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; vertical-align: .08em; border: 1px solid transparent; }
+.pill.ok { background: var(--ok-bg); color: var(--ok-ink); }
+.pill.warn { background: var(--warn-bg); color: var(--warn-ink); }
+.pill.off { background: var(--off-bg); color: var(--off-ink); }
+.pill.bad { background: var(--bad-bg); color: var(--bad-ink); }
+.callout { border: 1px solid var(--line); border-left-width: 6px; background: var(--panel); border-radius: 4px; padding: .8rem 1rem; margin: 0 0 1.25rem; }
+.callout > :last-child { margin-bottom: 0; }
+.callout.warn { border-left-color: #a46b00; }
+.callout.bad { border-left-color: #a8341f; }
+.callout.ok { border-left-color: #2f7d2a; }
+.callout.info { border-left-color: var(--link); }
+.callout .title { font-weight: 700; margin: 0 0 .25rem; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1.2rem; margin: 0 0 1rem; }
+.kv dt { font-weight: 700; }
+.kv dd { margin: 0; }
+@media (max-width: 36rem) { .kv { grid-template-columns: 1fr; gap: 0; } .kv dd { margin-bottom: .6rem; } }
+dl.glossary dt { font-weight: 700; margin-top: 1rem; }
+dl.glossary dd { margin: .15rem 0 0; }
+details.note { border: 1px solid var(--line); border-radius: 4px; background: var(--panel); }
+details.note > summary { cursor: pointer; padding: .65rem 1rem; font-weight: 650; min-height: 44px; display: flex; align-items: center; }
+details.note > div { padding: 0 1rem .8rem; }
+.formula { background: var(--code-bg); padding: .6rem .9rem; border-radius: 4px; margin: 0 0 1rem; overflow-x: auto; }
+.cols { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); margin: 0 0 1.25rem; }
+.cols > div { border: 1px solid var(--line); border-radius: 4px; padding: .8rem 1rem; background: var(--panel); }
+.cols h4 { margin-top: 0; }
+.cols ul { margin-bottom: 0; }
+
+/* 7. diagrams: drawn in SVG with the page colours, so they follow light, dark and print */
+figure.diagram { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: .75rem; }
+figure.diagram .scroll { overflow-x: auto; }
+figure.diagram svg { display: block; width: 100%; height: auto; min-width: 640px; max-width: 100%; margin: 0 auto; }
+figure.diagram figcaption { margin-top: .6rem; font-size: .92rem; color: var(--muted); }
+.d-box { fill: var(--diagram-box); stroke: var(--ink); stroke-width: 1.4; }
+.d-alt { fill: var(--diagram-alt); stroke: var(--ink); stroke-width: 1.4; }
+.d-warn { fill: var(--diagram-warn); stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 6 4; }
+.d-group { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 3 4; }
+.d-line { stroke: var(--ink); stroke-width: 1.6; fill: none; }
+.d-dash { stroke: var(--muted); stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+.d-arrow { fill: var(--ink); }
+.d-text { fill: var(--ink); font: 13px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+.d-title { fill: var(--ink); font: 700 13.5px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+.d-small { fill: var(--muted); font: 11.5px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+.d-label { fill: var(--ink); font: 600 12px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+.d-bar { fill: var(--accent); }
+.d-bar-test { fill: var(--link); }
+.d-bar-train { fill: var(--muted); opacity: .55; }
+
+/* 8. small screens */
+@media (max-width: 36rem) {
+  body { font-size: 1.02rem; }
+  th { white-space: normal; }
+  .tablebox table { min-width: 30rem; }
+}
+
+/* 9. print: no navigation, everything open, links shown, tables and diagrams not split */
+@media print {
+  :root { --bg: #fff; --panel: #f5f5f5; --ink: #000; --muted: #333; --line: #999; --accent: #333; --link: #000; --code-bg: #eee; --diagram-box: #fff; --diagram-alt: #eee; --diagram-warn: #f3f3f3; color-scheme: light; }
+  body { font-size: 10.5pt; }
+  .toc-wrap, .skip, .noprint { display: none !important; }
+  .page { display: block; max-width: none; }
+  main { padding: 0; }
+  header.top { padding: 0; }
+  section { margin-top: 1.4rem; break-inside: auto; }
+  h2, h3, h4 { break-after: avoid; }
+  figure, .callout, .cols > div, tr, .formula { break-inside: avoid; }
+  .tablebox { overflow: visible; border: 1px solid #999; }
+  .tablebox table { min-width: 0; font-size: 9pt; }
+  figure.diagram { background: #fff; }
+  figure.diagram .scroll { overflow: visible; }
+  figure.diagram svg { min-width: 0; }
+  details.note > div { display: block !important; }
+  a { text-decoration: none; }
+  main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .85em; }
+  .pill { border-color: #666; background: #fff !important; color: #000 !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the documentation</a>
+
+<div class="page">
+<header class="top">
+  <p class="muted small" style="margin:0">ClothCraft &middot; system documentation</p>
+  <h1>How ClothCraft works</h1>
+  <p class="lede">ClothCraft is a made-to-order apparel shop with a design editor, a staff and administrator workspace, and a Decision Support System (DSS) that turns the shop&rsquo;s own orders and stock records into forecasts, restock suggestions, customer segments, alerts and a business-health view. This page explains how each part is built and how the numbers are produced, and it states what has and has not been verified.</p>
+  <ul class="meta">
+    <li><strong>Last verified:</strong> <time datetime="2026-10-27">27 October 2026</time> (Asia/Manila)</li>
+    <li><strong>Describes:</strong> the working tree on branch <code>main</code> on that date, including work not yet committed</li>
+    <li><strong>Versions:</strong> <code>clothcraft</code> 19.0.1.12.0 &middot; <code>clothcraft_dss</code> 19.0.1.0.0 &middot; DSS engine <code>B8-S4</code></li>
+  </ul>
+  <div class="callout ok" role="note">
+    <p class="title">New to the project?</p>
+    <p>Start with the <a href="#tutorial">Installation and Handover Tutorial</a>: clone, install, run, verify and update ClothCraft on your own computer.</p>
+  </div>
+  <div class="callout warn" role="note">
+    <p class="title">Read this first: the data in the development shop is synthetic</p>
+    <p>The orders, customers, staff, restocks and stock counts in the development shop database (<code>clothcraft_shop</code>) were generated by the project&rsquo;s scenario pack and replayed through the shop&rsquo;s own API so that the DSS has a year of history to work on. They are <strong>not real sales</strong> and have not been independently verified. Every accuracy figure on this page therefore shows that the methods <em>run correctly on that data</em>. None of them is evidence of accuracy on real business outcomes. See <a href="#k-evidence">section K</a> and <a href="#l-limits">section L</a>.</p>
+  </div>
+  <div class="callout info" role="note">
+    <p class="title">Work in progress</p>
+    <p>The administrator screens for the DSS are still being built (stages S5c&ndash;S5e). This page documents what the code does today and marks everything else <span class="pill warn">Planned</span>, <span class="pill warn">In progress</span> or <span class="pill off">Not yet implemented</span>. It makes no claim about what the unfinished stages will contain. Statuses are summarised in <a href="#status">the status table</a>.</p>
+  </div>
+</header>
+
+  <div class="toc-wrap">
+    <nav aria-label="Table of contents">
+      <details class="toc" id="toc" open>
+        <summary>Contents</summary>
+        <ol>
+          <li><a href="#a-overview"><span class="letter">A</span>System overview</a></li>
+          <li><a href="#b-stack"><span class="letter">B</span>Technology stack</a></li>
+          <li><a href="#c-shop"><span class="letter">C</span>How the shop works</a></li>
+          <li><a href="#d-architecture"><span class="letter">D</span>Architecture and data flow</a></li>
+          <li><a href="#e-bi"><span class="letter">E</span>Business Intelligence concepts</a></li>
+          <li><a href="#f-dss"><span class="letter">F</span>The Decision Support System</a></li>
+          <li><a href="#g-data"><span class="letter">G</span>How the DSS uses data</a></li>
+          <li><a href="#h-forecast"><span class="letter">H</span>Forecasting and model card</a></li>
+          <li><a href="#i-restock"><span class="letter">I</span>Restock and inventory rules</a></li>
+          <li><a href="#j-engines"><span class="letter">J</span>Segments, alerts and health</a></li>
+          <li><a href="#k-evidence"><span class="letter">K</span>Evaluation and evidence</a></li>
+          <li><a href="#l-limits"><span class="letter">L</span>Data integrity and limitations</a></li>
+          <li><a href="#m-tests"><span class="letter">M</span>Testing and verification</a></li>
+          <li><a href="#n-glossary"><span class="letter">N</span>Glossary and references</a></li>
+          <li><a href="#tutorial"><span class="letter">&#9654;</span>Installation and handover tutorial</a>
+            <ol class="sub">
+              <li><a href="#tut-a"><span class="letter">A</span>Requirements</a></li>
+              <li><a href="#tut-b"><span class="letter">B</span>Get the source code</a></li>
+              <li><a href="#tut-c"><span class="letter">C</span>Install Docker, Git, Node</a></li>
+              <li><a href="#tut-d"><span class="letter">D</span>Environment variables</a></li>
+              <li><a href="#tut-e"><span class="letter">E</span>Build and start</a></li>
+              <li><a href="#tut-f"><span class="letter">F</span>Database and Odoo setup</a></li>
+              <li><a href="#tut-g"><span class="letter">G</span>Open and sign in</a></li>
+              <li><a href="#tut-h"><span class="letter">H</span>Verify the install</a></li>
+              <li><a href="#tut-i"><span class="letter">I</span>Daily commands</a></li>
+              <li><a href="#tut-j"><span class="letter">J</span>Troubleshooting</a></li>
+              <li><a href="#tut-k"><span class="letter">K</span>Handover notes</a></li>
+              <li><a href="#tut-l"><span class="letter">L</span>Update and maintenance</a></li>
+            </ol>
+          </li>
+          <li><a href="#status"><span class="letter">&middot;</span>Implementation status</a></li>
+          <li><a href="#counts"><span class="letter">&middot;</span>How things were counted</a></li>
+        </ol>
+      </details>
+    </nav>
+  </div>
+
+  <main id="content" tabindex="-1">
+
+<!-- =============================================================================================== A -->
+<section id="a-overview" aria-labelledby="a-h">
+  <h2 id="a-h"><span class="letter">A</span>System overview</h2>
+
+  <h3>What ClothCraft does</h3>
+  <p>Customers browse garments (T-shirts, hoodies, long sleeves, onesies and similar), see prices and stock, and either buy a plain garment or design their own print in the in-browser editor, starting blank or from a premade design. Orders are paid by bank transfer or cash on delivery and move through a fulfilment lifecycle handled by staff. Behind the shop, the same database that holds orders and stock feeds the DSS, which reads it and writes its results back into dedicated tables.</p>
+
+  <h3>Who uses it</h3>
+  <div class="cols">
+    <div>
+      <h4>Customers</h4>
+      <p>Browse, customize, order, track and confirm receipt. Reached through the public storefront. An account is needed for the editor, the cart and orders.</p>
+    </div>
+    <div>
+      <h4>Inventory Staff (employees)</h4>
+      <p>Work orders, stock, restocks and suppliers at <code>/staff</code>. Security group &ldquo;Inventory Staff&rdquo;.</p>
+    </div>
+    <div>
+      <h4>Administrators</h4>
+      <p>Everything staff can do, plus approving restocks, managing employees and customers, the dashboard and the DSS at <code>/admin</code>. Security group &ldquo;Administrator&rdquo;.</p>
+    </div>
+    <div>
+      <h4>The storefront API service</h4>
+      <p>Not a person: the FastAPI service signs in to Odoo with its own restricted group (&ldquo;Storefront API service&rdquo;).</p>
+    </div>
+  </div>
+
+  <h3>How the parts relate</h3>
+  <ul>
+    <li><strong>Storefront and editor</strong> (React, in the browser) show products and let a customer build a design. They only ever call <code>/api</code> on their own origin.</li>
+    <li><strong>The API service</strong> (FastAPI) checks the request and session, then calls Odoo&rsquo;s JSON-2 interface. It is the only thing that talks to Odoo for the browser.</li>
+    <li><strong>Odoo 19</strong> with two custom modules holds the business rules: <code>clothcraft</code> (catalogue, orders, stock, restocks, suppliers, designs, audit) and <code>clothcraft_dss</code> (the DSS runner and result tables).</li>
+    <li><strong>PostgreSQL 16</strong> stores everything, including the DSS results. The DSS engine reads it with read-only <code>SELECT</code> statements.</li>
+    <li><strong>The admin interface</strong> is part of the same React app, under <code>/admin</code>, and reads DSS results through <code>/api/admin/dss/*</code>.</li>
+  </ul>
+
+  <h3>What the DSS helps decide</h3>
+  <ul>
+    <li><strong>How much to expect to sell</strong> in the next eight weeks, per garment, per garment type and in total (forecast with ranges).</li>
+    <li><strong>What to reorder, from whom, how much and by when</strong> for each size and colour (restock suggestions). Nothing is ordered automatically.</li>
+    <li><strong>Which customers</strong> are recent, frequent or lapsing (RFM segments).</li>
+    <li><strong>What needs attention now</strong>: unpaid bank transfers, forecast stock-outs, low stock, restocks late or blocked by supplier availability.</li>
+    <li><strong>How the business is trending</strong>: monthly revenue, spending, margin view, stock value and a short projection.</li>
+  </ul>
+
+  <figure class="diagram" id="fig-arch">
+    <div class="scroll">
+    <svg viewBox="0 0 960 470" role="img" aria-labelledby="fa-t fa-d">
+      <title id="fa-t">ClothCraft system architecture</title>
+      <desc id="fa-d">A browser running the React storefront, editor and admin calls the FastAPI service on the same origin. The service calls Odoo 19, which runs the clothcraft and clothcraft_dss modules and stores data in PostgreSQL. The DSS engine reads PostgreSQL with read-only queries and writes results through Odoo into dedicated tables.</desc>
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="d-arrow"/></marker></defs>
+
+      <rect class="d-group" x="10" y="10" width="300" height="450" rx="8"/>
+      <text class="d-title" x="24" y="34">In the customer&rsquo;s or staff member&rsquo;s browser</text>
+      <rect class="d-box" x="28" y="52" width="264" height="74" rx="4"/>
+      <text class="d-title" x="40" y="74">React storefront</text>
+      <text class="d-small" x="40" y="93">Landing, category, product, cart, checkout,</text>
+      <text class="d-small" x="40" y="109">account, orders, Browse all designs</text>
+      <rect class="d-box" x="28" y="138" width="264" height="74" rx="4"/>
+      <text class="d-title" x="40" y="160">Design editor (Fabric 7.4)</text>
+      <text class="d-small" x="40" y="179">Layers, print box, draft autosave</text>
+      <text class="d-small" x="40" y="195">Premade templates from /designs (static)</text>
+      <rect class="d-box" x="28" y="224" width="264" height="74" rx="4"/>
+      <text class="d-title" x="40" y="246">Staff and admin workspace</text>
+      <text class="d-small" x="40" y="265">/staff: orders, stock, restocks, suppliers</text>
+      <text class="d-small" x="40" y="281">/admin: + employees, customers, DSS</text>
+      <rect class="d-alt" x="28" y="310" width="264" height="56" rx="4"/>
+      <text class="d-title" x="40" y="332">Browser storage</text>
+      <text class="d-small" x="40" y="351">Editor drafts (IndexedDB)</text>
+      <rect class="d-warn" x="28" y="378" width="264" height="64" rx="4"/>
+      <text class="d-title" x="40" y="400">Mock mode (development only)</text>
+      <text class="d-small" x="40" y="419">MSW answers /api in the browser; no server</text>
+
+      <line class="d-line" x1="310" y1="160" x2="362" y2="160" marker-end="url(#ah)"/>
+      <text class="d-label" x="316" y="148">/api</text>
+
+      <rect class="d-group" x="364" y="10" width="586" height="450" rx="8"/>
+      <text class="d-title" x="378" y="34">Server side (Docker Compose)</text>
+
+      <rect class="d-box" x="382" y="52" width="170" height="124" rx="4"/>
+      <text class="d-title" x="394" y="74">FastAPI service</text>
+      <text class="d-small" x="394" y="93">Sessions, request</text>
+      <text class="d-small" x="394" y="109">checks, routing.</text>
+      <text class="d-small" x="394" y="125">Python 3.12</text>
+      <text class="d-small" x="394" y="147">The business rules are</text>
+      <text class="d-small" x="394" y="163">enforced in Odoo</text>
+
+      <line class="d-line" x1="552" y1="114" x2="600" y2="114" marker-end="url(#ah)"/>
+      <text class="d-label" x="556" y="102">JSON-2</text>
+
+      <rect class="d-box" x="602" y="52" width="330" height="214" rx="4"/>
+      <text class="d-title" x="614" y="74">Odoo 19</text>
+      <rect class="d-alt" x="618" y="86" width="298" height="78" rx="4"/>
+      <text class="d-title" x="630" y="108">module clothcraft</text>
+      <text class="d-small" x="630" y="126">Catalogue, cart, orders and lifecycle,</text>
+      <text class="d-small" x="630" y="142">stock, restocks, suppliers, designs, audit,</text>
+      <text class="d-small" x="630" y="158">notifications; the clothcraft.api facade</text>
+      <rect class="d-alt" x="618" y="174" width="298" height="78" rx="4"/>
+      <text class="d-title" x="630" y="196">module clothcraft_dss</text>
+      <text class="d-small" x="630" y="214">Run model, weekly and Run-now jobs,</text>
+      <text class="d-small" x="630" y="230">7 append-only result tables,</text>
+      <text class="d-small" x="630" y="246">imports the engine (pandas) inside a run</text>
+
+      <line class="d-line" x1="767" y1="266" x2="767" y2="310" marker-end="url(#ah)"/>
+      <line class="d-line" x1="767" y1="310" x2="767" y2="266" marker-end="url(#ah)"/>
+      <text class="d-label" x="778" y="293">read and write</text>
+
+      <rect class="d-box" x="602" y="312" width="330" height="76" rx="4"/>
+      <text class="d-title" x="614" y="334">PostgreSQL 16</text>
+      <text class="d-small" x="614" y="353">573 tables in clothcraft_shop, 30 named clothcraft_*</text>
+      <text class="d-small" x="614" y="369">(9 of them clothcraft_dss_*). Orders, stock moves, DSS output.</text>
+
+      <rect class="d-alt" x="382" y="312" width="170" height="130" rx="4"/>
+      <text class="d-title" x="394" y="334">DSS engine</text>
+      <text class="d-small" x="394" y="353">addons/clothcraft_dss/engine</text>
+      <text class="d-small" x="394" y="369">pandas, numpy, statsmodels.</text>
+      <text class="d-small" x="394" y="385">SELECT only. Runs inside</text>
+      <text class="d-small" x="394" y="401">Odoo&rsquo;s own cursor; also</text>
+      <text class="d-small" x="394" y="417">runnable on tables in tests</text>
+      <line class="d-dash" x1="552" y1="350" x2="600" y2="350" marker-end="url(#ah)"/>
+
+      <rect class="d-box" x="602" y="400" width="330" height="48" rx="4"/>
+      <text class="d-title" x="614" y="421">Filestore (product and design pictures)</text>
+      <text class="d-small" x="614" y="438">Not in the database dump; copied separately</text>
+    </svg>
+    </div>
+    <figcaption>Figure 1. The system as built. Solid arrows are requests; dashed lines are the engine&rsquo;s read-only access. The engine is plain Python, imported by Odoo only while a run is executing. Sources: <code>docker-compose.yml</code>, <code>backend/app/odoo.py</code>, <code>addons/clothcraft_dss/models/dss_run.py</code>.</figcaption>
+  </figure>
+</section>
+
+<!-- =============================================================================================== B -->
+<section id="b-stack" aria-labelledby="b-h">
+  <h2 id="b-h"><span class="letter">B</span>Technology stack</h2>
+  <p>Only technology that the application actually uses is listed. Versions are pinned in <code>frontend/package.json</code>, <code>backend/requirements.txt</code> and the root <code>Dockerfile</code>.</p>
+
+  <div class="tablebox" tabindex="0" role="region" aria-label="Technology stack table">
+  <table>
+    <caption>Languages, frameworks and what each does in ClothCraft</caption>
+    <thead><tr><th>Layer</th><th>Technology (version)</th><th>Role in ClothCraft</th></tr></thead>
+    <tbody>
+      <tr><td>Languages</td><td>TypeScript (compiler 7.0.2), Python 3.12</td><td>TypeScript for the browser app and its scripts; Python for Odoo modules, the API service and the DSS engine. Some tooling is plain Node scripts (<code>.mjs</code>).</td></tr>
+      <tr><td>Frontend framework</td><td>React 19.3.1, React Router 8.5.0</td><td>All pages: storefront, editor shell, staff and admin workspaces. Heavy pages (design, cart, checkout, staff, admin) are lazy-loaded.</td></tr>
+      <tr><td>Build and styling</td><td>Vite 8.3.4, Tailwind CSS 4.3.3</td><td>Development server (with an <code>/api</code> proxy), production bundle, utility styling. Files in <code>frontend/public</code> are copied unchanged into the build.</td></tr>
+      <tr><td>Design editor</td><td>Fabric 7.4.0</td><td>Canvas layer engine of the &ldquo;Simple&rdquo; editor. Fonts (Bebas Neue, Caveat, Cormorant Garamond, Jost, Pacifico) come from <code>@fontsource</code> packages.</td></tr>
+      <tr><td>Charts</td><td>Hand-written inline SVG</td><td>The forecast chart and the diagrams. No charting library is installed.</td></tr>
+      <tr><td>API service</td><td>FastAPI 0.159.1, Uvicorn 0.54.0, httpx 0.28.1, pydantic 2.14.1</td><td>Browser-facing HTTP API. Checks requests, manages sessions and calls Odoo&rsquo;s JSON-2 endpoint with a bearer key. Docker image <code>python:3.12.15-slim-trixie</code>.</td></tr>
+      <tr><td>Application server</td><td>Odoo 19.0 (image <code>odoo:19.0-20261015</code>)</td><td>ORM, security groups, record rules, sales, stock, payment, scheduled jobs. Custom modules <code>clothcraft</code> and <code>clothcraft_dss</code>.</td></tr>
+      <tr><td>Database</td><td>PostgreSQL 16 through Odoo&rsquo;s ORM and psycopg2</td><td>All persistent data. The DSS reads with SQL <code>SELECT</code>; result rows are written through the ORM. Database triggers enforce append-only DSS tables.</td></tr>
+      <tr><td>DSS libraries</td><td>pandas 3.1.0, numpy 2.5.4, statsmodels 0.15.0</td><td>Table handling and the damped-trend exponential smoothing model. Declared in the DSS module manifest as required Python packages.</td></tr>
+      <tr><td>Frontend tests</td><td>Vitest 5.0.5, Testing Library, jsdom 30.1.3, Playwright 1.64.1 (Microsoft Edge), MSW 3.0.3</td><td>Unit and component tests in jsdom; editor tests in real Edge; MSW supplies a mock shop for tests and mock mode.</td></tr>
+      <tr><td>Backend tests</td><td>pytest 9.1.1; Odoo test runner; <code>unittest</code></td><td>API service tests, Odoo addon tests and DSS engine tests.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout info">
+    <p class="title">Installed but not used by the DSS</p>
+    <p>The Odoo image also installs scikit-learn and SciPy. A search of the <code>addons/</code> and <code>backend/</code> source found no import of either, so they are not part of any DSS calculation described here. The DSS uses <strong>no machine learning, neural networks, web scraping or real-time streaming</strong>: its methods are classical statistical forecasting and fixed rules, computed in batch.</p>
+  </div>
+  <p class="small muted">A second &ldquo;Pro&rdquo; editor engine exists behind the build flag <code>VITE_PRO_EDITOR</code>, which is off unless set to <code>true</code>. This page documents the Simple editor, which is the one the shop uses and the tests cover.</p>
+</section>
+
+<!-- =============================================================================================== C -->
+<section id="c-shop" aria-labelledby="c-h">
+  <h2 id="c-h"><span class="letter">C</span>How the shop works</h2>
+
+  <h3>Customers</h3>
+  <figure class="diagram" id="fig-flow">
+    <div class="scroll">
+    <svg viewBox="0 0 980 300" role="img" aria-labelledby="ff-t ff-d">
+      <title id="ff-t">Customer journey and order lifecycle</title>
+      <desc id="ff-d">The customer browses, optionally opens a premade design or a blank editor, picks garment colour and size, adds to the cart, checks out, and the order moves from awaiting payment to confirmed, shipped, out for delivery, delivered and closed. An order can be cancelled while awaiting payment or confirmed.</desc>
+      <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="d-arrow"/></marker></defs>
+      <text class="d-title" x="10" y="22">Customer journey</text>
+      <rect class="d-box" x="10" y="34" width="140" height="62" rx="4"/><text class="d-label" x="22" y="58">Browse</text><text class="d-small" x="22" y="76">Category, Featured,</text><text class="d-small" x="22" y="90">Browse all designs</text>
+      <rect class="d-box" x="186" y="34" width="150" height="62" rx="4"/><text class="d-label" x="198" y="58">Pick garment</text><text class="d-small" x="198" y="76">product, colour, size;</text><text class="d-small" x="198" y="90">real price and stock</text>
+      <rect class="d-alt" x="372" y="34" width="150" height="62" rx="4"/><text class="d-label" x="384" y="58">Editor (optional)</text><text class="d-small" x="384" y="76">blank, or a copy of a</text><text class="d-small" x="384" y="90">premade design</text>
+      <rect class="d-box" x="558" y="34" width="120" height="62" rx="4"/><text class="d-label" x="570" y="58">Cart</text><text class="d-small" x="570" y="76">server-side cart,</text><text class="d-small" x="570" y="90">tick lines to buy</text>
+      <rect class="d-box" x="714" y="34" width="120" height="62" rx="4"/><text class="d-label" x="726" y="58">Checkout</text><text class="d-small" x="726" y="76">quote, address,</text><text class="d-small" x="726" y="90">bank transfer / COD</text>
+      <rect class="d-box" x="870" y="34" width="100" height="62" rx="4"/><text class="d-label" x="882" y="58">Order</text><text class="d-small" x="882" y="76">stock guard</text><text class="d-small" x="882" y="90">locks the stock</text>
+      <line class="d-line" x1="150" y1="65" x2="184" y2="65" marker-end="url(#ah2)"/>
+      <line class="d-line" x1="336" y1="65" x2="370" y2="65" marker-end="url(#ah2)"/>
+      <line class="d-line" x1="522" y1="65" x2="556" y2="65" marker-end="url(#ah2)"/>
+      <line class="d-line" x1="678" y1="65" x2="712" y2="65" marker-end="url(#ah2)"/>
+      <line class="d-line" x1="834" y1="65" x2="868" y2="65" marker-end="url(#ah2)"/>
+      <path class="d-dash" d="M261 96 L261 118 L618 118 L618 98" marker-end="url(#ah2)"/>
+      <text class="d-small" x="330" y="134">a plain garment skips the editor</text>
+
+      <text class="d-title" x="10" y="176">Order lifecycle (staff act on it; the customer confirms receipt)</text>
+      <rect class="d-box" x="10" y="190" width="130" height="50" rx="4"/><text class="d-label" x="22" y="212">awaiting payment</text><text class="d-small" x="22" y="229">order placed</text>
+      <rect class="d-box" x="170" y="190" width="110" height="50" rx="4"/><text class="d-label" x="182" y="212">confirmed</text><text class="d-small" x="182" y="229">payment received</text>
+      <rect class="d-box" x="310" y="190" width="110" height="50" rx="4"/><text class="d-label" x="322" y="212">shipped</text>
+      <rect class="d-box" x="450" y="190" width="140" height="50" rx="4"/><text class="d-label" x="462" y="212">out for delivery</text>
+      <rect class="d-box" x="620" y="190" width="110" height="50" rx="4"/><text class="d-label" x="632" y="212">delivered</text>
+      <rect class="d-alt" x="760" y="190" width="100" height="50" rx="4"/><text class="d-label" x="772" y="212">closed</text><text class="d-small" x="772" y="229">final</text>
+      <rect class="d-warn" x="880" y="190" width="90" height="50" rx="4"/><text class="d-label" x="892" y="212">cancelled</text><text class="d-small" x="892" y="229">final</text>
+      <line class="d-line" x1="140" y1="215" x2="168" y2="215" marker-end="url(#ah2)"/>
+      <line class="d-line" x1="280" y1="215" x2="308" y2="215" marker-end="url(#ah2)"/>
+      <line class="d-line" x1="420" y1="215" x2="448" y2="215" marker-end="url(#ah2)"/>
+      <line class="d-line" x1="590" y1="215" x2="618" y2="215" marker-end="url(#ah2)"/>
+      <line class="d-line" x1="730" y1="215" x2="758" y2="215" marker-end="url(#ah2)"/>
+      <path class="d-dash" d="M75 240 L75 270 L925 270 L925 242" marker-end="url(#ah2)"/>
+      <text class="d-small" x="330" y="286">cancel is possible from awaiting payment and confirmed only</text>
+    </svg>
+    </div>
+    <figcaption>Figure 2. Customer journey and fulfilment states. Source: <code>addons/clothcraft/models/order_flow.py</code> (<code>NEXT</code> table) and the routes in <code>frontend/src/router.tsx</code>. An older <code>packed</code> state is still accepted by the code for orders left over from before step 11; a migration moves them.</figcaption>
+  </figure>
+
+  <ul>
+    <li><strong>Browsing.</strong> The Category page lists products with filters (group, garment type, text, price range, in-stock only). Each card shows the shop&rsquo;s own price (VAT included) and a stock badge: <code>in_stock</code>, <code>low_stock</code> or <code>out_of_stock</code>. Featured products come from <code>GET /api/catalogue/featured</code>.</li>
+    <li><strong>Premade designs.</strong> The Featured section shows design mockups for five featured products; <em>Browse all designs</em> (<code>/designs</code>) lists twelve premade designs from a single catalog file (<code>frontend/src/designs/catalog.ts</code>) that holds no prices or stock. &ldquo;Customize Design&rdquo; opens <code>/design?template=&hellip;</code>: the editor loads a <strong>copy</strong> of the template as editable layers, fitted to the chosen garment&rsquo;s print area. The shared template files are static and are never written to. Nine designs are fully editable; three contain one flattened picture layer that can be moved, resized and rotated but not redrawn.</li>
+    <li><strong>Garment, colour, size.</strong> Chosen on the product page or inside the editor. Variants are real Odoo product variants with their own SKU.</li>
+    <li><strong>Editor.</strong> Text, shapes and uploaded PNG/JPEG/WebP pictures as layers inside the garment&rsquo;s print box, undo/redo, up to 50 elements per design (server limit). Signed-in customers get autosaved <em>drafts</em> in the browser for designs started from blank; <strong>a design started from a premade template is not autosaved as a draft</strong> (add it to the cart to keep it).</li>
+    <li><strong>Print fee.</strong> A designed garment carries a per-piece fee computed from the area covered by the design (bounding boxes, overlaps counted once) times a rate, plus a size step. The browser shows an estimate; the server (<code>addons/clothcraft/design_fee.py</code>) is the authority. Both run against one shared file of test cases.</li>
+    <li><strong>Cart and checkout.</strong> Signed-in customers have a server-side cart; the customer ticks the lines to buy and the server issues a quote (<code>POST /api/cart/quote</code>). Checkout offers bank transfer or cash on delivery. Placing the order runs a stock guard under a lock, so stock cannot be oversold.</li>
+    <li><strong>Account and orders.</strong> The Account page lists the customer’s orders and saved drafts; each order has a tracking view. The customer can confirm that the order was received (<code>POST /api/orders/{id}/received</code>), which closes it; orders also close automatically after a configurable number of days (the shop setting <em>auto-close days</em>).</li>
+  </ul>
+
+  <h3>Employees and staff</h3>
+  <p>Inventory Staff sign in through the employee door (<code>/staff</code>). They see the order board and order list and can move orders along the lifecycle; manage stock (view, history, record a stock edit); create and edit restock requests while a request is still <code>requested</code>; and maintain suppliers, their supply lines and unavailable dates. They cannot approve, reject or receive a restock. Odoo&rsquo;s record rules, not the screens, enforce what each group may see and change.</p>
+
+  <h3>Administrators</h3>
+  <ul>
+    <li><strong>Dashboard and order summary</strong> (<code>/admin</code>, <code>/admin/orders</code>): counts and the full order list.</li>
+    <li><strong>Stock and restocks:</strong> everything staff do, plus setting the low-stock levels (a global level and per-variant overrides), and approve, reject, receive or mark &ldquo;not received&rdquo; on restocks. Receiving creates a real stock receipt and records the actual cost (VAT included).</li>
+    <li><strong>Suppliers</strong> and their price lines.</li>
+    <li><strong>Employees</strong> (create, edit, change role, reset password, deactivate, reactivate) and <strong>customers</strong> (view, edit, deactivate, reactivate).</li>
+    <li><strong>Forecast and DSS:</strong> <code>/admin/dss</code> (overview of the latest real and simulated runs, the run list and <em>Run now</em>) and <code>/admin/dss/forecast</code> (forecast chart, accuracy table, plain-language meaning and recommended actions).</li>
+  </ul>
+
+  <div class="callout warn">
+    <p class="title">Not implemented or not verified</p>
+    <ul>
+      <li><span class="pill off">Not yet implemented</span> Dedicated admin screens for restock recommendations as a table, customer segments, alerts and business health. Their results are stored and served by the API (<code>/api/admin/dss/restock</code>, <code>segments</code>, <code>alerts</code>, <code>health</code>), but the frontend has no page that draws them yet.</li>
+      <li><span class="pill off">Not yet implemented</span> The header&rsquo;s &ldquo;Need help?&rdquo; item is still marked Coming soon.</li>
+      <li><span class="pill warn">Unverified</span> The customer journey from a premade design to a paid order has not been run end-to-end against the real shop with a signed-in customer (it was exercised on the mock shop and by unit tests). Registering a test customer would write to the shop database, so it was not done.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =============================================================================================== D -->
+<section id="d-architecture" aria-labelledby="d-h">
+  <h2 id="d-h"><span class="letter">D</span>Application architecture and data flow</h2>
+  <p>Three data paths matter. They are drawn together in <a href="#fig-dss-flow">Figure 3</a>.</p>
+  <ol>
+    <li><strong>Shop path.</strong> Browser &rarr; <code>/api</code> (Vite proxy in development) &rarr; FastAPI &rarr; Odoo&rsquo;s <code>clothcraft.api</code> facade (one method per operation) &rarr; PostgreSQL. A confirmed order creates sale-order lines and reserves stock; staff actions write order history and stock moves; every lifecycle change is appended to <code>clothcraft_order_audit</code>.</li>
+    <li><strong>Design path.</strong> Premade templates are static JSON and PNG in <code>frontend/public/designs/</code>. The catalog file describes them; it is separate from product inventory. When a customer saves a designed line, the design (layers, preview, print image) is stored with <code>clothcraft.design</code> and the line carries its design id.</li>
+    <li><strong>DSS path.</strong> A run is triggered only by an Odoo scheduled job, never inside a web request: the weekly job (installed <em>inactive</em>) or the &ldquo;Run now&rdquo; job that the administrator&rsquo;s button queues. The run reads native Odoo tables, computes in memory, and writes seven result tables in one transaction. The admin screens read those tables through <code>/api/admin/dss/*</code>.</li>
+  </ol>
+
+  <figure class="diagram" id="fig-dss-flow">
+    <div class="scroll">
+    <svg viewBox="0 0 980 440" role="img" aria-labelledby="fd-t fd-d">
+      <title id="fd-t">DSS data flow from source records to a business decision</title>
+      <desc id="fd-d">Source records in PostgreSQL (orders, stock moves, receipts, restocks, suppliers, payments) are extracted by read-only queries, validated and transformed into weekly demand and daily balance tables, analysed by five engines (forecast, restock, segments, alerts, health), stored as seven append-only result tables, served by the API and shown on the admin dashboard, where a person makes the decision.</desc>
+      <defs><marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="d-arrow"/></marker></defs>
+
+      <rect class="d-box" x="10" y="40" width="170" height="150" rx="4"/>
+      <text class="d-title" x="22" y="62">1 Source records</text>
+      <text class="d-small" x="22" y="82">sale_order(_line)</text><text class="d-small" x="22" y="97">stock_move, stock_quant</text><text class="d-small" x="22" y="112">stock_picking, payment</text><text class="d-small" x="22" y="127">clothcraft_restock(_line)</text><text class="d-small" x="22" y="142">clothcraft_supplier(_line)</text><text class="d-small" x="22" y="157">clothcraft_order_audit</text><text class="d-small" x="22" y="172">clothcraft_stock_alert</text>
+      <rect class="d-box" x="206" y="40" width="150" height="150" rx="4"/>
+      <text class="d-title" x="218" y="62">2 Extract</text>
+      <text class="d-small" x="218" y="82">extract.py, extract_more.py</text><text class="d-small" x="218" y="102">SELECT only, one</text><text class="d-small" x="218" y="117">REPEATABLE READ</text><text class="d-small" x="218" y="132">snapshot; optional</text><text class="d-small" x="218" y="147">shop tables return an</text><text class="d-small" x="218" y="162">empty frame if absent</text>
+      <rect class="d-box" x="382" y="40" width="170" height="150" rx="4"/>
+      <text class="d-title" x="394" y="62">3 Validate + transform</text>
+      <text class="d-small" x="394" y="82">transform.py</text><text class="d-small" x="394" y="102">demand lines (confirmed,</text><text class="d-small" x="394" y="117">garments only) &rarr; weekly</text><text class="d-small" x="394" y="132">units; daily on-hand from</text><text class="d-small" x="394" y="147">done stock moves; lead</text><text class="d-small" x="394" y="162">times; Closed-order rule</text>
+      <rect class="d-alt" x="578" y="40" width="170" height="150" rx="4"/>
+      <text class="d-title" x="590" y="62">4 Historical datasets</text>
+      <text class="d-small" x="590" y="82">weekly units per variant</text><text class="d-small" x="590" y="97">(Mon&ndash;Sun, Manila)</text><text class="d-small" x="590" y="117">end-of-day on-hand per</text><text class="d-small" x="590" y="132">variant, with stock-out</text><text class="d-small" x="590" y="147">flag; earned (Closed)</text><text class="d-small" x="590" y="162">orders; monthly money</text>
+      <rect class="d-box" x="774" y="40" width="196" height="150" rx="4"/>
+      <text class="d-title" x="786" y="62">5 Analysis engines</text>
+      <text class="d-small" x="786" y="82">forecast.py (+ methods.py)</text><text class="d-small" x="786" y="97">restock.py</text><text class="d-small" x="786" y="112">segments.py (RFM)</text><text class="d-small" x="786" y="127">alerts.py</text><text class="d-small" x="786" y="142">health.py</text><text class="d-small" x="786" y="162">orchestrated by bundle.py</text>
+      <line class="d-line" x1="180" y1="115" x2="204" y2="115" marker-end="url(#ah3)"/>
+      <line class="d-line" x1="356" y1="115" x2="380" y2="115" marker-end="url(#ah3)"/>
+      <line class="d-line" x1="552" y1="115" x2="576" y2="115" marker-end="url(#ah3)"/>
+      <line class="d-line" x1="748" y1="115" x2="772" y2="115" marker-end="url(#ah3)"/>
+
+      <path class="d-line" d="M872 190 L872 226 L860 226" />
+      <path class="d-line" d="M872 190 L872 226 L180 226 L180 250" marker-end="url(#ah3)"/>
+      <rect class="d-box" x="10" y="252" width="300" height="130" rx="4"/>
+      <text class="d-title" x="22" y="274">6 Stored DSS results (dss_run.py)</text>
+      <text class="d-small" x="22" y="294">one run row + 7 output tables:</text><text class="d-small" x="22" y="310">forecast, backtest, restock, segment,</text><text class="d-small" x="22" y="326">alert, health, actual</text><text class="d-small" x="22" y="346">one transaction; all-or-nothing;</text><text class="d-small" x="22" y="362">append-only (database triggers)</text>
+      <rect class="d-box" x="360" y="252" width="270" height="130" rx="4"/>
+      <text class="d-title" x="372" y="274">7 API and dashboard</text>
+      <text class="d-small" x="372" y="294">api_dss.py (12 methods) &rarr;</text><text class="d-small" x="372" y="310">FastAPI /api/admin/dss/* &rarr;</text><text class="d-small" x="372" y="326">React: Overview, Forecast</text>
+      <text class="d-small" x="372" y="346">Other tables: served by API,</text><text class="d-small" x="372" y="362">no admin screen yet</text>
+      <rect class="d-alt" x="680" y="252" width="290" height="130" rx="4"/>
+      <text class="d-title" x="692" y="274">8 Business decision</text>
+      <text class="d-small" x="692" y="294">A person reads the figures and decides:</text><text class="d-small" x="692" y="310">what to reorder, when, from whom;</text><text class="d-small" x="692" y="326">which orders to chase; how to read</text><text class="d-small" x="692" y="342">the trend. The DSS orders nothing and</text><text class="d-small" x="692" y="358">changes no stock or order.</text>
+      <line class="d-line" x1="310" y1="317" x2="358" y2="317" marker-end="url(#ah3)"/>
+      <line class="d-line" x1="630" y1="317" x2="678" y2="317" marker-end="url(#ah3)"/>
+      <text class="d-small" x="10" y="414">Stages 3 to 5 work on tables held in memory. The engine never writes to Odoo&rsquo;s business tables.</text>
+    </svg>
+    </div>
+    <figcaption>Figure 3. DSS pipeline. Sources: <code>engine/extract*.py</code>, <code>engine/transform.py</code>, <code>engine/bundle.py</code> (<code>compute</code>), <code>models/dss_run.py</code>, <code>models/api_dss.py</code>, <code>frontend/src/api/adminDss.ts</code>.</figcaption>
+  </figure>
+
+  <h3>API surface</h3>
+  <p>Counted from source (definition in <a href="#counts">How things were counted</a>). These are route <em>definitions</em>, not mounted URLs: the staff and admin doors share code and some definitions are mounted under both <code>/api/staff</code> and <code>/api/admin</code>.</p>
+  <div class="tablebox" tabindex="0" role="region" aria-label="API route groups">
+  <table>
+    <caption>Route definitions in <code>backend/app</code></caption>
+    <thead><tr><th>Group</th><th class="num">Definitions</th><th>Where</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>/api/catalogue</code></td><td class="num">4</td><td><code>main.py</code></td><td>Products, featured products, one product, product image</td></tr>
+      <tr><td><code>/api/auth</code></td><td class="num">4</td><td><code>main.py</code></td><td>Register, login, logout, who am I</td></tr>
+      <tr><td><code>/api/cart</code>, <code>/api/checkout</code></td><td class="num">3 + 1</td><td><code>main.py</code>, <code>cart_routes.py</code></td><td>Server cart (get, put), quote, checkout options</td></tr>
+      <tr><td><code>/api/orders</code></td><td class="num">4</td><td><code>main.py</code></td><td>Place, list, read, confirm received</td></tr>
+      <tr><td><code>/api/designs</code> (+ staff/admin previews)</td><td class="num">11</td><td><code>designs.py</code></td><td>Design pricing, save, read, state, preview and print images, delete</td></tr>
+      <tr><td><code>/api/admin</code> (dashboard, auth, order summary)</td><td class="num">5</td><td><code>admin.py</code></td><td>Admin sign-in and dashboard</td></tr>
+      <tr><td><code>{prefix}/orders</code></td><td class="num">3</td><td><code>staff.py</code></td><td>Order list, order, transition (template mounted per door)</td></tr>
+      <tr><td><code>{prefix}/&hellip;</code> inventory</td><td class="num">55</td><td><code>inventory.py</code></td><td>Suppliers (12), restock options and restocks (9), stock (5), employees (8), customers (5), <strong>DSS (12)</strong>, notifications (3), garment options (1)</td></tr>
+      <tr><td><strong>Total definitions</strong></td><td class="num"><strong>90</strong></td><td colspan="2">35 decorator-registered (32 with literal paths, 3 with a prefix variable) + 55 registered by the inventory helper. The number of distinct mounted URLs was not counted at runtime.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- =============================================================================================== E -->
+<section id="e-bi" aria-labelledby="e-h">
+  <h2 id="e-h"><span class="letter">E</span>Business Intelligence concepts and methods</h2>
+  <p>Business Intelligence (BI) turns operational records into information for decisions. The table maps each BI concept to what ClothCraft really implements, and says plainly where a concept is <em>not</em> implemented.</p>
+
+  <div class="tablebox" tabindex="0" role="region" aria-label="BI concepts mapped to implementation">
+  <table>
+    <caption>BI concept &rarr; implementation</caption>
+    <thead><tr><th>Concept</th><th>In ClothCraft</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Data capture</strong></td>
+        <td>Operational records are captured as a by-product of running the shop: orders and lines (checkout), stock moves (sales, receipts, stock counts), restock tickets and receipts, supplier price lines, payments and delivery pickings, and an append-only order audit (every lifecycle change with who and when). Nothing is scraped or streamed.</td>
+        <td><code>addons/clothcraft/models/</code> (<code>sale_order*.py</code>, <code>stock_move*.py</code>, <code>restock.py</code>, <code>order_audit.py</code>, <code>stock_alert.py</code>)</td></tr>
+      <tr><td><strong>ETL</strong></td>
+        <td><em>Extract:</em> read-only SQL. <em>Transform:</em> time zone conversion (database UTC to Manila days), filtering to confirmed garment demand, weekly aggregation on a complete grid, rebuilding daily stock balance from moves, lead-time tables, the Closed-order rule. <em>Load:</em> results are written to seven DSS tables. The transformation happens in memory at run time; there is no separate warehouse database.</td>
+        <td><code>engine/extract.py</code>, <code>extract_more.py</code>, <code>transform.py</code>; <code>models/dss_run.py</code></td></tr>
+      <tr><td><strong>OLAP-style analysis</strong></td>
+        <td>Partial. Facts are summarised along a <em>time</em> dimension (day, Monday&ndash;Sunday week, Manila month) and a <em>product</em> hierarchy (variant &rarr; product &rarr; garment type &rarr; total), with the variant&rsquo;s size and colour as attributes. Forecast and backtest rows are stored per level, and the forecast page lets the user switch level and item. <strong>There is no OLAP cube, no multidimensional store and no free-form slicing</strong>; the groupings are fixed in code.</td>
+        <td><code>transform.weekly_units</code>, <code>forecast.prepare</code>, <code>health.monthly</code></td></tr>
+      <tr><td><strong>KPIs</strong></td>
+        <td>WAPE, bias and interval coverage (forecast quality); days left and suggested quantity (restock); revenue, spending, cost of goods sold, net cash view, margin view, stock value, stock cover in months, year-on-year growth (health); recency/frequency/monetary (segments). Formulas in sections H&ndash;J.</td>
+        <td><code>forecast.metrics</code>, <code>restock.recommend</code>, <code>health.kpis</code>, <code>segments.score</code></td></tr>
+      <tr><td><strong>Descriptive analytics</strong> <span class="muted">(what happened)</span></td>
+        <td>Weekly units sold, rebuilt stock balance and stock-out flags, monthly earned revenue and spending, stock value, segment tables, unpaid transfer ages. Also the actuals table that the forecast chart draws as history.</td>
+        <td><code>transform.py</code>, <code>health.py</code>, <code>bundle.actuals_table</code></td></tr>
+      <tr><td><strong>Predictive analytics</strong> <span class="muted">(what is likely)</span></td>
+        <td>Eight-week unit forecasts with 80% and 95% ranges (section H); a three-month revenue projection derived from the total forecast; run-out dates derived from forecast demand.</td>
+        <td><code>forecast.py</code>, <code>methods.py</code>, <code>health.projection</code>, <code>restock.py</code></td></tr>
+      <tr><td><strong>Prescriptive analytics</strong> <span class="muted">(what to do)</span></td>
+        <td>Rule-based, not optimisation: restock suggestions (reorder point, order-up-to level, supplier ranking), alert bands, and on the forecast page fixed-text recommended actions. A person decides.</td>
+        <td><code>restock.py</code>, <code>alerts.py</code>, <code>frontend/src/admin/dss/recommendationRules.ts</code></td></tr>
+      <tr><td><strong>Data warehouse, dashboards, data mining</strong></td>
+        <td><span class="pill off">Not implemented</span> as such. The operational database is the only store. The admin DSS screens are the dashboard. RFM scoring is the only segmentation technique; there is no clustering or other mining.</td><td>&mdash;</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- =============================================================================================== F -->
+<section id="f-dss" aria-labelledby="f-h">
+  <h2 id="f-h"><span class="letter">F</span>The Decision Support System</h2>
+
+  <h3>Purpose, architecture and role</h3>
+  <p>The DSS answers four questions for the administrator: <em>what will we sell, what should we reorder, who are our customers, and what needs attention?</em> It is a <strong>batch</strong> system. Once per run it reads the database, recomputes everything from scratch, and stores a complete, immutable set of results labelled with the rules and parameters used. It makes recommendations only: it places no orders, edits no stock and notifies nobody.</p>
+
+  <h3>Engines</h3>
+  <p>The engine package <code>addons/clothcraft_dss/engine/</code> contains 13 modules plus <code>__init__.py</code>. By the definition used here (see <a href="#counts">How things were counted</a>) <strong>five are analysis engines</strong>; the rest support them.</p>
+  <div class="tablebox" tabindex="0" role="region" aria-label="DSS engine modules">
+  <table>
+    <caption>The 13 engine modules by role</caption>
+    <thead><tr><th>Role</th><th class="num">Count</th><th>Modules</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Analysis engines</strong></td><td class="num">5</td><td><code>forecast.py</code> (forecast and backtest), <code>restock.py</code>, <code>segments.py</code> (RFM), <code>alerts.py</code>, <code>health.py</code> (business health)</td></tr>
+      <tr><td>Method library</td><td class="num">1</td><td><code>methods.py</code>: naive, 4-week moving average, seasonal naive, damped-trend ETS, Croston/SBA</td></tr>
+      <tr><td>Extraction</td><td class="num">2</td><td><code>extract.py</code> (10 read functions), <code>extract_more.py</code> (shop-only tables, optional)</td></tr>
+      <tr><td>Transformation</td><td class="num">1</td><td><code>transform.py</code></td></tr>
+      <tr><td>Orchestration and bundle</td><td class="num">1</td><td><code>bundle.py</code>: <code>compute()</code> runs everything in order; also writes checksummed bundles</td></tr>
+      <tr><td>Development tools (not part of a run)</td><td class="num">3</td><td><code>profile.py</code>, <code>export_dataset.py</code>, <code>report_step2.py</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small muted">Odoo glue, outside the engine: <code>models/dss_run.py</code> (runner, locks, jobs), <code>dss_outputs.py</code> (7 append-only output models), <code>api_dss.py</code> (12 admin API methods), <code>dss_import.py</code> (import of a <em>simulated</em> bundle; off by default and absent on the shop).</p>
+
+  <h3>Pipeline: what each stage receives, calculates and produces</h3>
+  <div class="tablebox" tabindex="0" role="region" aria-label="DSS pipeline stages">
+  <table>
+    <caption>Stages in the order a run executes them (<code>bundle.compute</code>)</caption>
+    <thead><tr><th>Stage</th><th>Receives</th><th>Calculates</th><th>Produces</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1 Select and extract</strong></td><td>A database cursor</td><td>Read-only <code>SELECT</code>s of catalogue, order lines, orders, stock moves, quants, receipts, restocks, suppliers, payments, pickings, order audit, stock alerts. The as-of day is today (Manila) on a real database, or the last order&rsquo;s day on a simulated one.</td><td>Raw tables</td></tr>
+      <tr><td><strong>2 Validate and transform</strong></td><td>Raw tables</td><td>Keeps confirmed (<code>sale</code>, <code>done</code>) order lines of garment products; drops cancelled orders, section/note lines and non-garment products such as the customization fee. Converts UTC to Manila days. Counts only complete Monday&ndash;Sunday weeks.</td><td>Demand lines, weekly units on a full grid (zeros kept), daily end-of-day on-hand per variant, lead times</td></tr>
+      <tr><td><strong>3 Gate</strong></td><td>Weekly demand</td><td>Forecasting runs only if at least <code>min_sale_weeks</code> = 16 complete weeks with a garment sale exist.</td><td>Forecast status <code>ok</code> or <code>not_enough_history</code> (then restock and the forecast alerts are skipped)</td></tr>
+      <tr><td><strong>4 Forecast + backtest</strong></td><td>Weekly units, daily balance</td><td>Rolling-origin backtest of the candidate methods, selection, final 8-week forecast with ranges, variant shares (section H)</td><td>Forecast rows, backtest metric rows, selection</td></tr>
+      <tr><td><strong>5 Restock</strong></td><td>Forecast, shares, stock, incoming, suppliers, lead times</td><td>Position, run-out, safety stock, reorder point, order-up-to, supplier ranking (section I)</td><td>One row per garment variant that has a forecast</td></tr>
+      <tr><td><strong>6 Segments</strong></td><td>Closed orders</td><td>RFM scores and segment rules (section J)</td><td>One row per scored customer, plus a status</td></tr>
+      <tr><td><strong>7 Alerts</strong></td><td>Orders, payments, pickings, restock rows, stock alerts, restocks, suppliers</td><td>Five rule-based alert kinds (section J)</td><td>Alert rows</td></tr>
+      <tr><td><strong>8 Health</strong></td><td>Closed orders, spending, costs, stock, forecast</td><td>Monthly series, trend label, KPIs, projection (section J)</td><td>Monthly rows and a summary</td></tr>
+      <tr><td><strong>9 Persist</strong></td><td>All results</td><td>One transaction under a PostgreSQL advisory lock; inside a savepoint. Any error rolls every output row back and the run is recorded as <code>failed</code> with the error text. Output tables are append-only (database triggers), as are finished run rows.</td><td>A <code>clothcraft.dss.run</code> row (when, who, database, rules, parameters, libraries, row counts, duration, fingerprints) and 7 output tables</td></tr>
+      <tr><td><strong>10 Present</strong></td><td>Stored results</td><td>12 admin API methods; the React pages draw the figures and never recompute them.</td><td>Overview and Forecast screens</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>How a run is started and protected</h3>
+  <ul>
+    <li><strong>Weekly job:</strong> Monday 03:00 Manila (Sunday 19:00 UTC), installed <em>inactive</em>; an Administrator switches it on.</li>
+    <li><strong>Run now:</strong> a job that is active but parked at the year 2999; the button only adds a trigger, so a web request never computes anything.</li>
+    <li><strong>One at a time:</strong> a transaction-level advisory lock; a second run logs and stops.</li>
+    <li><strong>Interrupted runs</strong> (time limit or restart) are recorded as <code>failed</code> on the next start instead of being computed again silently.</li>
+    <li><strong>Reproducibility:</strong> no clock or random source is used inside the methods; the run row stores parameters, library versions and a fingerprint of the input tables, so the same data gives the same output.</li>
+  </ul>
+</section>
+
+<!-- =============================================================================================== G -->
+<section id="g-data" aria-labelledby="g-h">
+  <h2 id="g-h"><span class="letter">G</span>How the DSS captures, mines, uses and analyzes data</h2>
+  <p>In plain terms: the shop records every sale and every stock movement as part of normal operation. The DSS <em>reads</em> those records, rebuilds a week-by-week sales history and a day-by-day stock history, and applies fixed statistical and rule-based methods to them. It does not collect extra data, watch the web or learn from outside sources.</p>
+
+  <div class="tablebox" tabindex="0" role="region" aria-label="DSS inputs">
+  <table>
+    <caption>Major inputs: source, fields, treatment, output, purpose</caption>
+    <thead><tr><th>Input</th><th>Source and fields used</th><th>Transformation or aggregation</th><th>Analysis and output</th><th>Business purpose</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Sales demand</strong></td><td><code>sale_order_line</code> (quantity, product, display type) joined to <code>sale_order</code> (state, order date)</td><td>Confirmed orders only; garments only; order date to Manila day, then Monday week; sum per variant per week; complete grid so no-sale weeks are 0</td><td>Forecast (units per week) and variant shares</td><td>Expected demand</td></tr>
+      <tr><td><strong>Stock movements</strong></td><td><code>stock_move</code> (state, quantity, date, source and destination location usage, product)</td><td>Done moves crossing the internal boundary: +quantity in, &minus;quantity out; daily sum; cumulative sum = end-of-day on-hand; opening-balance rule (section I)</td><td>Stock-out flags (<code>on_hand &le; 0</code>) used to mark censored weeks; reserved approximation</td><td>Know when sales were limited by stock</td></tr>
+      <tr><td><strong>Current stock</strong></td><td><code>stock_quant</code> in internal locations</td><td>On hand and reserved per variant</td><td>Restock position (free = on hand &minus; reserved); stock value</td><td>What is on the shelf now</td></tr>
+      <tr><td><strong>Incoming stock</strong></td><td>Open incoming <code>stock_move</code>s; <code>clothcraft_restock_line</code> of approved or not-received tickets</td><td>Summed per variant</td><td>Added to the restock position</td><td>Avoid reordering what is on its way</td></tr>
+      <tr><td><strong>Lead times</strong></td><td>Purchase-order approval to first receipt; restock approval (<code>decided_at</code>) to <code>received_on</code></td><td>Per supplier: n, mean, median, 90th percentile</td><td>L (90th percentile, rounded up) in restock</td><td>How long a reorder takes</td></tr>
+      <tr><td><strong>Suppliers</strong></td><td><code>clothcraft_supplier</code>, <code>_line</code> (garment type &times; size &times; colour unit cost), <code>_unavailability</code></td><td>Eligibility and landed unit cost (unit cost + flat shipping / quantity)</td><td>Supplier ranking per variant</td><td>Whom to order from</td></tr>
+      <tr><td><strong>Customers and Closed orders</strong></td><td><code>sale_order</code> partner, amount, <code>clothcraft_state</code> and its audit history</td><td>Closed orders dated by their closing audit line</td><td>RFM scores, segments; earned revenue</td><td>Customer value and revenue</td></tr>
+      <tr><td><strong>Payments and pickings</strong></td><td>Payment transactions (bank transfer pending), outgoing pickings</td><td>Age of unpaid transfers with nothing shipped</td><td>Alerts</td><td>Chasing payment</td></tr>
+      <tr><td><strong>Costs</strong></td><td>Latest received unit cost; else cheapest shop supply line; else simulation supplier-info price &times; 1.12</td><td>Last purchase cost per variant (never Odoo&rsquo;s standard cost)</td><td>Stock value; cost of goods sold; margin view</td><td>Money view</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Three kinds of data that must not be confused</h3>
+  <div class="cols">
+    <div><h4>Normal application records</h4><p>Whatever the running shop writes: real orders in a real deployment. A DSS run labels itself with the rules it applied.</p></div>
+    <div><h4>Synthetic scenario data</h4><p>The scenario pack: 370 invented orders from 112 invented customers (plus the shop&rsquo;s own 2 orders), 8 invented employees, 31 restocks and 38 stock counts, covering 2025-10-01 to 2026-10-26. Recognisable by <code>@example.test</code> emails and the order reference pattern <code>api:&hellip;:pack:O&hellip;</code>. It is stored in <code>clothcraft_shop</code>.</p></div>
+    <div><h4>Evaluation-only reference data</h4><p><code>testdata/dss-scenarios/ground_truth.csv</code> (357 rows) lists what the DSS <em>should</em> show, written in advance from the rules. It is used to check the DSS and is <strong>never an input to a run</strong>.</p></div>
+  </div>
+  <div class="callout warn">
+    <p class="title">A labelling gap</p>
+    <p>The DSS screens badge a run <em>REAL DATA</em> when the database has no simulation marker. The development shop now holds the synthetic scenario history but has no such marker, so a run on it is badged REAL DATA although its orders are synthetic. The badge has not been changed; treat every number in the development shop as demonstration data.</p>
+  </div>
+
+  <h3>Missing data, zero sales, stock movements and balances</h3>
+  <ul>
+    <li><strong>Zero-sales weeks</strong> are real zeros: the weekly table is built on a full product-by-week grid and filled with 0, so the methods see quiet weeks.</li>
+    <li><strong>Censored weeks.</strong> Demand lost while an item is out of stock is not recorded anywhere. A series-week is flagged <em>censored</em> when at least 25% of its variant-days ended with on-hand &le; 0. Metrics are reported for all weeks and for uncensored weeks. The flag detects only end-of-day zero on-hand; shortages hidden by reservations, or a stock-out earlier in a day that ends positive after a same-day receipt, are not detected. Demand is therefore still understated for items that sell out.</li>
+    <li><strong>No forecast is invented.</strong> A product that never sold in the training window gets no forecast row. A product with fewer than 8 weeks with a sale (thin) gets its garment type&rsquo;s recent average times its own share, flagged <code>not_enough_history</code>, with an interval twice as wide.</li>
+    <li><strong>Shortage of history.</strong> With fewer than 16 complete weeks with sales, the forecast is skipped and the run says so. Health labels its trend <code>not_enough_history</code> until 8 complete months exist.</li>
+    <li><strong>Absent tables.</strong> Shop-only tables (suppliers, restocks, stock alerts, order audit) are optional: if missing, the extractor returns an empty frame and the alert kinds depending on them say <code>not_available_on_this_data</code>.</li>
+    <li><strong>Inventory counts.</strong> A stock count that finds or removes units is an inventory-adjustment stock move; it enters the rebuilt balance like any other move.</li>
+    <li><strong>Reservations</strong> are not stored historically by Odoo, so the reserved quantity per day is an <em>approximation</em> (an outgoing move holds its quantity from creation to completion); the DSS labels it so.</li>
+  </ul>
+</section>
+
+<!-- =============================================================================================== H -->
+<section id="h-forecast" aria-labelledby="h-h">
+  <h2 id="h-h"><span class="letter">H</span>Forecasting methods and model card</h2>
+  <p>All values below are read from <code>engine/forecast.py</code> (<code>DEFAULTS</code>), <code>engine/methods.py</code> and <code>engine/bundle.py</code>, and the shop&rsquo;s latest stored run record shows the same parameters in use (run 3; <code>"forecast": {}</code> means defaults).</p>
+
+  <h3>Methods implemented</h3>
+  <div class="tablebox" tabindex="0" role="region" aria-label="Forecasting methods">
+  <table>
+    <caption>Five forecasting methods, three of them candidates</caption>
+    <thead><tr><th>Method</th><th>What it does</th><th>Role</th><th>Limits</th></tr></thead>
+    <tbody>
+      <tr><td><code>naive</code></td><td>Next weeks = last week&rsquo;s units</td><td>Baseline</td><td>Follows noise; a single odd week repeats for eight weeks</td></tr>
+      <tr><td><code>ma4</code></td><td>Next weeks = mean of the last 4 weeks</td><td>Baseline</td><td>No trend; lags a change</td></tr>
+      <tr><td><code>snaive</code> (seasonal naive)</td><td>Week t+h = the same week one year (52 weeks) earlier; uses the full history</td><td>Comparator only; never chosen</td><td>Needs a year of history; only 14 of 90 scored rows had one in the latest run</td></tr>
+      <tr><td><code>ets</code></td><td>Holt exponential smoothing, additive error, <strong>additive damped trend, no seasonality</strong> (statsmodels <code>ExponentialSmoothing</code>, maximum-likelihood fit, estimated initial values). Not fitted with fewer than 8 weeks.</td><td>Candidate</td><td>About 1.5 yearly cycles of data exist, too few for a seasonal model, so no annual seasonality is modelled</td></tr>
+      <tr><td><code>croston</code> (Croston with Syntetos&ndash;Boylan correction)</td><td>Smooths non-zero demand sizes <em>z</em> and the gaps <em>p</em> between them with &alpha; = 0.1; forecast = (1 &minus; &alpha;/2) &middot; z / p for every week ahead; all-zero history gives 0</td><td>Used inside the policy <code>ets_croston</code> for intermittent products</td><td>Flat forecast; no trend</td></tr>
+      <tr><td><code>group_share</code></td><td>Garment type&rsquo;s mean weekly units over the last 26 training weeks &times; the product&rsquo;s share of the type since its first sale</td><td>Fallback for thin products</td><td>Borrowed from the group, not the product&rsquo;s own pattern</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The two candidate <em>policies</em> are <code>ets</code> (ETS for every product) and <code>ets_croston</code> (Croston/SBA for products whose share of zero-sales weeks exceeds 30%, ETS for the rest). Every forecast is clipped at zero. No machine-learning model is fitted.</p>
+
+  <h3>Model card</h3>
+  <div class="tablebox" tabindex="0" role="region" aria-label="Model card parameters">
+  <table>
+    <caption>Parameters in force (defaults from <code>forecast.py</code>; unchanged in the stored runs)</caption>
+    <thead><tr><th>Item</th><th>Value</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Series level</td><td>Product (garment template); sums for garment type and total</td><td>Garment type and total <em>point</em> forecasts are bottom-up sums; their <em>ranges</em> come from their own backtest residuals</td></tr>
+      <tr><td>Granularity, week</td><td>Monday&ndash;Sunday, Asia/Manila; complete weeks only</td><td>A week is complete when its Sunday is on or before the as-of day</td></tr>
+      <tr><td><code>horizon</code></td><td>8 weeks</td><td>The forecast covers the 8 weeks after the last complete week</td></tr>
+      <tr><td><code>train_start</code></td><td>2025-07-07</td><td>Earlier weeks are ramp-up: never trained on, never scored, shown flagged</td></tr>
+      <tr><td>Minimum history to forecast at all</td><td>16 complete weeks with a sale (<code>min_sale_weeks</code>)</td><td>Below this the run reports <code>not_enough_history</code></td></tr>
+      <tr><td><code>thin_weeks</code></td><td>8</td><td>Fewer weeks with a sale &rarr; <code>group_share</code>; none &rarr; no forecast</td></tr>
+      <tr><td><code>group_weeks</code>, <code>share_weeks</code></td><td>26, 26</td><td>Window for the group average and for variant shares</td></tr>
+      <tr><td><code>intermittent_zero_share</code></td><td>0.30</td><td>Above this share of zero weeks the product is treated as intermittent</td></tr>
+      <tr><td><code>level_weeks</code></td><td>8</td><td>Window for the series&rsquo; recent level, the scale <em>s</em> of residuals (at least 1 unit)</td></tr>
+      <tr><td>ETS minimum weeks</td><td>8 (<code>ETS_MIN_WEEKS</code>)</td><td>Below this the ETS result is not available</td></tr>
+      <tr><td>Croston &alpha;; moving-average <em>k</em>; season</td><td>0.1; 4; 52 weeks</td><td>Smoothing, window, comparator period</td></tr>
+      <tr><td>Backtest</td><td><code>n_origins</code> 12, <code>origin_step</code> 2 weeks, <code>window_weeks</code> 26, <code>calib_origins</code> 8</td><td>12 evaluation origins every second week inside the last 26 complete weeks; 8 earlier calibration origins seed the intervals and are not scored</td></tr>
+      <tr><td><code>censor_share</code></td><td>0.25</td><td>Share of variant-days at zero on-hand that marks a series-week censored</td></tr>
+      <tr><td>Intervals</td><td>Empirical quantiles of scaled residuals: 10%/90% for the 80% range, 2.5%/97.5% for the 95% range</td><td>Residual <em>r</em> = (actual &minus; forecast) / <em>s</em>; range = forecast + <em>q</em> &middot; <em>s</em>, clipped at 0. Pooled per level and horizon; at least <code>min_resid</code> = 30 residuals, else the horizon bucket (1&ndash;2, 3&ndash;4, 5&ndash;8), else all horizons, else no range. In the backtest only residuals from earlier origins are used (out of sample). A thin product&rsquo;s range is twice as wide.</td></tr>
+      <tr><td>Selection criterion</td><td>Lowest product-level WAPE over the evaluation origins, ties to the simpler method; <code>override_margin</code> 5 WAPE points</td><td>See below</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>How a method is evaluated and chosen</h3>
+  <figure class="diagram" id="fig-backtest">
+    <div class="scroll">
+    <svg viewBox="0 0 960 250" role="img" aria-labelledby="fb-t fb-d">
+      <title id="fb-t">Rolling-origin backtest</title>
+      <desc id="fb-d">For each of 12 origins spaced two weeks apart, the methods are fitted on weeks before the origin and forecast eight weeks ahead; those forecasts are compared with the weeks that actually happened.</desc>
+      <text class="d-title" x="10" y="20">Weeks (left = older)</text>
+      <rect class="d-bar-train" x="10" y="40" width="330" height="22" rx="2"/>
+      <text class="d-small" x="16" y="56" style="fill:var(--ink)">Origin 1: train on all weeks before it</text>
+      <rect class="d-bar-test" x="340" y="40" width="190" height="22" rx="2"/>
+      <text class="d-small" x="346" y="56" style="fill:#fff">forecast 8 weeks, then score</text>
+      <rect class="d-bar-train" x="10" y="72" width="395" height="22" rx="2"/>
+      <text class="d-small" x="16" y="88" style="fill:var(--ink)">Origin 2 (two weeks later): train on more</text>
+      <rect class="d-bar-test" x="405" y="72" width="190" height="22" rx="2"/>
+      <rect class="d-bar-train" x="10" y="104" width="460" height="22" rx="2"/>
+      <text class="d-small" x="16" y="120" style="fill:var(--ink)">Origin 3 &hellip; up to origin 12</text>
+      <rect class="d-bar-test" x="470" y="104" width="190" height="22" rx="2"/>
+      <rect class="d-bar-train" x="10" y="136" width="640" height="22" rx="2"/>
+      <rect class="d-bar-test" x="650" y="136" width="190" height="22" rx="2" opacity=".5"/>
+      <text class="d-small" x="656" y="152" style="fill:var(--ink)">cut off at the last complete week</text>
+      <line class="d-line" x1="10" y1="178" x2="940" y2="178" marker-end="url(#ah4)"/>
+      <defs><marker id="ah4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="d-arrow"/></marker></defs>
+      <text class="d-small" x="10" y="198">time &rarr;</text>
+      <text class="d-text" x="10" y="226">Errors e = forecast &minus; actual are collected from every (origin, product, week ahead); WAPE and bias are computed from them.</text>
+    </svg>
+    </div>
+    <figcaption>Figure 4. Rolling-origin backtest. The forecast at each origin uses only information that existed at that origin, so the scores are on weeks the method had not seen (held-out actuals).</figcaption>
+  </figure>
+  <ol>
+    <li>For each origin, every method forecasts the next 8 weeks of every product from the weeks before that origin only.</li>
+    <li>Only product rows where <em>all</em> compared policies have a forecast are used, so policies are compared on the same weeks.</li>
+    <li>The overall policy is the one with the <strong>lowest product-level WAPE</strong> among <code>naive</code>, <code>ma4</code>, <code>ets</code>, <code>ets_croston</code>. It is judged against the better baseline: if the best candidate does not beat it, the baseline is chosen and every forecast row is flagged <code>baseline_wins</code>.</li>
+    <li>A single product gets its own method (an <em>override</em>) when another method beats the overall choice by more than 5 WAPE points on that product. Thin products are never overridden.</li>
+    <li>The final forecast starts from the week after the last complete week, uses each product&rsquo;s chosen method, and stores 8 rows per series with the method, flags and 80%/95% ranges.</li>
+    <li>Variant shares split a product&rsquo;s forecast across sizes and colours: units over the last 26 weeks, scaled up for days the variant was out of stock, with Laplace smoothing: share = (adjusted + 1) / (sum of adjusted + number of variants).</li>
+  </ol>
+
+  <h3>Metrics, as implemented</h3>
+  <div class="formula" role="math" aria-label="Metric definitions">
+    e = forecast &minus; actual<br>
+    MAE = mean(|e|)<br>
+    WAPE = 100 &times; sum(|e|) / sum(actual)<br>
+    bias = 100 &times; sum(e) / sum(actual) &nbsp; (positive = over-forecast, negative = under-forecast)<br>
+    coverage80 / coverage95 = % of scored weeks whose actual fell inside the 80% / 95% range
+  </div>
+  <ul>
+    <li><strong>WAPE</strong> is the total size of the errors as a share of total sales. Lower is better; 0% is perfect. It weights busy weeks more than quiet ones, so a few units of error on a tiny series barely moves the total but dominates that series&rsquo; own score.</li>
+    <li><strong>Bias</strong> says <em>which way</em> the forecast errs. A bias of &minus;20% means that over the scored weeks the forecasts added up to about 20% less than what sold. Read it together with WAPE: a forecast can have near-zero bias and a large WAPE when over- and under-forecasts cancel out.</li>
+    <li><strong>Coverage</strong> checks the ranges. An 80% range that contains the actual 80% of the time is calibrated; lower means ranges too narrow.</li>
+    <li>Only rows that have a forecast are scored, so a method that returns nothing (seasonal naive without a year of history) is not penalised or flattered with zeros; <code>n</code> is reported with every metric.</li>
+  </ul>
+  <p class="small muted">Limitations of the approach: weekly demand per product is small (a few units), so product-level percentages are noisy; the methods see no promotions, prices, holidays or marketing; lost demand during stock-outs is invisible; intervals assume the future errors look like the recent ones.</p>
+</section>
+
+<!-- =============================================================================================== I -->
+<section id="i-restock" aria-labelledby="i-h">
+  <h2 id="i-h"><span class="letter">I</span>Restock and inventory decision rules</h2>
+  <p>Source: <code>engine/restock.py</code>. One row is produced per garment variant whose product has a forecast. The output is a <strong>recommendation</strong>; a person creates and approves the actual restock ticket.</p>
+
+  <h3>From demand to a recommendation</h3>
+  <ol>
+    <li><strong>Demand per day</strong> = the product&rsquo;s weekly forecast &times; the variant&rsquo;s share, spread evenly over the week&rsquo;s days. Only days <em>after</em> the as-of day count, so the current week contributes its remaining days. Past the last forecast week the last week&rsquo;s rate is repeated (flag <code>extended_beyond_horizon</code>).</li>
+    <li><strong>Position</strong> = free stock (on hand &minus; reserved, internal locations) + incoming (open incoming moves and lines of approved or not-received restocks).</li>
+    <li><strong>Run-out day</strong> = the first day whose cumulative demand exceeds the position; <code>days_left</code> is the days before it. A pessimistic run-out uses the upper 80% bound.</li>
+    <li><strong>Lead time L</strong> per supplier: the 90th percentile of its receipts if it has at least 3, else the supplier-info delay, else 10 days; rounded up to whole days.</li>
+    <li><strong>Safety stock</strong> SS = z &times; &sigma; &times; &radic;((L + R) / 7), with z for the service level, &sigma; = the product&rsquo;s backtest RMSE at 1&ndash;2 weeks ahead &times; the variant&rsquo;s share.</li>
+    <li><strong>Reorder point</strong> = demand over L + SS. <strong>Order-up-to level</strong> S = demand over (L + R) + SS.</li>
+    <li><strong>Suggested quantity</strong> = ceil(max(0, S &minus; free &minus; incoming)), raised to the supplier&rsquo;s minimum if any, and capped at 12 weeks of average forecast demand (flag <code>capped</code>).</li>
+    <li><strong>Order by</strong> = the day the position falls to the safety stock, minus L. If that is on or before the as-of day the status is <code>order_now</code>.</li>
+    <li><strong>Supplier choice</strong> (eligible suppliers only: active, switched on, not unavailable today or during the expected arrival, with a supply line for the variant&rsquo;s garment type, size and colour): suppliers that arrive before the run-out day first, then lowest landed unit cost, then shortest L, then name. Alternatives are stored.</li>
+  </ol>
+
+  <div class="tablebox" tabindex="0" role="region" aria-label="Restock parameters">
+  <table>
+    <caption>Parameters in force (<code>restock.PARAMS</code>)</caption>
+    <thead><tr><th>Parameter</th><th>Value</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>service_level</code></td><td class="num">0.90</td><td>z = 1.2816 (normal inverse of 0.90)</td></tr>
+      <tr><td><code>review_days</code> (R)</td><td class="num">7</td><td>How often stock is reviewed</td></tr>
+      <tr><td><code>cap_weeks</code></td><td class="num">12</td><td>Upper limit of a suggestion, in weeks of average demand</td></tr>
+      <tr><td><code>default_lead_days</code></td><td class="num">10</td><td>Used when a supplier has no usable history or delay</td></tr>
+      <tr><td><code>min_receipts</code></td><td class="num">3</td><td>Receipts needed before a supplier&rsquo;s own history is trusted</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Status labels</h3>
+  <p>The restock <code>status</code> uses exactly these labels. (The words <code>warning</code> and <code>critical</code> belong to <em>alerts</em>, section J, not to restock rows.)</p>
+  <div class="tablebox" tabindex="0" role="region" aria-label="Restock status labels">
+  <table>
+    <thead><tr><th>Label</th><th>Rule</th><th>Latest shop run: variants</th></tr></thead>
+    <tbody>
+      <tr><td><code>order_now</code></td><td>Order-by day is on or before the as-of day and the suggested quantity is above 0</td><td class="num">0</td></tr>
+      <tr><td><code>plan</code></td><td>An order-by day exists but <code>order_now</code> does not apply (the day is still ahead, or the suggested quantity is 0)</td><td class="num">1</td></tr>
+      <tr><td><code>ok</code></td><td>Demand is forecast but the position does not fall to the safety stock within the horizon</td><td class="num">224</td></tr>
+      <tr><td><code>no_demand</code></td><td>Forecast demand is zero for the period</td><td class="num">21</td></tr>
+      <tr><td><code>no_forecast</code></td><td>The product has no forecast (never sold, or the forecast did not run)</td><td class="num">0</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small muted">Counts are from run 3 on <code>clothcraft_shop</code> (246 rows), read from the stored table on 27 October 2026.</p>
+  <p>Separately, <code>stockout_before_arrival</code> is true when an order placed today would arrive (as-of + L) after the run-out day, and <code>arrives_before_runout</code> is its counterpart.</p>
+
+  <h3>What stays a human decision</h3>
+  <p>Whether to place the order, with which supplier (the ranking is only a default), how many, whether the supplier can really deliver, and whether demand will really follow the forecast. The Administrator approves, rejects and receives restocks in the normal workflow.</p>
+
+  <h3>Historical stock balance and the opening-balance rule</h3>
+  <p>The DSS rebuilds each variant&rsquo;s end-of-day stock from its done stock moves. <strong>The stored stock dates are never changed.</strong> During integration of the scenario pack into the development shop, the original operational stock dates were preserved: the shop&rsquo;s 243 opening-stock moves keep their original date (2026-10-23), and the &ldquo;D1&rdquo; step that would have re-dated them was deliberately not run on the shop.</p>
+  <p>Because that opening stock is dated after the first sales, a plain rebuild would show many variants below zero, hence &ldquo;out of stock&rdquo;, until the opening date. The engine therefore applies an <em>opening-balance rule</em> (<code>transform.backdate_opening</code>) <strong>in memory only</strong>, for the reconstruction:</p>
+  <ul>
+    <li>A variant&rsquo;s <em>opening move</em> is its first-entered (lowest id) done inbound move, if that is an inventory adjustment of positive quantity.</li>
+    <li>The rule applies only when, without that move, the running balance goes below zero on some day before the move&rsquo;s own day, counting real receipts and outgoing moves as cover (stock added by a later count is not treated as cover).</li>
+    <li>It then counts that one move from the earlier of the variant&rsquo;s first other move and the start of history. Only its day moves; its quantity is counted once; no other move changes; nothing is written anywhere.</li>
+    <li>It does not apply when the opening stock is dated early enough, when there is no opening move, or when the balance never goes negative.</li>
+  </ul>
+  <p><em>Assumption:</em> a lower move id means it was entered earlier. The reconstruction is only as good as that assumption. Covered by tests in <code>engine/tests/test_transform.py</code>.</p>
+</section>
+
+<!-- =============================================================================================== J -->
+<section id="j-engines" aria-labelledby="j-h">
+  <h2 id="j-h"><span class="letter">J</span>Customer segmentation, alerts and business health</h2>
+  <p class="callout info" style="padding:.6rem 1rem"><span class="pill off">Not yet implemented</span> as admin screens. The three engines below run in every DSS run and their results are stored and served by the API; the frontend has no page for them yet.</p>
+
+  <h3>Customer segmentation (RFM)</h3>
+  <p><strong>Inputs:</strong> Closed orders only (the &ldquo;Closed rule&rdquo;: orders in the Closed state, dated by their latest <code>closed</code> audit line, else <code>delivered</code>, else the order date; on a database without that state, delivered-and-paid orders dated by their last delivery). Every run records which rule it used. <strong>Per customer:</strong></p>
+  <ul>
+    <li><strong>Recency (R)</strong> = whole days from the last Closed order to the end of the as-of day.</li>
+    <li><strong>Frequency (F)</strong> = lifetime number of Closed orders.</li>
+    <li><strong>Monetary (M)</strong> = total of those orders, VAT included.</li>
+  </ul>
+  <p><strong>Scores 1&ndash;5:</strong> R and M by quintile of rank (ties broken by customer id so the same data always scores the same; more recent and larger score higher). F by fixed bands: 1 order = 1, 2 = 2, 3&ndash;4 = 3, 5&ndash;8 = 4, 9 or more = 5 (quintiles would break on the many one-order customers).</p>
+  <div class="tablebox" tabindex="0" role="region" aria-label="Segment rules">
+  <table>
+    <caption>Segment rules: the first rule that matches, in this order</caption>
+    <thead><tr><th>#</th><th>Segment</th><th>Rule (R score, F score)</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Champions</td><td>R &ge; 4 and F &ge; 4</td></tr>
+      <tr><td>2</td><td>Loyal</td><td>F &ge; 4 and R &ge; 3</td></tr>
+      <tr><td>3</td><td>Potential loyalists</td><td>R &ge; 4 and F is 2 or 3</td></tr>
+      <tr><td>4</td><td>New</td><td>R &ge; 4 and F = 1</td></tr>
+      <tr><td>5</td><td>At risk</td><td>R &le; 2 and F &ge; 3</td></tr>
+      <tr><td>6</td><td>One-time, lapsed</td><td>F = 1 and R &le; 3</td></tr>
+      <tr><td>7</td><td>Hibernating</td><td>R &le; 2 and F &le; 2</td></tr>
+      <tr><td>8</td><td>Needs attention</td><td>anything else</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>Limits:</strong> with fewer than 20 scored customers there is no segment table (<code>not_enough_customers</code>). Customers with confirmed orders but no Closed order are not scored; they are counted as <code>no_completed_order</code>. Quintile scores are <em>relative</em> to the other customers, so a segment name says how a customer ranks, not that they are valuable in absolute terms. <strong>Example output:</strong> run 3 on the development shop scored 101 customers: One-time lapsed 25, Needs attention 18, Champions 17, New 15, At risk 14, Potential loyalists 8, Loyal 2, Hibernating 2 (synthetic customers).</p>
+
+  <h3>Alerts</h3>
+  <p>Computed per run and stored; there are no notifications. These are <em>calculated indicators</em>: they say a rule matched on the records, not that a real-world problem is confirmed (a bank transfer may have been paid but not yet recorded; a forecast stock-out is a prediction).</p>
+  <div class="tablebox" tabindex="0" role="region" aria-label="Alert kinds">
+  <table>
+    <caption>Five alert kinds (<code>engine/alerts.py</code>)</caption>
+    <thead><tr><th>Kind</th><th>Rule</th><th>Bands and severity</th></tr></thead>
+    <tbody>
+      <tr><td><code>unpaid_bank_transfer</code></td><td>Confirmed order with a pending bank-transfer payment and nothing shipped; age from order date to the end of the as-of day</td><td>3+ days <code>follow_up</code> (info); 7+ <code>stuck</code> (warning); 14+ <code>admin_decide</code> (critical)</td></tr>
+      <tr><td><code>forecast_stockout</code></td><td>A variant whose run-out day falls within L + R days</td><td><code>critical</code> if an order placed today would arrive after the run-out day, else <code>warning</code></td></tr>
+      <tr><td><code>low_stock_risk</code></td><td>Variant the shop marks low (on hand strictly below its low-stock level; default level 5; a level of 0 never makes it low) that also has a forecast run-out day</td><td><code>warning</code></td></tr>
+      <tr><td><code>restock_supplier</code></td><td>Open restock (approved or not received) whose supplier is inactive, permanently off, unavailable today, or unavailable during the expected arrival</td><td><code>warning</code></td></tr>
+      <tr><td><code>restock_overdue</code></td><td>Open restock past its expected arrival range</td><td><code>warning</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Business health</h3>
+  <p>Source: <code>engine/health.py</code>. All money is VAT included. Revenue counts only Closed orders.</p>
+  <ul>
+    <li><strong>Monthly series</strong> (whole Manila months; the as-of month is partial and flagged): earned revenue; spending (received restocks by month received, plus purchase-order receipts at line cost); cost of goods sold (garment units of revenue orders &times; the variant&rsquo;s last purchase cost, in the month of their revenue); <em>cash view</em> = revenue &minus; spending; <em>margin view</em> = revenue &minus; cost of goods sold. A 3-month moving average is computed for complete months.</li>
+    <li><strong>Trend label</strong> from the last 6 complete months of the 3-month average revenue: least-squares slope divided by the mean; at or above +2% <code>growing</code>, at or below &minus;2% <code>declining</code>, else <code>stable</code>; <code>not_enough_history</code> until 8 complete months exist. A <strong>warning</strong> flag is set when the last 3 complete months all had a negative cash view.</li>
+    <li><strong>KPIs:</strong> stock value (on hand &times; last purchase cost, never Odoo&rsquo;s standard cost), stock cover in months (stock value / mean cost of goods sold of the last 3 complete months), year-on-year growth (when the year-earlier month exists), cumulative revenue and spending, and a <em>net position after the starting investment</em>. The supplier opening balance is a starting investment: never spending, never a loss.</li>
+    <li><strong>Projection:</strong> revenue for the as-of month&rsquo;s remaining days and the next months, from the total forecast &times; revenue per unit (Closed revenue of the last 3 complete months / garment units). Only months whose remaining days all lie inside the forecast horizon are projected; the others are <code>not_covered</code> with no figures. The 80% band adds the weekly bounds.</li>
+    <li><strong>Not provided:</strong> there is no cash balance, balance sheet, runway or bankruptcy figure in Odoo, so none is invented.</li>
+  </ul>
+  <p><strong>Example output (run 3, synthetic data):</strong> trend <code>stable</code> (relative slope +0.2%); 12 complete months; the November 2026 projection is about 62.6 units and &#8369;26,418 (80% band &#8369;11,457&ndash;&#8369;53,964); December is <code>not_covered</code>. These are demonstrations of the method.</p>
+</section>
+
+<!-- =============================================================================================== K -->
+<section id="k-evidence" aria-labelledby="k-h">
+  <h2 id="k-h"><span class="letter">K</span>Model evaluation and evidence</h2>
+  <div class="callout bad">
+    <p class="title">What this section does and does not establish</p>
+    <p>Every figure here comes from the <strong>synthetic scenario pack</strong>, replayed into the development shop. They demonstrate that the DSS computes what its rules say it should, and give a first look at how the forecast methods behave on that data. They do <strong>not</strong> show how accurate the forecasts would be on a real shop: the synthetic data was generated by rules the project wrote, and no independent real-world outcomes were compared.</p>
+  </div>
+
+  <h3>Which run was used</h3>
+  <p>All forecast figures are from the latest finished DSS run on <code>clothcraft_shop</code>: <strong>run 3</strong>, engine <code>B8-S4</code>, triggered by Run now, as-of 2026-10-26, started 2026-10-26 15:27:11 UTC (23:27 Manila), duration <strong>59.1 s</strong>, with the data described in <a href="#g-data">section G</a>. They were checked on 27 October 2026 by (a) querying the stored run and output tables read-only, and (b) re-running the project&rsquo;s read-only comparison script <code>scripts/pack_compare.py</code> against the shop in a read-only transaction. Both gave the same numbers.</p>
+
+  <div class="tablebox" tabindex="0" role="region" aria-label="Verified results">
+  <table>
+    <caption>Verified results and their definitions</caption>
+    <thead><tr><th>Result</th><th>Value</th><th>What was measured</th><th>What it does not show</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Pack comparison</strong></td><td><strong>353 match, 3 mismatch, 1 not comparable</strong>, of 357 ground-truth rows</td><td>Each row of <code>ground_truth.csv</code> (what a screen or API view should show, written in advance from the rules) against the stored run, across scenarios S01&ndash;S21.</td><td>Not validation against real outcomes. The expectations were written by the same project from reading the rules; a mismatch can mean the pack is wrong as easily as the DSS. See below.</td></tr>
+      <tr><td><strong>Forecast WAPE</strong></td><td><strong>45.1%</strong></td><td>Chosen configuration (<code>ets_croston</code> with 5 overrides), <em>total</em> level (sum of all products), all horizons 1&ndash;8, 90 scored rows (12 origins, target weeks up to the last complete week, 2026-10-19). Origins fall every second week from 2026-04-27 to 2026-09-28 (derived from the code&rsquo;s rule and the as-of date).</td><td>It is the error of the <em>sum</em> of all products, which is easier than product by product. At product level the selection WAPEs were 111.6% (<code>ets_croston</code>), 112.5% (<code>ets</code>), 112.8% (<code>ma4</code>) and 122.0% (<code>naive</code>): single products sell a few units a week.</td></tr>
+      <tr><td><strong>Forecast bias</strong></td><td><strong>&minus;19.7%</strong> (about &minus;19.74)</td><td>Same rows: the forecasts added up to about a fifth less than what sold (negative = under-forecast). Product by product (all weeks), 25 of 38 products were under-forecast and 13 over-forecast, with a median product bias of &minus;13.2%.</td><td>Includes the 5 product overrides, which pick whichever method scored best on past weeks; a selection effect can make results look better in the sample than going forward.</td></tr>
+      <tr><td><strong>Interval coverage</strong></td><td><strong>75.6%</strong> for the 80% range; <strong>85.6%</strong> for the 95% range</td><td>Share of the same 90 scored weeks in which the actual fell inside the stored range (quantiles 10&ndash;90% and 2.5&ndash;97.5% of earlier out-of-sample residuals).</td><td>Both are below their nominal level, so the ranges are somewhat too narrow on this data; with the under-forecast bias this is expected. 90 weeks is a small sample.</td></tr>
+      <tr><td><strong>Run time</strong></td><td><strong>59.1 s</strong></td><td>Run 3 on <code>clothcraft_shop</code> (finished 15:28:10 UTC). The figure 59.6 s that circulated earlier belongs to run 1 on the separate pack database with the older engine, so it is <em>not</em> the shop run&rsquo;s time.</td><td>Depends on the machine and container; not a performance guarantee.</td></tr>
+      <tr><td><strong>Output volume</strong></td><td><strong>240 forecast rows, 3,240 backtest rows</strong></td><td>Row counts stored with run 3: forecast 240, backtest 3,240, restock 246, segments 101, alerts 5, health 13, actuals 1,120.</td><td>Counts, not quality.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>The 4 rows that did not match</h3>
+  <ul>
+    <li><strong>3 mismatches, all scenario S10, variant <code>W-TEE-BLK-M</code>.</strong> The pack expected a forecast stock-out, a low-stock risk and an &ldquo;order now&rdquo; urgency. The DSS did not raise them because that variant had 28 units <em>incoming</em> from open approved restocks (on hand 1, reserved 1, free 0): free + incoming covers the very small forecast demand (about 0.03 a day), so the status was <code>ok</code>. The expectation ignored the incoming stock. This is a difference in how incoming stock is counted, not a calculation error; neither side has been changed.</li>
+    <li><strong>1 not comparable, scenario S11.</strong> The row expected a median lead time for a supplier that the DSS recommends for no variant; only the 90th percentile is stored for such a supplier, so the median cannot be read.</li>
+  </ul>
+  <p>Earlier in the work, three apparent mismatches in scenario S09 were traced to the comparison script comparing an integer key with a text key; that was fixed in the script, not in the DSS.</p>
+
+  <h3>How the figures can be reproduced</h3>
+  <p><code>scripts/pack_compare.py</code> (run inside <code>odoo shell</code> in a read-only transaction) prints the per-scenario table and the accuracy block; its method is documented in the script header and <code>testdata/dss-scenarios/RUNBOOK.md</code>. The database change log is <code>testdata/dss-scenarios/DATABASE_CHANGES.md</code>.</p>
+
+  <h3>Validation that does not exist yet</h3>
+  <p>There is no comparison of any forecast with real customer purchases, because no real trading history exists in this deployment. Until there is, the figures above should be read as a demonstration that the method runs, and as a first comparison against simple baselines on invented data. At product level the best candidate policy (<code>ets_croston</code>, 111.6%) beat the better baseline (<code>ma4</code>, 112.8%) by only about 1.1 WAPE points, so the run records <code>model_beats_baseline</code> as true on a very small margin.</p>
+</section>
+
+<!-- =============================================================================================== L -->
+<section id="l-limits" aria-labelledby="l-h">
+  <h2 id="l-h"><span class="letter">L</span>Data integrity and limitations</h2>
+  <p>These are expected properties of the project&rsquo;s current stage, not defects. Each entry says what it means in practice.</p>
+  <div class="tablebox" tabindex="0" role="region" aria-label="Limitations">
+  <table>
+    <thead><tr><th>Limitation</th><th>Practical impact</th></tr></thead>
+    <tbody>
+      <tr><td>The development shop contains synthetic and reconstructed records (370 pack orders, 112 customers, 8 employees, restocks, counts, designs). Only 2 orders, 3 customers, 19 products, 3 suppliers and 5 designs pre-date the pack.</td><td>Do not treat any sales, customer, revenue or stock history in the development shop as verified business history. Use the shop&rsquo;s real marker and the <code>@example.test</code> pattern to tell them apart.</td></tr>
+      <tr><td>Forecast quality depends on available history. Weekly units per product are small and noisy; no annual seasonality is modelled (about 1.5 years of data).</td><td>Treat product-level forecasts as rough guidance; totals and garment types are steadier. Expect wider ranges for new products.</td></tr>
+      <tr><td>Some variants have limited history; products with fewer than 8 selling weeks use a borrowed group average.</td><td>Those forecasts are flagged <code>not_enough_history</code> and carry a twice-wide range.</td></tr>
+      <tr><td>Variant-level restock splits are the product forecast times a share from recent sales. With original stock dates preserved and the opening-balance rule applied, a variant&rsquo;s reconstructed history can differ from what a re-dated history would give.</td><td>Variant rows (size and colour) are less certain than product rows. Stored stock dates were not altered to improve the figures.</td></tr>
+      <tr><td>WAPE and bias each tell part of the story: bias can cancel, WAPE hides direction, and both depend on the level (total vs product).</td><td>Read them together, with the number of weeks scored (<code>n</code>) and the level.</td></tr>
+      <tr><td>Incoming stock and ground-truth mismatches (section K): the DSS counts approved incoming restocks as available position.</td><td>A variant with a large incoming order is not flagged as running out, which matches the intended rule but can differ from a hand-written expectation.</td></tr>
+      <tr><td>Demand lost during stock-outs is not recorded, and some shortages are not detected.</td><td>Demand is understated for items that sell out; the censored-week flag reduces but does not remove the effect.</td></tr>
+      <tr><td>Reserved quantity per past day is a reconstruction.</td><td>Free-stock history is approximate.</td></tr>
+      <tr><td>The DSS screens badge the synthetic history as REAL DATA (section G).</td><td>The badge is not a guarantee of authenticity here.</td></tr>
+      <tr><td>The editor does not auto-save a premade design as a draft; the premade template is never changed.</td><td>A customer who closes the tab before adding to the cart loses the edits. Designs started from blank are autosaved as drafts.</td></tr>
+      <tr><td>The signed-in, end-to-end customer journey on the real shop was not run during this documentation work.</td><td>It is covered by mock-shop checks and unit tests, not by a live purchase.</td></tr>
+      <tr><td>Premade design artwork is original code-drawn art; the garment photos behind the previews are the shop&rsquo;s existing ones and their licence is unconfirmed.</td><td>Confirm the photo licence before a public launch (<code>frontend/public/garments/CREDITS.md</code>).</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- =============================================================================================== M -->
+<section id="m-tests" aria-labelledby="m-h">
+  <h2 id="m-h"><span class="letter">M</span>Testing and verification</h2>
+  <p>Runs made on <strong>27 October 2026</strong> for this page, in this working tree. A test group is listed as <span class="pill ok">Passed</span> only where a run in this session showed it. &ldquo;Not run&rdquo; means it needs a service or credentials that were not used.</p>
+  <div class="tablebox" tabindex="0" role="region" aria-label="Test results">
+  <table>
+    <caption>Verification results</caption>
+    <thead><tr><th>Category</th><th>Command or tool</th><th class="num">Passed</th><th class="num">Failed</th><th class="num">Skipped / not run</th><th>What it validates (and what it does not)</th></tr></thead>
+    <tbody>
+      <tr><td>Type checking</td><td><code>tsc -b</code></td><td colspan="3">exit 0, no errors</td><td>All frontend TypeScript compiles under strict settings.</td></tr>
+      <tr><td>Frontend unit and component tests</td><td>Vitest, <code>jsdom</code> project: 51 files</td><td class="num">754</td><td class="num">0</td><td class="num">0</td><td>Logic, components, mock API contract, designs catalog, menu. Does not use a real browser engine or the real backend.</td></tr>
+      <tr><td>Browser and editor tests</td><td>Vitest, <code>edge</code> project (real Microsoft Edge): 9 files</td><td class="num">183</td><td class="num">0</td><td class="num">0</td><td>The Fabric editor, drafts storage (IndexedDB), fee-estimate performance. Headless desktop size only.</td></tr>
+      <tr><td>Backend service tests</td><td>pytest in the API image, 11 test files</td><td class="num">231</td><td class="num">0</td><td class="num">145 skipped</td><td>Request handling, sessions, carts, designs, orders, DSS routes against a stub of Odoo. The 145 skipped tests are live or contract tests that need <code>CONTRACT_BASE_URL</code> (a running stack and test users); they were not run.</td></tr>
+      <tr><td>DSS engine tests</td><td><code>unittest</code>, 7 test modules, engine on hand-built tables</td><td class="num">120</td><td class="num">0</td><td class="num">0</td><td>Each rule: transforms, opening-balance rule, forecast metrics and selection, restock formulas, RFM, alerts, health, bundle integrity. Uses small invented tables, not the shop database.</td></tr>
+      <tr><td>Odoo addon tests</td><td>Odoo test runner, tags <code>/clothcraft,/clothcraft_dss</code>, on a <strong>fresh throwaway database</strong> (Philippines setup, modules just installed)</td><td class="num">298</td><td class="num">0</td><td class="num">0</td><td>Models, security rules, the API facade, the DSS runner and API. <strong>Result: 0 failed, 0 errors of 298 tests</strong>, run from a clean copy of the project on 27 October 2026. An earlier run on a scratch <em>copy of the shop database</em> (which already held orders, DSS runs and carts) gave 20 failures and 3 errors, in tests that assume an empty database; they are not defects of the code. Never run on the shop database itself.</td></tr>
+      <tr><td>Clean installation (tutorial)</td><td>Parts D to H run by hand in a disposable copy with its own Compose project, plus a one-off Edge script</td><td colspan="3">Install completed; 12 of 13 scripted checks passed first time</td><td>Database creation, module installs, catalogue seed, service users, services up, 19 products and pictures, storefront, <code>/designs</code> (12 cards), customer registration, the editor, administrator sign-in, stock page, DSS <em>Run now</em> (finished), <code>/docs/</code>, no console errors or 5xx. The one first-time failure was the <em>test script&rsquo;s</em> way of signing in (registering through the API does not leave the browser signed in); repeated with a sign-in through the page, the editor opened for both a blank design and a premade one. Windows only. Not a cold-cache build and not a Git clone.</td></tr>
+      <tr><td>Production build</td><td><code>npm run build</code></td><td colspan="3">built; <code>docs/index.html</code> is copied byte for byte into the build</td><td>The bundle compiles (built into a scratch folder with the same commands as <code>npm run build</code>). Does not test the page in a browser; the check script below does.</td></tr>
+      <tr><td>Integration and API checks</td><td>Read-only comparison script and read-only SQL on the shop</td><td colspan="3">353 / 357 matched (section K)</td><td>DSS output against pre-written expectations. See the limits in section K.</td></tr>
+      <tr><td>Documentation page and menu link, in Edge</td><td><code>frontend/scripts/check-docs-page.mjs</code></td><td colspan="3">98 of 98 checks passed</td><td>The contents links, in-page links, diagrams, five widths, light and dark contrast, print to PDF, no-JavaScript use, no outside requests, and the menu link in the signed-out and signed-in menus on desktop and phone width. The signed-in menu was checked on the mock shop with a seeded demo customer; no one signed in to the real shop.</td></tr>
+      <tr><td>Scripted browser checks</td><td><code>frontend/scripts/check-*.mjs</code> (17 scripts)</td><td colspan="3">Not re-run for this page</td><td>These drive Edge against a running build. The Browse All Designs check (<code>check-premade-designs.mjs</code>) passed 52 of 52 on the mock shop when it was built earlier in this project; it was not repeated here.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small muted">Test-method definitions in source (counts of <code>def test_</code>, not results): <code>addons/clothcraft/tests</code> 246, <code>addons/clothcraft_dss/tests</code> 52, <code>addons/clothcraft_dss/engine/tests</code> 120. The Odoo runner executed 286 tests; the 120 engine tests ran and passed separately.</p>
+</section>
+
+<!-- =============================================================================================== N -->
+<section id="n-glossary" aria-labelledby="n-h">
+  <h2 id="n-h"><span class="letter">N</span>Glossary and references</h2>
+  <dl class="glossary">
+    <dt>Business Intelligence (BI)</dt><dd>Collecting, organising and analysing business data so people can make better decisions.</dd>
+    <dt>Decision Support System (DSS)</dt><dd>Software that analyses data and presents options or recommendations for a person to decide on. ClothCraft&rsquo;s DSS is batch-computed and recommendation-only.</dd>
+    <dt>ETL</dt><dd>Extract, Transform, Load: reading data from source systems, cleaning and reshaping it, and storing the result for analysis.</dd>
+    <dt>KPI</dt><dd>Key Performance Indicator: a number that tracks a goal, such as WAPE for forecast quality or stock cover for inventory.</dd>
+    <dt>WAPE</dt><dd>Weighted Absolute Percentage Error: 100 &times; (sum of absolute errors) / (sum of actual values).</dd>
+    <dt>Forecast bias</dt><dd>100 &times; (sum of signed errors) / (sum of actuals). Negative means the forecast is too low on balance.</dd>
+    <dt>Backtesting</dt><dd>Judging a method by pretending to forecast from past points in time and comparing with what then happened.</dd>
+    <dt>Rolling origin</dt><dd>A backtest that repeats the forecast from several successive origin dates, each time using only earlier data.</dd>
+    <dt>Prediction interval (range)</dt><dd>A band expected to contain the actual value a stated share of the time (80% or 95% here).</dd>
+    <dt>Censored demand</dt><dd>Sales that could not happen because stock ran out, so recorded sales understate true demand.</dd>
+    <dt>Intermittent demand</dt><dd>Demand with many zero periods, forecast here with Croston&rsquo;s method.</dd>
+    <dt>RFM</dt><dd>Recency (days since last order), Frequency (number of orders) and Monetary value (total spent): three measures used to group customers.</dd>
+    <dt>Lead time</dt><dd>Days from approving a purchase or restock to receiving the goods.</dd>
+    <dt>Safety stock</dt><dd>Extra stock held to absorb forecast error during the lead time plus review period.</dd>
+    <dt>Reorder point / order-up-to level</dt><dd>The position at which to reorder / the target position an order should lift stock to.</dd>
+    <dt>Inventory balance</dt><dd>Units on hand at a point in time; here rebuilt from stock movements for each end of day.</dd>
+    <dt>Restock recommendation</dt><dd>The DSS&rsquo;s suggested quantity, supplier and order-by day for a variant. A suggestion, not an order.</dd>
+    <dt>Closed order</dt><dd>An order that finished its lifecycle (the customer confirmed receipt, or it closed automatically). Only Closed orders count as revenue and in RFM.</dd>
+    <dt>Append-only</dt><dd>Rows can be added but never edited or deleted, enforced by database triggers for DSS results.</dd>
+  </dl>
+
+  <h3>Internal references</h3>
+  <p>Paths are relative to the repository root. They are references for readers with the source, not web links.</p>
+  <ul class="mono">
+    <li>addons/clothcraft_dss/engine/forecast.py, methods.py, restock.py, segments.py, alerts.py, health.py, transform.py, extract.py, extract_more.py, bundle.py</li>
+    <li>addons/clothcraft_dss/models/dss_run.py, dss_outputs.py, api_dss.py</li>
+    <li>addons/clothcraft/models/order_flow.py, restock.py, stock_alert.py; addons/clothcraft/design_fee.py</li>
+    <li>backend/app/main.py, inventory.py, designs.py, odoo.py</li>
+    <li>frontend/src/router.tsx, designs/catalog.ts, admin/dss/</li>
+    <li>testdata/dss-scenarios/README.md, RUNBOOK.md, DATABASE_CHANGES.md, ground_truth.csv</li>
+    <li>scripts/pack_compare.py, pack_load.py</li>
+  </ul>
+  <p class="small muted">No external references are cited: nothing on this page depends on a source that was not checked in this project. The method names (Holt damped trend, Croston, Syntetos&ndash;Boylan, RFM) are standard; their ClothCraft behaviour is defined by the code above, not by the literature.</p>
+</section>
+
+<!-- =============================================================================================== status & counts -->
+<!-- =============================================================================================== TUTORIAL -->
+<section id="tutorial" aria-labelledby="tut-title">
+  <h2 id="tut-title"><span class="letter">&#9654;</span>ClothCraft Installation and Handover Tutorial</h2>
+  <p class="lede">This tutorial takes a classmate from an empty computer to a running ClothCraft shop, and then explains where things are and how to keep it up to date. Follow the lettered parts in order the first time. Every command is meant to be copied exactly. Run each one from the folder named above it.</p>
+
+  <div class="callout ok">
+    <p class="title">What was actually tested, and what was not (27 October 2026)</p>
+    <p>The first-run procedure below was run from scratch in a <strong>disposable copy</strong> of the project (no <code>.env</code> files, its own Docker Compose project, separate volumes and ports) on <strong>Windows 10 Pro with Docker Desktop</strong>, using Windows PowerShell 5.1. The shop installed, started and passed the checks in part H. These were also run in that copy: the frontend type check, the frontend unit tests (754 passed), the production build, the backend tests (231 passed, 145 skipped), the DSS engine tests (120 passed) and the Odoo addon tests on a fresh database (298 run, 0 failed).</p>
+    <p><strong>Not tested:</strong> macOS and Linux (the commands in the folded &ldquo;Bash&rdquo; boxes are the usual shell equivalents but were not run); a first-ever image build with an empty Docker cache (the build was already cached on the test machine, so the build time is not measured); a download from GitHub (the copy was made from the project folder); working with no internet; and the optional DSS demo with scenario data (see part F). Steps that were not run are marked <span class="pill warn">Not tested</span> where they appear.</p>
+  </div>
+
+  <!-- ------------------------------------------------------------------------------ A -->
+  <section id="tut-a" aria-labelledby="tut-a-h">
+    <h3 id="tut-a-h">A. System requirements</h3>
+    <h4>Required for a normal installation</h4>
+    <div class="tablebox" tabindex="0" role="region" aria-label="Required software">
+    <table>
+      <thead><tr><th>What</th><th>Version</th><th>Why, and how it was verified</th></tr></thead>
+      <tbody>
+        <tr><td>Operating system</td><td>Windows 10 or 11 (tested: Windows 10 Pro 10.0.19045)</td><td>The whole procedure was run here. The project&rsquo;s own scripts are written for Windows PowerShell. macOS and Linux should work because everything runs in Docker, but nothing here was run on them.</td></tr>
+        <tr><td>Docker Desktop (or Docker Engine) with Compose v2</td><td>Tested: Docker 29.8.0, Compose v5.5.1</td><td>Runs PostgreSQL 16, Odoo 19 and the API service in containers. The command is <code>docker compose</code> (with a space). The old <code>docker-compose</code> program was not tested.</td></tr>
+        <tr><td>Git</td><td>Any recent version</td><td>To download the project and later updates.</td></tr>
+        <tr><td>Node.js and npm</td><td><strong>Node 22.22 or newer</strong> (tested: Node 26.5.0, npm 12.0.1)</td><td>The storefront is <em>not</em> in a container: you run it on your computer with <code>npm</code>. The floor comes from the packages themselves: React Router 8.5.0 requires Node 22.22 or newer, and Vitest 5.0.5 requires 22.12, 24 or 26 and up. Installing Node also installs npm.</td></tr>
+        <tr><td>A terminal</td><td>Windows PowerShell 5.1 (tested) or PowerShell 7</td><td>All Windows commands below are PowerShell.</td></tr>
+        <tr><td>Internet (first install, and when updating)</td><td>&mdash;</td><td>To download the Docker images (<code>odoo:19.0-20261015</code>, <code>postgres:16</code>, <code>python:3.12.15-slim-trixie</code>), the Python packages added to the Odoo image, and the npm packages. Working offline afterwards was not tested.</td></tr>
+        <tr><td>Free ports on your computer</td><td><code>8069</code>, <code>8000</code>, <code>5173</code></td><td>8069 = Odoo, 8000 = API service (both published on <code>127.0.0.1</code> only), 5173 = the storefront dev server. PostgreSQL is <em>not</em> published; only the other containers reach it. <code>4173</code> is used only by <code>npm run preview</code>. Read from <code>docker-compose.yml</code>, <code>docker-compose.dev.yml</code> and the Vite settings.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><strong>You do not need to install Python or PostgreSQL.</strong> They are inside the containers: Odoo and the DSS engine run on the Python 3.12 that ships in the Odoo image, the API service runs on Python 3.12.15 in its own image, and PostgreSQL 16 is its own container. Node.js is the one runtime you do install yourself.</p>
+
+    <h4>Recommended resources (estimates, not tested minimums)</h4>
+    <ul>
+      <li><strong>Disk:</strong> about 5 GB for the images (measured: Odoo image 3.8 GB, API image 0.24 GB, PostgreSQL 0.64 GB) plus about 0.25 GB for <code>node_modules</code> and some for the databases and backups. <strong>Recommendation: keep at least 15 GB free.</strong></li>
+      <li><strong>Memory:</strong> the three idle containers used about 0.45 GB in total, and the frontend tests need more. Peak memory during the first module install was not measured. <strong>Recommendation: 8 GB of RAM or more</strong>, and let Docker Desktop use at least 4 GB.</li>
+    </ul>
+
+    <h4>Optional, for development and testing</h4>
+    <ul>
+      <li><strong>Microsoft Edge:</strong> the editor&rsquo;s browser tests (<code>--project edge</code>) and the <code>frontend/scripts/check-*.mjs</code> scripts drive the real Edge. <code>npm test</code> runs those too, so on a computer without Edge use the jsdom project alone (part I).</li>
+      <li><strong>A code editor</strong> such as Visual Studio Code, and <strong>curl</strong> (included with Windows 10 and later as <code>curl.exe</code>).</li>
+      <li><strong>An Odoo database manager</strong> is not needed: the tutorial creates the database from the command line.</li>
+    </ul>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ B -->
+  <section id="tut-b" aria-labelledby="tut-b-h">
+    <h3 id="tut-b-h">B. Get the source code</h3>
+    <p>Open PowerShell (Start menu, type <em>PowerShell</em>) in the folder where you keep projects, for example your Documents folder. Then:</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>git clone https://github.com/ZieHna/ClothCraftv3.git
+cd ClothCraftv3</code></pre>
+    <p><code>git clone</code> downloads the project into a new folder called <code>ClothCraftv3</code>; <code>cd</code> moves the terminal into it. <strong>Every command in the rest of this tutorial is run from this folder</strong> (the one that contains <code>docker-compose.yml</code>) unless a step says <code>cd frontend</code>.</p>
+    <p>Check that you have the right project:</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>git remote -v                 # both lines should end with ZieHna/ClothCraftv3.git
+git branch --show-current     # the branch you are on (main)
+git status                    # should say: nothing to commit, working tree clean
+git log --oneline -3          # the three newest commits
+dir                           # you should see docker-compose.yml, addons, backend, frontend, scripts</code></pre>
+    <p>If <code>dir</code> does not list <code>docker-compose.yml</code>, you are in the wrong folder: <code>cd</code> into the clone.</p>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ C -->
+  <section id="tut-c" aria-labelledby="tut-c-h">
+    <h3 id="tut-c-h">C. Install and verify Docker, Git and Node.js</h3>
+    <p>Use the vendors&rsquo; own pages (all of these opened correctly on 27 October 2026):</p>
+    <ul>
+      <li>Docker Desktop for Windows: <a href="https://docs.docker.com/desktop/setup/install/windows-install/">docs.docker.com/desktop/setup/install/windows-install/</a>. Follow its system-requirements list; the installer may ask you to enable WSL 2 or virtualization and to restart.</li>
+      <li>Docker Desktop for Mac: <a href="https://docs.docker.com/desktop/setup/install/mac-install/">docs.docker.com/desktop/setup/install/mac-install/</a> <span class="pill warn">Not tested</span></li>
+      <li>Docker Engine for Linux: <a href="https://docs.docker.com/engine/install/">docs.docker.com/engine/install/</a>, plus the Compose plugin: <a href="https://docs.docker.com/compose/install/">docs.docker.com/compose/install/</a> <span class="pill warn">Not tested</span></li>
+      <li>Git: <a href="https://git-scm.com/downloads">git-scm.com/downloads</a></li>
+      <li>Node.js (choose a version that is 22.22 or newer, such as the current LTS): <a href="https://nodejs.org/en/download">nodejs.org/en/download</a></li>
+      <li>Microsoft Edge (optional, for the browser tests): <a href="https://www.microsoft.com/edge">microsoft.com/edge</a></li>
+    </ul>
+    <p><strong>Start Docker.</strong> On Windows and macOS, open <em>Docker Desktop</em> from the Start menu or Applications and wait until it says the engine is running. On Linux the service is started with your system&rsquo;s service manager.</p>
+    <p>Then check every tool. Close and reopen PowerShell first, so it sees the new installs:</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker --version
+docker compose version
+docker info
+git --version
+node --version
+npm --version</code></pre>
+    <ul>
+      <li><code>docker --version</code> and <code>docker compose version</code> print a version line. If <code>docker compose</code> is &ldquo;not a docker command&rdquo;, your Docker is too old or lacks Compose.</li>
+      <li><code>docker info</code> is the real test that Docker is <em>running</em>. A long block of text that includes <code>Server Version</code> means success. If it ends with an error about connecting to the Docker API or a pipe, Docker Desktop is not running yet (see part J).</li>
+      <li><code>node --version</code> must show <code>v22.22</code> or higher.</li>
+    </ul>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ D -->
+  <section id="tut-d" aria-labelledby="tut-d-h">
+    <h3 id="tut-d-h">D. Configure environment variables</h3>
+    <p>ClothCraft keeps its settings in <code>.env</code> files that are <strong>never uploaded to GitHub</strong> (they are in <code>.gitignore</code>). You create them from the examples. There are three places, and only the first two need you to do anything.</p>
+
+    <h4>1. <code>.env</code> in the project folder: the database login</h4>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>Copy-Item .env.example .env
+notepad .env</code></pre>
+    <p>The file has two settings. Both are <strong>yours to choose</strong>; nothing in the project needs particular values:</p>
+    <dl class="kv">
+      <dt><code>POSTGRES_USER</code></dt><dd>Use <code>odoo</code>. The commands in this tutorial use <code>-U odoo</code>; if you pick another name, replace it in those commands.</dd>
+      <dt><code>POSTGRES_PASSWORD</code></dt><dd>A long random password of your own, used by both the database and Odoo containers. To generate one in PowerShell: <code>-join ((48..57)+(97..122) | Get-Random -Count 24 | ForEach-Object {[char]$_})</code>. Paste the result after the equals sign, with no spaces and no quotes. Do not reuse a real password.</dd>
+    </dl>
+    <p>Now tell Docker Compose to use the development files together. Add these two lines at the end of the same <code>.env</code> (they just save you typing two <code>-f</code> options on every command):</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>COMPOSE_PATH_SEPARATOR=;
+COMPOSE_FILE=docker-compose.yml;docker-compose.dev.yml</code></pre>
+    <p>Save and close the file. <strong>Important:</strong> PostgreSQL only reads <code>POSTGRES_PASSWORD</code> the first time it creates its data. If you change the password later, the existing database keeps the old one (see part J).</p>
+
+    <h4>2. <code>backend/.env</code>: the API service</h4>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>Copy-Item backend\.env.example backend\.env</code></pre>
+    <p>Leave it as it is for now. What is in it:</p>
+    <ul>
+      <li><code>ODOO_API_KEY</code> and <code>SESSION_SECRET</code>: <strong>you do not type these.</strong> A setup script in part F creates a new key and a random secret and writes them here. <code>SESSION_SECRET</code> signs customers&rsquo; login cookies and the service refuses to start without it. If you ever change it, everyone is signed out.</li>
+      <li><code>DELIVERY_LABEL</code>, <code>BANK_NAME</code>, <code>BANK_ACCOUNT_NAME</code>, <code>BANK_ACCOUNT_NUMBER</code>: development defaults and clearly marked placeholders (&ldquo;Sample Bank (placeholder)&rdquo;). Leave them. The shop then tells customers &ldquo;Do not send money&rdquo; for bank transfers.</li>
+      <li>The Odoo address, the database name and the allowed browser origin are set by <code>docker-compose.dev.yml</code>, not here. The optional lines that start with <code>#</code> can stay commented.</li>
+      <li>The staff test accounts: the script in part F also writes two test logins (their emails and random passwords) at the bottom of this file. <strong>They exist only in your copy.</strong> Never paste this file into a chat, an email or an issue.</li>
+    </ul>
+
+    <h4>3. <code>frontend/</code>: how the storefront reaches the API</h4>
+    <p>Nothing to create. The committed <code>frontend/.env.development</code> says <code>VITE_API=odoo</code> and <code>VITE_PROXY_TARGET=http://127.0.0.1:8000</code>. The browser only ever calls <code>/api</code> on its own address (<code>http://localhost:5173</code>); the Vite dev server forwards those calls to the API service on port 8000, which calls Odoo, which talks to PostgreSQL. To override a value for yourself, create <code>frontend/.env.local</code> (also ignored by git).</p>
+
+    <div class="callout warn">
+      <p class="title">Files that must stay on your computer and never be committed</p>
+      <ul>
+        <li><code>.env</code> and <code>backend/.env</code> (passwords, API key, session secret)</li>
+        <li><code>backups/</code> and any <code>*.dump</code> (they contain customers and password hashes)</li>
+        <li><code>testdata/dss-scenarios/_local/</code> (sign-in accounts for the optional demo)</li>
+        <li><code>scripts/mcp_dev/.env</code></li>
+      </ul>
+      <p>All of these are already listed in <code>.gitignore</code>. Run <code>git status</code> before any commit and look at every file it lists.</p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ E -->
+  <section id="tut-e" aria-labelledby="tut-e-h">
+    <h3 id="tut-e-h">E. Build and start the system with Docker</h3>
+    <p><strong>Which setup?</strong> Use the <strong>development stack</strong>: <code>docker-compose.yml</code> (PostgreSQL and Odoo) plus <code>docker-compose.dev.yml</code> (adds the API service and makes Odoo serve only the <code>clothcraft_shop</code> database). That pair is what you selected with the <code>COMPOSE_FILE</code> line in part D. The third file, <code>docker-compose.dss-bundles.yml</code>, is only for importing a simulated DSS bundle on a demo database; ignore it.</p>
+    <p>From the project folder:</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose build odoo api</code></pre>
+    <p><code>build</code> makes the two images that are not downloaded ready-made: the Odoo image (the official Odoo 19 image plus the Python libraries the DSS needs: pandas, numpy, statsmodels) and the API image. The first time it downloads a lot and can take several minutes. Then start only the database:</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose up -d db
+docker compose ps</code></pre>
+    <p><code>-d</code> means &ldquo;detached&rdquo;: the container runs in the background and you get your prompt back. <code>docker compose ps</code> lists the containers; the <code>db</code> line should say <code>Up</code>. The project defines no health checks, so &ldquo;Up&rdquo; plus a successful check in part H is how you know a service is ready. Wait about 10 seconds before the next part, until:</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose exec -T db sh -c 'pg_isready -U "$POSTGRES_USER"'</code></pre>
+    <p>prints <code>accepting connections</code>.</p>
+    <p><strong>Why not start everything now?</strong> The API service cannot start until it has an API key, and the key can only be made after the database exists (part F). You start Odoo and the API at the end of part F.</p>
+    <p>Useful at any time:</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose logs --tail 50 db       # the last 50 log lines of one service
+docker compose logs -f odoo            # follow a service live (Ctrl+C stops following, not the service)</code></pre>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ F -->
+  <section id="tut-f" aria-labelledby="tut-f-h">
+    <h3 id="tut-f-h">F. Database and Odoo initialization (first run only)</h3>
+    <p>ClothCraft does <strong>not</strong> create its database or install its modules by itself. You do it once, in this order. The order matters: the shop&rsquo;s chart of accounts and 12% VAT come from the company&rsquo;s country at the moment the accounting module is installed, so the company must be set to the Philippines <em>before</em> ClothCraft is installed.</p>
+
+    <div class="callout info">
+      <p class="title">Why some commands use <code>cmd /c</code></p>
+      <p>Several steps feed a script file to Odoo&rsquo;s shell. In Windows PowerShell 5.1, piping a file (<code>Get-Content file | docker ...</code>) silently adds an invisible byte-order mark, and Odoo stops with <em>invalid non-printable character U+FEFF</em>. This happened during testing. <code>cmd /c &ldquo;... &lt; file&rdquo;</code> sends the file byte for byte and works. (Some older examples in <code>README.md</code> use the pipe form.)</p>
+    </div>
+
+    <p><strong>Step 1 &ndash; create an empty database</strong> named <code>clothcraft_shop</code> (the name the development stack is set to serve):</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose exec -T db sh -c 'createdb -U "$POSTGRES_USER" -E UTF8 -T template0 clothcraft_shop'</code></pre>
+    <p><strong>Step 2 &ndash; install Odoo&rsquo;s base module</strong> (about 20 seconds in the test):</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose run --rm --no-deps odoo odoo -d clothcraft_shop -i base --stop-after-init --without-demo=True</code></pre>
+    <p><code>run --rm</code> starts a one-off Odoo container that is deleted when it finishes; <code>--no-deps</code> does not start other services; <code>-i base</code> installs a module; <code>--stop-after-init</code> exits when done; <code>--without-demo=True</code> leaves out Odoo&rsquo;s sample data.</p>
+    <p><strong>Step 3 &ndash; set the company to the Philippines and PHP:</strong></p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>cmd /c "docker compose run --rm --no-deps -T odoo odoo shell -d clothcraft_shop --no-http &lt; config\set_ph_company.py"</code></pre>
+    <p>The last line printed should be <code>Company set to PH PHP</code>. <strong>If it is not, stop and fix this before going on.</strong> (Installing ClothCraft with the wrong company cannot be undone cleanly; the way out is to drop the empty database and start again at step 1.)</p>
+    <p><strong>Step 4 &ndash; install the ClothCraft module and the DSS module</strong> (about 95 seconds and 10 seconds in the test):</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose run --rm --no-deps odoo odoo -d clothcraft_shop -i clothcraft --stop-after-init --without-demo=True
+docker compose run --rm --no-deps odoo odoo -d clothcraft_shop -i clothcraft_dss --stop-after-init --without-demo=True</code></pre>
+    <p><strong>Step 5 &ndash; load the shop catalogue:</strong> the 19 garments, their 246 colour-and-size variants, pictures, prices and a starting stock. There are no customers, orders or simulated history.</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>cmd /c "docker compose run --rm --no-deps -T -v ""%CD%\assets-v1:/mnt/assets-v1:ro"" odoo odoo shell -d clothcraft_shop --no-http &lt; scripts\seed_catalogue.py"</code></pre>
+    <p>Success ends with a line that starts <code>SHOP CATALOGUE SEEDED clothcraft_shop | garments 19 | variants 246</code>. The script refuses to run on any other database or one that already has garments, so running it twice is safe.</p>
+    <p><strong>Step 6 &ndash; create the API service user, then the staff test users.</strong> Run them in this order. Each writes into <code>backend\.env</code> and never prints a secret:</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>cmd /c "docker compose run --rm --no-deps -T -v ""%CD%\backend:/out"" -e API_KEY_OUT=/out/.env odoo odoo shell -d clothcraft_shop --no-http &lt; scripts\create_api_user.py"
+cmd /c "docker compose run --rm --no-deps -T -v ""%CD%\backend:/out"" -e STAFF_OUT=/out/.env odoo odoo shell -d clothcraft_shop --no-http &lt; scripts\create_staff_users.py"</code></pre>
+    <p>Expect <code>API USER READY api_shop ...</code> and <code>STAFF USERS READY</code>. To confirm the file was filled without showing the secrets, run this (it prints names only):</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>Get-Content backend\.env | Where-Object { $_ -match '^[A-Z_]+=' } | ForEach-Object { ($_ -split '=')[0] + '=' + $(if (($_ -split '=',2)[1]) {'&lt;set&gt;'} else {'&lt;empty&gt;'}) }</code></pre>
+    <p>Every name, including <code>ODOO_API_KEY</code>, <code>SESSION_SECRET</code> and the four <code>STAFF_&hellip;</code> lines, should say <code>&lt;set&gt;</code>.</p>
+    <p><strong>Step 7 &ndash; start Odoo and the API</strong> and wait a few seconds:</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose up -d odoo api
+docker compose ps</code></pre>
+    <p>All three services (<code>db</code>, <code>odoo</code>, <code>api</code>) should say <code>Up</code>. Now go to part G.</p>
+
+    <details class="note"><summary>Bash / macOS / Linux equivalents of steps 3, 5 and 6 <span class="pill warn">Not tested</span></summary>
+      <div>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose run --rm --no-deps -T odoo odoo shell -d clothcraft_shop --no-http &lt; config/set_ph_company.py
+docker compose run --rm --no-deps -T -v "$PWD/assets-v1:/mnt/assets-v1:ro" odoo odoo shell -d clothcraft_shop --no-http &lt; scripts/seed_catalogue.py
+docker compose run --rm --no-deps -T -v "$PWD/backend:/out" -e API_KEY_OUT=/out/.env odoo odoo shell -d clothcraft_shop --no-http &lt; scripts/create_api_user.py
+docker compose run --rm --no-deps -T -v "$PWD/backend:/out" -e STAFF_OUT=/out/.env odoo odoo shell -d clothcraft_shop --no-http &lt; scripts/create_staff_users.py</code></pre>
+      </div>
+    </details>
+
+    <h4>What the different database operations mean</h4>
+    <dl class="kv">
+      <dt>Create a fresh database</dt><dd>Step 1: an empty PostgreSQL database. Nothing in it yet.</dd>
+      <dt>Install a module</dt><dd><code>-i name</code>: Odoo creates the module&rsquo;s tables and loads its starting data. Done once per database.</dd>
+      <dt>Upgrade a module</dt><dd><code>-u name</code>: after you pull new code, Odoo applies the module&rsquo;s changes (new columns, migrations) to an <em>existing</em> database. Take a backup first (part I) and see part L.</dd>
+      <dt>Restore a backup</dt><dd>Puts the contents of a <code>.dump</code> file into a database. It also needs the pictures (the filestore) to be restored separately, or product pictures will be missing. The project&rsquo;s tested restore is <code>scripts\pack_run.ps1 restore</code> in <code>testdata\dss-scenarios\RUNBOOK.md</code>. <span class="pill warn">Not tested</span> as part of this tutorial.</dd>
+      <dt>Load optional demo data</dt><dd>The DSS <em>scenario pack</em> adds a year of invented orders. See below: it goes in a separate database, never in <code>clothcraft_shop</code>.</dd>
+    </dl>
+
+    <h4>Optional: demo data for the DSS (synthetic)</h4>
+    <p>A fresh shop has no sales, so the forecast has nothing to work on (it needs at least 16 weeks with sales). To <em>see</em> the DSS working, the project has a scenario pack: 370 invented orders from 112 invented customers, 2025-10-01 to 2026-10-26. <strong>It is synthetic, for demonstration and evaluation only; it is not independently verified sales history.</strong> Follow <code>testdata\dss-scenarios\RUNBOOK.md</code>. It loads into its <em>own</em> database, <code>clothcraft_pack_20261026</code>, using <code>scripts\pack_run.ps1</code>, and needs two files from the project owner (a database dump and a product-pictures archive) that are deliberately not in git. <strong>Do not load it into <code>clothcraft_shop</code> by default.</strong> The loader refuses the shop database unless an explicit backup variable is set, and the date-rebasing step (&ldquo;D1&rdquo;) must never be run: the shop&rsquo;s original stock dates are kept. <span class="pill warn">Not tested</span> here (it was run and checked earlier in the project).</p>
+
+    <div class="callout bad">
+      <p class="title">Danger zone: destructive commands (not part of normal setup)</p>
+      <p><code>docker compose down -v</code> deletes the containers <strong>and the database and file volumes</strong>: every database, order, customer and picture is gone. <code>dropdb</code> deletes one database. Never use them to &ldquo;try fixing&rdquo; a problem. Use them only on a copy you can afford to lose, after a verified backup (part I) and after reading <code>README.md</code>. Nothing else in this tutorial deletes data.</p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ G -->
+  <section id="tut-g" aria-labelledby="tut-g-h">
+    <h3 id="tut-g-h">G. Start, open and sign in</h3>
+    <p>Start the storefront. In a <strong>second</strong> PowerShell window (the first can stay free for Docker commands):</p>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>cd frontend
+npm ci
+npm run dev -- --strictPort</code></pre>
+    <p><code>npm ci</code> installs exactly the versions in <code>package-lock.json</code> (about 1 minute; a warning that one package&rsquo;s install script was blocked is expected and harmless here). <code>npm run dev</code> starts the Vite dev server and leaves it running; stop it with Ctrl+C. <code>--strictPort</code> makes it stop with an error if port 5173 is busy instead of quietly choosing another port: the API only accepts browser requests from port 5173 (and 4173&ndash;4175 for previews), so any other port would show the shop but refuse sign-in and registration.</p>
+
+    <div class="tablebox" tabindex="0" role="region" aria-label="Local addresses">
+    <table>
+      <caption>Local addresses (checked on the test install)</caption>
+      <thead><tr><th>What</th><th>Address</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Storefront</td><td><code>http://localhost:5173/</code></td><td>Home. Category: <code>/category</code>. Browse all designs: <code>/designs</code>. Design editor: <code>/design</code> (needs a customer account). Account: <code>/account</code>.</td></tr>
+        <tr><td>Staff interface</td><td><code>http://localhost:5173/staff</code></td><td>Employee sign-in (also reached from the menu: <em>CC user</em> &rarr; <em>Employee login</em>).</td></tr>
+        <tr><td>Admin dashboard</td><td><code>http://localhost:5173/admin/login</code></td><td>Administrator sign-in, then <code>/admin</code>.</td></tr>
+        <tr><td>DSS pages that exist</td><td><code>/admin/dss</code> and <code>/admin/dss/forecast</code></td><td>Overview (with <em>Run now</em>) and Forecast. Nothing else of the DSS has a page yet (part K).</td></tr>
+        <tr><td>This documentation</td><td><code>http://localhost:5173/docs/</code></td><td>Static page; needs no sign-in. Also in the header menu.</td></tr>
+        <tr><td>API check</td><td><code>http://127.0.0.1:8000/api/catalogue/featured</code></td><td>The API has <strong>no health endpoint and no interactive API documentation</strong> (it is switched off); this public read-only route answering with JSON is the simplest check.</td></tr>
+        <tr><td>Odoo back office</td><td><code>http://localhost:8069/odoo</code> (sign-in page: <code>/web/login</code>)</td><td>Odoo&rsquo;s own screens, for the person maintaining the data.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h4>Accounts</h4>
+    <div class="tablebox" tabindex="0" role="region" aria-label="Account types">
+    <table>
+      <thead><tr><th>Account</th><th>How it comes to exist</th><th>Where the password is</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Customer</strong></td><td>Created by the person: header menu &rarr; <em>Register</em>. Nothing is created automatically.</td><td>Chosen by the customer.</td></tr>
+        <tr><td><strong>Staff test administrator</strong> <code>staff.admin@clothcraft.test</code><br><strong>Staff test employee</strong> <code>staff.inventory@clothcraft.test</code></td><td>Made automatically by part F, step 6 (the emails are fixed in the script; they are test accounts, not real people).</td><td>Random, written only to <em>your</em> <code>backend\.env</code> as <code>STAFF_ADMIN_PASSWORD</code> and <code>STAFF_INVENTORY_PASSWORD</code>. Open the file on your computer to read them. They are not in git and never printed by a script.</td></tr>
+        <tr><td><strong>API service user</strong> <code>api_shop</code></td><td>Made automatically by part F, step 6. Used only by the API service.</td><td>It uses the key in <code>backend\.env</code>; nobody signs in with it.</td></tr>
+        <tr><td><strong>Odoo <code>admin</code></strong></td><td>Created by Odoo itself when the database is made.</td><td><strong>A fresh Odoo database accepts the well-known default password <code>admin</code> for this account</strong> (confirmed on the test install). Ports 8069 and 8000 are only open on your own computer, but change it anyway: sign in at <code>/odoo</code>, open your profile, then account security / change password (menu names vary slightly by Odoo version). <span class="pill warn">Not tested</span> as a click path.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><strong>Setting up your own local administrator safely:</strong> sign in at <code>/admin/login</code> with the staff test administrator, open <em>Employees</em> &rarr; <em>New</em>, and create your own account with the <em>Administrator</em> role and a password you choose (12 to 128 characters). Then you can deactivate the test administrator. The dashboard refuses to deactivate or demote the last active administrator.</p>
+    <p>If you lose all administrators, the README section &ldquo;Employee management&rdquo; explains how to recover through Odoo.</p>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ H -->
+  <section id="tut-h" aria-labelledby="tut-h-h">
+    <h3 id="tut-h-h">H. Verify the installation</h3>
+    <p>Safe, read-only checks first. Docker commands run from the project folder.</p>
+    <div class="tablebox" tabindex="0" role="region" aria-label="Verification checklist">
+    <table>
+      <thead><tr><th>#</th><th>Check</th><th>Command or action</th><th>A good result looks like</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Containers running</td><td><code>docker compose ps</code></td><td>Three lines, <code>db</code>, <code>odoo</code>, <code>api</code>, each <code>Up</code>.</td></tr>
+        <tr><td>2</td><td>Database connectivity</td><td><code>docker compose exec -T db sh -c 'pg_isready -U "$POSTGRES_USER"'</code></td><td><code>accepting connections</code></td></tr>
+        <tr><td>3</td><td>Modules installed</td><td><code>docker compose exec db psql -U odoo -d clothcraft_shop -c "select name, state, latest_version from ir_module_module where name like 'clothcraft%' order by name"</code></td><td>Two rows, <code>clothcraft</code> and <code>clothcraft_dss</code>, state <code>installed</code>.</td></tr>
+        <tr><td>4</td><td>Seeded catalogue</td><td><code>docker compose exec db psql -U odoo -d clothcraft_shop -At -c "select count(*) from product_template where garment_type_id is not null"</code></td><td><code>19</code></td></tr>
+        <tr><td>5</td><td>Odoo answers</td><td><code>(Invoke-WebRequest -UseBasicParsing http://127.0.0.1:8069/web/login).StatusCode</code></td><td><code>200</code></td></tr>
+        <tr><td>6</td><td>API answers</td><td><code>(Invoke-WebRequest -UseBasicParsing http://127.0.0.1:8000/api/catalogue/featured).StatusCode</code></td><td><code>200</code> (an error code, such as 502, means the API cannot reach Odoo or the database)</td></tr>
+        <tr><td>7</td><td>Storefront and API through the dev server</td><td>Open <code>http://localhost:5173/</code>. Browser console: F12.</td><td>The landing page, with featured garments, and no red errors in the console.</td></tr>
+        <tr><td>8</td><td>Products, stock and pictures</td><td>Open <code>/category</code></td><td>19 garments, each with a picture, a peso price and an in-stock, low-stock or sold-out label. (Tested: all 19 pictures load.)</td></tr>
+        <tr><td>9</td><td>Documentation</td><td>Open <code>http://localhost:5173/docs/</code>, or the header menu &rarr; <em>Documentation</em></td><td>This page, opening in a new tab from the menu.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p><strong>Checks that write to the database.</strong> Do these only on this local, disposable install:</p>
+    <div class="tablebox" tabindex="0" role="region" aria-label="Checks that write">
+    <table>
+      <thead><tr><th>Check</th><th>Action</th><th>A good result looks like</th></tr></thead>
+      <tbody>
+        <tr><td>Sign in (creates a customer)</td><td>Header menu &rarr; <em>Register</em>; use any made-up name, an address ending in <code>@example.test</code>, and a long password.</td><td>The dialog closes and the menu shows your name.</td></tr>
+        <tr><td>Design editor</td><td>While signed in, open <code>/designs</code> and press <em>Customize Design</em> on any card (or <code>/design?product=m-tee&amp;variant=M-TEE-BLK-M</code> for a blank one).</td><td>A canvas with the design&rsquo;s layers and the garment behind it. (Tested with a premade design and a blank one.)</td></tr>
+        <tr><td>Administrator sign-in</td><td>Open <code>/admin/login</code>; use the staff test administrator from part G.</td><td>The admin dashboard. <code>/admin/stock</code> lists the variants with their stock.</td></tr>
+        <tr><td>DSS run (creates one DSS run)</td><td>Signed in as administrator, open <code>/admin/dss</code> and press <em>Run now</em>.</td><td>After a short wait: &ldquo;DSS run completed successfully&rdquo;, and the run appears in the list marked <em>REAL DATA</em>. On a fresh shop the run has no orders to forecast from, so the forecast stays empty and alerts show zero; that is correct. The forecast needs at least 16 complete weeks with sales.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ I -->
+  <section id="tut-i" aria-labelledby="tut-i-h">
+    <h3 id="tut-i-h">I. Daily commands</h3>
+    <p>Every command was run on the test install unless marked. &ldquo;Project folder&rdquo; means the folder with <code>docker-compose.yml</code>. All of them are safe for normal use; none of them deletes data.</p>
+    <div class="tablebox" tabindex="0" role="region" aria-label="Daily commands">
+    <table>
+      <thead><tr><th>Task</th><th>Folder</th><th>Command</th></tr></thead>
+      <tbody>
+        <tr><td>Start the system</td><td>Project</td><td><code>docker compose up -d</code>, then in <code>frontend</code>: <code>npm run dev -- --strictPort</code></td></tr>
+        <tr><td>Stop, keeping all data</td><td>Project</td><td><code>docker compose stop</code> (and Ctrl+C in the frontend window). Start again with <code>docker compose up -d</code>. Verified: the shop answered again after a stop and start.</td></tr>
+        <tr><td>Service status</td><td>Project</td><td><code>docker compose ps</code> (add <code>-a</code> to include stopped ones)</td></tr>
+        <tr><td>Logs of one service</td><td>Project</td><td><code>docker compose logs --tail 100 api</code> (or <code>odoo</code>, <code>db</code>); follow live with <code>logs -f odoo</code></td></tr>
+        <tr><td>Rebuild an image after its code or dependencies changed</td><td>Project</td><td><code>docker compose build api</code> then <code>docker compose up -d api</code> (the same for <code>odoo</code>). Odoo&rsquo;s addon code is mounted from <code>addons/</code>, so a code change there needs only a module upgrade (part L), not a rebuild.</td></tr>
+        <tr><td>Restart one service</td><td>Project</td><td><code>docker compose restart api</code></td></tr>
+        <tr><td>Get a shell inside a container</td><td>Project</td><td><code>docker compose exec api sh</code> (API; <code>exit</code> to leave). <code>docker compose exec db psql -U odoo -d clothcraft_shop</code> opens the database prompt.</td></tr>
+        <tr><td>Frontend type check</td><td class="nowrap"><code>frontend</code></td><td><code>npm run typecheck</code></td></tr>
+        <tr><td>Frontend tests (no browser needed)</td><td class="nowrap"><code>frontend</code></td><td><code>npx vitest run --project jsdom</code> (754 tests, about 2 minutes). <code>npm test</code> also runs the Edge project and needs Microsoft Edge.</td></tr>
+        <tr><td>Frontend editor tests in Edge</td><td class="nowrap"><code>frontend</code></td><td><code>npx vitest run --project edge</code> (183 tests; needs Edge)</td></tr>
+        <tr><td>Production build</td><td class="nowrap"><code>frontend</code></td><td><code>npm run build</code> (writes <code>frontend/dist</code>, including <code>dist/docs</code>); look at it with <code>npm run preview</code> on port 4173</td></tr>
+        <tr><td>Backend (API service) tests</td><td>Project</td><td><code>docker compose run --rm --no-deps -v "${PWD}/contract:/contract:ro" api python -m pytest -q -p no:cacheprovider tests</code>. Expect <code>231 passed, 145 skipped</code>; the skipped ones need a live stack address and are not run.</td></tr>
+        <tr><td>DSS engine tests</td><td>Project</td><td><code>docker compose run --rm --no-deps -w /mnt/extra-addons/clothcraft_dss -e PYTHONDONTWRITEBYTECODE=1 --entrypoint python3 odoo -m unittest discover -s engine/tests -t .</code> Expect <code>Ran 120 tests ... OK</code>.</td></tr>
+        <tr><td>Odoo addon tests (on a <strong>throwaway</strong> database)</td><td>Project</td><td>See the box below. Expect <code>0 failed, 0 error(s) of 298 tests</code>.</td></tr>
+        <tr><td>Database status</td><td>Project</td><td><code>docker compose exec -T db sh -c 'pg_isready -U "$POSTGRES_USER"'</code> and <code>docker compose exec db psql -U odoo -l</code> (lists databases)</td></tr>
+        <tr><td>Back up the database</td><td>Project</td><td>See the box below.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <details class="note"><summary>Back up the database and the pictures (tested)</summary>
+      <div>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>New-Item -ItemType Directory -Force backups | Out-Null
+docker compose exec -T db sh -c 'pg_dump -U "$POSTGRES_USER" -Fc -f /tmp/shop.dump clothcraft_shop'
+docker compose cp db:/tmp/shop.dump backups/clothcraft_shop-YYYYMMDD.dump
+docker compose exec -T db sh -c 'pg_restore --list /tmp/shop.dump | head -3'
+docker compose exec -T db sh -c 'rm /tmp/shop.dump'
+docker compose cp odoo:/var/lib/odoo/.local/share/Odoo/filestore/clothcraft_shop backups/filestore-YYYYMMDD</code></pre>
+        <p>The first <code>docker compose cp</code> brings the database dump out of the container (the dump is written inside the container because PowerShell 5.1 corrupts binary data sent through <code>&gt;</code>). The listing proves the dump is readable. The last command copies the pictures. The <code>backups</code> folder is ignored by git. A backup <strong>contains customer data</strong>: keep it private. Tested sizes on a fresh shop: 6.1 MB dump, 524 files (8.8 MB) of pictures.</p>
+      </div>
+    </details>
+
+    <details class="note"><summary>Run the Odoo addon tests on a throwaway database (tested, about 6 minutes)</summary>
+      <div>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose exec -T db sh -c 'createdb -U "$POSTGRES_USER" -E UTF8 -T template0 clothcraft_test'
+docker compose run --rm --no-deps odoo odoo -d clothcraft_test --db-filter='^clothcraft_test$' -i base --stop-after-init --without-demo=True
+cmd /c "docker compose run --rm --no-deps -T odoo odoo shell -d clothcraft_test --db-filter=^clothcraft_test$ --no-http &lt; config\set_ph_company.py"
+docker compose run --rm --no-deps odoo odoo -d clothcraft_test --db-filter='^clothcraft_test$' -i clothcraft,clothcraft_dss --test-tags /clothcraft,/clothcraft_dss --stop-after-init --without-demo=True</code></pre>
+        <p>Tests never touch <code>clothcraft_shop</code> this way. They need an <em>empty</em> database set up for the Philippines: on a database that already has orders, DSS runs or carts, some tests fail because they expect a clean start. When you are done, you can remove the test database with <code>docker compose exec -T db sh -c 'dropdb -U "$POSTGRES_USER" clothcraft_test'</code> (this deletes only that throwaway database).</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ J -->
+  <section id="tut-j" aria-labelledby="tut-j-h">
+    <h3 id="tut-j-h">J. Common errors and troubleshooting</h3>
+    <p>Work through these in order. <strong>None of them starts by deleting a volume or recreating the database.</strong> &ldquo;Seen&rdquo; means the message was produced on the test install; &ldquo;typical&rdquo; means it is the well-known message but was not reproduced.</p>
+    <div class="tablebox" tabindex="0" role="region" aria-label="Troubleshooting">
+    <table>
+      <thead><tr><th>Symptom</th><th>Diagnostic</th><th>What it means</th><th>Safest fix</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Docker daemon not running.</strong> Any <code>docker</code> command ends with an error about connecting to the Docker API or a named pipe (typical).</td><td><code>docker info</code></td><td>Docker Desktop is closed or still starting.</td><td>Start Docker Desktop, wait until it says it is running, try again.</td></tr>
+        <tr><td><strong>Port already in use.</strong> Docker says <code>Bind for 127.0.0.1:8069 failed: port is already allocated</code> (seen). Vite says <code>Error: Port 5173 is already in use</code> (seen).</td><td><code>docker ps</code> for another project&rsquo;s containers; <code>Get-NetTCPConnection -LocalPort 8069 -State Listen</code> for any program on that port.</td><td>Another program or an older ClothCraft stack owns the port.</td><td>Stop that program or stack (<code>docker compose stop</code> in the other project&rsquo;s folder). Do not move the storefront to another port: the API accepts only 5173 and 4173&ndash;4175.</td></tr>
+        <tr><td><strong>Environment file missing.</strong> <code>env file ...\backend\.env not found</code> (seen). Or a warning <code>The "POSTGRES_USER" variable is not set. Defaulting to a blank string</code> (seen).</td><td><code>dir .env, backend\.env</code></td><td>You skipped part D, or you are in the wrong folder.</td><td>Make the files as in part D. Check <code>dir</code> shows <code>docker-compose.yml</code>.</td></tr>
+        <tr><td><strong>Database connection refused / API 502.</strong> <code>/api/...</code> answers <code>502</code> (seen). In the Odoo log: <code>could not translate host name "db"</code> (seen when the db container was stopped).</td><td><code>docker compose ps</code>, then <code>docker compose logs --tail 30 odoo</code></td><td>The database container is stopped or restarting, so Odoo and then the API cannot work.</td><td><code>docker compose start db</code>, wait 10 seconds, check <code>pg_isready</code>. Data is untouched by a stop.</td></tr>
+        <tr><td><strong>Password authentication failed</strong> for the database user (typical).</td><td><code>docker compose logs --tail 30 db</code> and <code>odoo</code></td><td>You changed <code>POSTGRES_PASSWORD</code> in <code>.env</code> <em>after</em> the database was first created. PostgreSQL keeps the old password.</td><td>Put the original password back in <code>.env</code>. Do not recreate the database.</td></tr>
+        <tr><td><strong>Database or Odoo module not initialized.</strong> Part H check 3 returns no rows or <code>uninstalled</code>; Odoo shows its own sign-in page but the shop shows errors (typical).</td><td>The query in part H, check 3</td><td>A step of part F was skipped or failed.</td><td>Find the first part-F step whose success line did not appear and repeat from there. Steps 4 and 5 can be repeated safely on the same database.</td></tr>
+        <tr><td><strong>Odoo shell error <code>invalid non-printable character U+FEFF</code>.</strong> (seen)</td><td>The command contained <code>Get-Content ... |</code></td><td>Windows PowerShell 5.1 added a byte-order mark.</td><td>Use the <code>cmd /c "... &lt; file"</code> form from part F.</td></tr>
+        <tr><td><strong>API returns an error while the frontend loads.</strong> The shop shows &ldquo;not available right now&rdquo;; the browser console shows <code>502</code> on <code>/api/...</code> (seen when the API container was stopped).</td><td><code>docker compose ps</code>; <code>docker compose logs --tail 50 api</code></td><td>The API container is down, or it cannot reach Odoo.</td><td><code>docker compose up -d api</code>. If it exits at once, check that <code>backend\.env</code> has <code>ODOO_API_KEY</code> and <code>SESSION_SECRET</code> set (part F, step 6).</td></tr>
+        <tr><td><strong>Product pictures return 404.</strong> Boxes where the picture should be (typical on a database restored from a dump).</td><td><code>(Invoke-WebRequest -UseBasicParsing http://127.0.0.1:8000/api/catalogue/products/m-tee/image).StatusCode</code></td><td>A dump holds the database rows but not the picture files. On the fresh install of this tutorial all 19 pictures loaded.</td><td>Seed the catalogue (part F, step 5) on a fresh database, or restore the filestore copy that goes with the dump (see <code>RUNBOOK.md</code>, &ldquo;product pictures&rdquo;).</td></tr>
+        <tr><td><strong>Login fails.</strong> &ldquo;The email or password is not right&rdquo; (HTTP 401, seen). Or &ldquo;This request did not come from the shop&rdquo; (HTTP 403, seen).</td><td>For 403: look at the address bar. For 401 as staff: open <code>backend\.env</code> and compare.</td><td>403: the storefront is not on <code>http://localhost:5173</code>. 401: wrong password; staff passwords are the random ones in your <code>backend\.env</code>.</td><td>403: stop the dev server and run it again with <code>--strictPort</code> after freeing port 5173. 401 for the staff test accounts: run part F step 6 again; it is safe and sets new random passwords.</td></tr>
+        <tr><td><strong>The documentation route shows the shop instead.</strong> <code>/docs/</code> shows the storefront&rsquo;s home or a not-found page (seen on a dev server started before the change).</td><td>Open <code>/docs/index.html</code> directly.</td><td>Vite&rsquo;s dev server must be restarted to load the <code>vite.config.ts</code> that serves <code>/docs/</code>.</td><td>Stop the dev server (Ctrl+C) and start it again.</td></tr>
+        <tr><td><strong>Frontend build or tests fail.</strong> <code>npm ci</code> complains about the engine, or the Edge tests cannot start.</td><td><code>node --version</code>; <code>npm ls --depth 0</code></td><td>Node older than 22.22, or Microsoft Edge not installed (only the Edge tests need it).</td><td>Install a newer Node and run <code>npm ci</code> again. Without Edge, use <code>npx vitest run --project jsdom</code>.</td></tr>
+        <tr><td><strong>The DSS run fails or shows nothing useful.</strong></td><td><code>/admin/dss</code> shows the run state; <code>docker compose logs --tail 80 odoo</code></td><td>A run that completes but has no forecast means the shop has fewer than 16 complete weeks with sales (the rule in <code>engine/bundle.py</code>). That is normal for a new shop. A <em>failed</em> run stores its error text in the run row.</td><td>For a first look at a working DSS use the separate scenario-pack database (part F, optional). If a run fails, send the error text (not the whole log) when you report it (part L).</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ K -->
+  <section id="tut-k" aria-labelledby="tut-k-h">
+    <h3 id="tut-k-h">K. Handover notes and system architecture</h3>
+    <h4>How the parts fit, in plain words</h4>
+    <p>A visitor&rsquo;s browser shows the <strong>storefront</strong> (the React app in <code>frontend/</code>). It never talks to the database. It sends every request to <code>/api</code> on its own address. In development the Vite server passes those to the <strong>API service</strong> (FastAPI, <code>backend/</code>), which checks the request and the login cookie and then asks <strong>Odoo</strong> to do the real work. Odoo holds the business rules (our <code>clothcraft</code> addon) and stores everything in <strong>PostgreSQL</strong>. The <strong>DSS</strong> (the <code>clothcraft_dss</code> addon and its engine) is a batch job inside Odoo: it reads the shop&rsquo;s own orders and stock tables, works out forecasts and suggestions, and stores the results in its own tables, which the admin screens read through the API. Section D of this page has the drawings.</p>
+
+    <div class="tablebox" tabindex="0" role="region" aria-label="Where to change what">
+    <table>
+      <thead><tr><th>To change&hellip;</th><th>Look in</th></tr></thead>
+      <tbody>
+        <tr><td>Storefront pages and components</td><td><code>frontend/src/pages/</code>, <code>frontend/src/components/</code> (landing sections in <code>components/landing/</code>); routes in <code>frontend/src/router.tsx</code>; cart in <code>src/cart/</code>; API calls in <code>src/api/</code></td></tr>
+        <tr><td>Admin and staff screens</td><td><code>frontend/src/admin/</code> (DSS screens in <code>admin/dss/</code>) and <code>frontend/src/staff/</code></td></tr>
+        <tr><td>Design editor</td><td><code>frontend/src/editor/</code> (the Fabric &ldquo;Simple&rdquo; editor in <code>editor/simple/</code>); drafts in <code>src/drafts/</code>; print-fee estimate in <code>src/pricing/</code></td></tr>
+        <tr><td>Premade designs</td><td>The list: <code>frontend/src/designs/catalog.ts</code>. The files: <code>frontend/public/designs/</code> (templates, pictures, previews), made by <code>frontend/scripts/make-premade-designs.mjs</code>; see <code>public/designs/README.md</code>. Do not edit the generated files by hand.</td></tr>
+        <tr><td>API service</td><td><code>backend/app/</code> (<code>main.py</code>, <code>inventory.py</code> for staff and admin routes, <code>designs.py</code>, <code>odoo.py</code>)</td></tr>
+        <tr><td>Odoo business rules</td><td><code>addons/clothcraft/models/</code> (orders, stock, restocks, suppliers, designs, the <code>api*.py</code> facade); the server&rsquo;s print-fee rule is <code>addons/clothcraft/design_fee.py</code>. After changing a model, bump the version in <code>__manifest__.py</code> and upgrade the module (part L).</td></tr>
+        <tr><td>DSS calculations</td><td><code>addons/clothcraft_dss/engine/</code> (<code>forecast.py</code>, <code>methods.py</code>, <code>restock.py</code>, <code>segments.py</code>, <code>alerts.py</code>, <code>health.py</code>, <code>transform.py</code>); the runner and result tables in <code>addons/clothcraft_dss/models/</code></td></tr>
+        <tr><td>Automated tests</td><td>Frontend: <code>*.test.ts(x)</code> next to the code. Backend: <code>backend/tests/</code>. Odoo: <code>addons/clothcraft/tests/</code>, <code>addons/clothcraft_dss/tests/</code>. DSS engine: <code>addons/clothcraft_dss/engine/tests/</code>. Browser scripts: <code>frontend/scripts/check-*.mjs</code> (the documentation page and menu link: <code>check-docs-page.mjs</code>).</td></tr>
+        <tr><td>This documentation</td><td><code>frontend/public/docs/index.html</code>: one file, plain HTML and CSS. Update its &ldquo;last verified&rdquo; date and the status table when things change.</td></tr>
+        <tr><td>Scripts and demo data</td><td><code>scripts/</code> (setup, seeding and the scenario-pack loader), <code>testdata/dss-scenarios/</code> (the synthetic pack, <code>README.md</code> and <code>RUNBOOK.md</code>), <code>config/</code> (Odoo settings), <code>assets-v1/</code> (product pictures used by the seed)</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h4>Known limitations and unfinished work</h4>
+    <ul>
+      <li><span class="pill warn">In progress</span> Stages <strong>S5c&ndash;S5e</strong> of the admin DSS screens are not finished. Only the DSS <em>Overview</em> and <em>Forecast</em> pages exist. <span class="pill off">Not yet implemented</span> as pages: restock recommendations as a table, customer segments, alerts and business health. The engine computes them in every run and the API serves them, but no screen shows them yet.</li>
+      <li>The weekly automatic DSS run is installed but switched off; <em>Run now</em> is the way to make a run.</li>
+      <li>&ldquo;Need help?&rdquo; in the header menu still says Coming soon.</li>
+      <li><strong>Scenario data is synthetic.</strong> It exists to demonstrate and evaluate the methods. It is not independently verified sales history, and results on it are not evidence of accuracy on real sales. The DSS screens badge any database without a simulation marker as <em>REAL DATA</em>, which is misleading for a database that holds scenario data.</li>
+      <li>A design started from a premade template is not autosaved as a draft; add it to the cart to keep it.</li>
+      <li>The garment photos behind the design previews have an unconfirmed licence (<code>frontend/public/garments/CREDITS.md</code>).</li>
+      <li>This tutorial was tested on Windows only (see the top of this tutorial).</li>
+    </ul>
+  </section>
+
+  <!-- ------------------------------------------------------------------------------ L -->
+  <section id="tut-l" aria-labelledby="tut-l-h">
+    <h3 id="tut-l-h">L. Update and maintenance</h3>
+    <p>The repository has one branch, <code>main</code>, and no other branch convention is written down in it. If you want to change code, make your own branch first (<code>git switch -c my-change</code>) so you never edit <code>main</code> directly.</p>
+    <h4>Pulling new changes safely</h4>
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>git status                         # is anything of yours uncommitted? commit it on your branch first
+git fetch                          # look at what is new; this changes none of your files
+git log HEAD..origin/main --oneline   # the commits you are about to receive
+git switch main
+git pull --ff-only                 # takes the new commits only if it can do so without overwriting anything</code></pre>
+    <p>If <code>git pull --ff-only</code> refuses, stop: it means your <code>main</code> and the shared one have diverged. <strong>Do not</strong> run <code>git reset --hard</code> or <code>git clean</code> to make the message go away; ask the person who maintains the repository, or move your work to a branch first. Your <code>.env</code> files are ignored by git, so a pull never touches them.</p>
+
+    <h4>Then rebuild only what changed</h4>
+    <ul>
+      <li><code>frontend/package-lock.json</code> changed &rarr; in <code>frontend</code>: <code>npm ci</code>.</li>
+      <li><code>Dockerfile</code> or <code>backend/requirements*</code> or <code>backend/app</code> changed &rarr; <code>docker compose build odoo api</code>, then <code>docker compose up -d</code>.</li>
+      <li>Files in <code>addons/</code> changed (look for a new version in an addon&rsquo;s <code>__manifest__.py</code>) &rarr; <strong>make a backup first (part I)</strong>, then stop Odoo and upgrade, then start it again:
+<pre tabindex="0" role="group" aria-label="Command to copy"><code>docker compose stop odoo
+docker compose run --rm --no-deps odoo odoo -d clothcraft_shop -u clothcraft,clothcraft_dss --stop-after-init
+docker compose up -d odoo</code></pre>
+      Success ends with a line like <code>Registry loaded in ...s</code> and no <code>ERROR</code> lines. (The upgrade command was tested for the DSS module; stopping Odoo first is what <code>README.md</code> recommends.)</li>
+      <li><code>frontend/vite.config.ts</code> changed &rarr; restart the dev server.</li>
+    </ul>
+    <p>Your database, backups and <code>.env</code> files stay as they are through all of this.</p>
+
+    <h4>Reporting a bug</h4>
+    <p>Send: what you did, step by step; what you expected; what happened instead; the output of <code>git rev-parse --short HEAD</code>; your operating system, <code>docker --version</code> and <code>node --version</code>; and the last 20 to 50 lines of the one relevant log (<code>docker compose logs --tail 50 api</code>), after reading them. <strong>Do not send:</strong> <code>.env</code> or <code>backend\.env</code> (or a screenshot of them), passwords, the API key, cookies, database dumps or backups, customer names, emails or addresses, or whole log files. Replace anything personal in a log line with <code>&lt;removed&gt;</code>.</p>
+  </section>
+</section>
+
+<section id="status" aria-labelledby="st-h">
+  <h2 id="st-h"><span class="letter">&middot;</span>Implementation status</h2>
+  <p>Update this table as the remaining DSS stages are finished; each other section describes behaviour that is in the code today.</p>
+  <div class="tablebox" tabindex="0" role="region" aria-label="Implementation status">
+  <table>
+    <thead><tr><th>Item</th><th>Status</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>DSS engine: forecast, restock, segments, alerts, health</td><td><span class="pill ok">Implemented</span></td><td>Run, stored, tested (section M)</td></tr>
+      <tr><td>DSS runner, result tables, admin API (12 methods)</td><td><span class="pill ok">Implemented</span></td><td>Installed on the development shop</td></tr>
+      <tr><td>Admin screens: DSS Overview and Forecast</td><td><span class="pill ok">Implemented</span></td><td>S5a, S5b</td></tr>
+      <tr><td>Forecast-page recommendation cards</td><td><span class="pill warn">In progress</span></td><td>Present in code (labelled S5c); the stage is not closed</td></tr>
+      <tr><td>Admin screens for restock table, segments, alerts, health</td><td><span class="pill off">Not yet implemented</span></td><td>S5c&ndash;S5e not complete; this page makes no claim about their design</td></tr>
+      <tr><td>Installation and handover tutorial (this page)</td><td><span class="pill ok">Implemented</span></td><td>First-run procedure tested on Windows 10 with Docker Desktop in a clean copy; macOS and Linux not tested; GitHub clone not tested</td></tr>
+      <tr><td>Weekly automatic DSS run</td><td><span class="pill warn">Planned</span></td><td>Job exists and is installed inactive</td></tr>
+      <tr><td>Independent validation against real sales</td><td><span class="pill off">Not yet implemented</span></td><td>No real trading history yet</td></tr>
+      <tr><td>Real-shop signed-in design-to-order journey check</td><td><span class="pill warn">Planned</span></td><td>Needs a customer account on a non-demo database</td></tr>
+      <tr><td>&ldquo;Need help?&rdquo; page</td><td><span class="pill off">Not yet implemented</span></td><td>Menu item shows Coming soon</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="counts" aria-labelledby="ct-h">
+  <h2 id="ct-h"><span class="letter">&middot;</span>How things were counted</h2>
+  <p>Counts were made on 27 October 2026 from the source and, where stated, from the running development stack. <em>Source counts</em> come from files; <em>runtime counts</em> come from a query or a test run.</p>
+  <div class="tablebox" tabindex="0" role="region" aria-label="Counts and definitions">
+  <table>
+    <thead><tr><th>Thing</th><th class="num">Count</th><th>Kind</th><th>Definition and method</th></tr></thead>
+    <tbody>
+      <tr><td>DSS analysis engines</td><td class="num">5</td><td>Source</td><td>A module in <code>engine/</code> that computes one DSS result table family from prepared data: forecast, restock, segments, alerts, health. <code>methods.py</code>, extractors, transform, bundle and tools are support, not engines.</td></tr>
+      <tr><td>Engine modules</td><td class="num">13</td><td>Source</td><td>Python files in <code>engine/</code> excluding <code>__init__.py</code> and <code>tests/</code>.</td></tr>
+      <tr><td>Forecasting methods</td><td class="num">5 + 1</td><td>Source</td><td>Functions in <code>methods.py</code> (naive, moving average, seasonal naive, damped ETS, Croston/SBA) plus the <code>group_share</code> fallback in <code>forecast.py</code>.</td></tr>
+      <tr><td>DSS result tables</td><td class="num">7</td><td>Source</td><td>Output models: forecast, backtest, restock, segment, alert, health, actual. Together with the run table and the import wizard they make the 9 database tables named <code>clothcraft_dss_*</code> (runtime query).</td></tr>
+      <tr><td>DSS admin API methods</td><td class="num">12</td><td>Source</td><td><code>admin_dss_*</code> methods in <code>api_dss.py</code>.</td></tr>
+      <tr><td>Odoo models declared</td><td class="num">34</td><td>Source</td><td>Distinct <code>_name</code> values: 23 in <code>clothcraft</code>, 11 in <code>clothcraft_dss</code>. Extensions of native models (<code>_inherit</code> lines: 42) are not counted as models.</td></tr>
+      <tr><td>Database tables</td><td class="num">573 / 30</td><td>Runtime</td><td>Base tables in schema <code>public</code> of <code>clothcraft_shop</code> / those whose name starts <code>clothcraft_</code>. Read-only <code>information_schema</code> query.</td></tr>
+      <tr><td>API route definitions</td><td class="num">90</td><td>Source</td><td>Section D. Not distinct mounted URLs.</td></tr>
+      <tr><td>Frontend route entries</td><td class="num">53</td><td>Source</td><td>Entries with <code>path:</code> or <code>index: true</code> in <code>frontend/src/router.tsx</code>, nested ones included, catch-alls included. 11 are customer-shop entries.</td></tr>
+      <tr><td>Frontend component files</td><td class="num">125</td><td>Source</td><td>All <code>.tsx</code> files under <code>frontend/src</code> that are not tests. This includes pages, admin and staff screens; it is a file count, not a count of distinct components.</td></tr>
+      <tr><td>Frontend test files</td><td class="num">60</td><td>Source</td><td><code>*.test.ts</code> and <code>*.test.tsx</code> under <code>frontend/src</code> (51 jsdom + 9 Edge, matching the runs).</td></tr>
+      <tr><td>Premade designs</td><td class="num">12</td><td>Source</td><td>Entries in <code>frontend/src/designs/catalog.ts</code> (5 featured, 7 browse-only).</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+  </main>
+</div>
+
+<script>
+/* The only script on the page, and optional: it opens the contents list on wide screens, collapses it on narrow ones,
+   and marks the section being read. Without it, the list is simply open and every link still works. */
+(function () {
+  try {
+    var toc = document.getElementById('toc');
+    var wide = window.matchMedia('(min-width: 62rem)');
+    function sync() { if (wide.matches) toc.setAttribute('open', ''); else toc.removeAttribute('open'); }
+    sync();
+    if (wide.addEventListener) wide.addEventListener('change', sync);
+    var links = {};
+    [].forEach.call(toc.querySelectorAll('a[href^="#"]'), function (a) { links[a.getAttribute('href').slice(1)] = a; });
+    toc.addEventListener('click', function (e) {
+      if (!wide.matches && e.target.closest && e.target.closest('a')) toc.removeAttribute('open');
+    });
+    if ('IntersectionObserver' in window) {
+      var current = null;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          var a = links[en.target.id];
+          if (!a) return;
+          if (current) current.removeAttribute('aria-current');
+          a.setAttribute('aria-current', 'true');
+          current = a;
+        });
+      }, { rootMargin: '-10% 0px -80% 0px' });
+      [].forEach.call(document.querySelectorAll('main section[id]'), function (s) { io.observe(s); });
+    }
+  } catch (e) { /* the page works without it */ }
+})();
+</script>
+</body>
+</html>
