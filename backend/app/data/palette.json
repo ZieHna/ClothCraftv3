@@ -1,0 +1,45 @@
+{
+ "groups": [
+  "Men",
+  "Women",
+  "Kids",
+  "Babies"
+ ],
+ "sizes": [
+  "XS",
+  "S",
+  "M",
+  "L",
+  "XL",
+  "XXL"
+ ],
+ "colors": [
+  {
+   "id": "black",
+   "name": "Black",
+   "hex": "#1F1D1B"
+  },
+  {
+   "id": "white",
+   "name": "White",
+   "hex": "#F4F1EA"
+  },
+  {
+   "id": "navy",
+   "name": "Navy",
+   "hex": "#243049"
+  },
+  {
+   "id": "red",
+   "name": "Red",
+   "hex": "#A8353A"
+  },
+  {
+   "id": "gray",
+   "name": "Gray",
+   "hex": "#8E8E8A"
+  }
+ ],
+ "note": "Simulated catalogue. Prices are invented (VAT-inclusive PHP). Stock is a seeded mock, not a real inventory.",
+ "label": "Simulated"
+}
