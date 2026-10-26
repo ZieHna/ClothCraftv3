@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Read-only screens for the Administrator. Runs start only from a cron; the button only queues one. -->
+    <record id="view_dss_run_list" model="ir.ui.view">
+        <field name="name">clothcraft.dss.run.list</field>
+        <field name="model">clothcraft.dss.run</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" decoration-danger="state == 'failed'" decoration-muted="state == 'running'">
+                <header>
+                    <button name="action_run_now" type="object" string="Run now" class="btn-primary" display="always"
+                            groups="clothcraft.group_admin"/>
+                    <button name="action_import_bundle" type="object" string="Import simulated bundle" display="always"
+                            groups="clothcraft.group_admin"/>
+                </header>
+                <field name="display_name" string="Run"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-danger="state == 'failed'"/>
+                <field name="trigger"/>
+                <field name="as_of"/>
+                <field name="simulated"/>
+                <field name="closed_rule"/>
+                <field name="requested_by_name"/>
+                <field name="started_at"/>
+                <field name="duration_s"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dss_run_form" model="ir.ui.view">
+        <field name="name">clothcraft.dss.run.form</field>
+        <field name="model">clothcraft.dss.run</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert" invisible="not simulated">
+                        <field name="label" readonly="1"/>
+                    </div>
+                    <div class="alert alert-danger" role="alert" invisible="state != 'failed'">
+                        <field name="error" readonly="1"/>
+                    </div>
+                    <group>
+                        <group string="Run">
+                            <field name="trigger"/>
+                            <field name="requested_by_name"/>
+                            <field name="started_at"/>
+                            <field name="finished_at"/>
+                            <field name="duration_s"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Data">
+                            <field name="as_of"/>
+                            <field name="source_db"/>
+                            <field name="simulated"/>
+                            <field name="closed_rule"/>
+                            <field name="closed_rule_text"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Restock" name="restock">
+                            <field name="restock_ids" readonly="1">
+                                <list>
+                                    <field name="sku"/>
+                                    <field name="free"/>
+                                    <field name="incoming"/>
+                                    <field name="runout_date"/>
+                                    <field name="supplier"/>
+                                    <field name="lead_days"/>
+                                    <field name="suggested_qty"/>
+                                    <field name="order_by"/>
+                                    <field name="order_now"/>
+                                    <field name="stockout_before_arrival"/>
+                                    <field name="est_cost"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Alerts" name="alerts">
+                            <field name="alert_ids" readonly="1">
+                                <list>
+                                    <field name="severity"/>
+                                    <field name="kind"/>
+                                    <field name="band"/>
+                                    <field name="subject_label"/>
+                                    <field name="message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Health" name="health">
+                            <field name="health_ids" readonly="1">
+                                <list>
+                                    <field name="month"/>
+                                    <field name="complete"/>
+                                    <field name="revenue"/>
+                                    <field name="spending"/>
+                                    <field name="cogs"/>
+                                    <field name="net_cash"/>
+                                    <field name="net_margin"/>
+                                    <field name="flags"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Segments" name="segments">
+                            <field name="segment_ids" readonly="1">
+                                <list>
+                                    <field name="customer_key"/>
+                                    <field name="segment_name"/>
+                                    <field name="recency_days"/>
+                                    <field name="frequency"/>
+                                    <field name="monetary"/>
+                                    <field name="r_score"/>
+                                    <field name="f_score"/>
+                                    <field name="m_score"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Forecast" name="forecast">
+                            <field name="forecast_ids" readonly="1">
+                                <list>
+                                    <field name="level"/>
+                                    <field name="key_label"/>
+                                    <field name="week_start"/>
+                                    <field name="yhat"/>
+                                    <field name="has_interval"/>
+                                    <field name="lo80"/>
+                                    <field name="hi80"/>
+                                    <field name="method"/>
+                                    <field name="flags"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Backtest" name="backtest">
+                            <field name="backtest_ids" readonly="1">
+                                <list>
+                                    <field name="level"/>
+                                    <field name="key"/>
+                                    <field name="policy"/>
+                                    <field name="horizon"/>
+                                    <field name="weeks"/>
+                                    <field name="n"/>
+                                    <field name="wape"/>
+                                    <field name="bias"/>
+                                    <field name="cov80"/>
+                                    <field name="chosen"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Technical" name="technical">
+                            <group>
+                                <field name="engine_version"/>
+                                <field name="module_version"/>
+                                <field name="input_fingerprint"/>
+                                <field name="output_hash"/>
+                                <field name="bundle_sha256" invisible="not bundle_sha256"/>
+                            </group>
+                            <field name="technical_text" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- B8 S3: import of an engine bundle (models/dss_import.py), Administrator only -->
+    <record id="view_dss_import_wizard_form" model="ir.ui.view">
+        <field name="name">clothcraft.dss.import.wizard.form</field>
+        <field name="model">clothcraft.dss.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import a simulated bundle">
+                <p>A bundle folder written by the DSS engine, directly under /mnt/dss-bundles inside the Odoo container. Its checksums are
+                   checked; the run is labelled simulated.</p>
+                <group>
+                    <field name="path"/>
+                </group>
+                <footer>
+                    <button name="action_import" type="object" string="Import" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dss_runs" model="ir.actions.act_window">
+        <field name="name">DSS runs</field>
+        <field name="res_model">clothcraft.dss.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No DSS run yet</p>
+            <p>Press Run now: the run is computed in the background and appears here when it has finished.</p>
+        </field>
+    </record>
+</odoo>

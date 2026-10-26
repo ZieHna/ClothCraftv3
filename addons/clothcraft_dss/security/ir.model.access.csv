@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dss_run_admin,clothcraft.dss.run admin (read),model_clothcraft_dss_run,clothcraft.group_admin,1,0,0,0
+access_dss_forecast_admin,clothcraft.dss.forecast admin (read),model_clothcraft_dss_forecast,clothcraft.group_admin,1,0,0,0
+access_dss_backtest_admin,clothcraft.dss.backtest admin (read),model_clothcraft_dss_backtest,clothcraft.group_admin,1,0,0,0
+access_dss_restock_admin,clothcraft.dss.restock admin (read),model_clothcraft_dss_restock,clothcraft.group_admin,1,0,0,0
+access_dss_segment_admin,clothcraft.dss.segment admin (read),model_clothcraft_dss_segment,clothcraft.group_admin,1,0,0,0
+access_dss_alert_admin,clothcraft.dss.alert admin (read),model_clothcraft_dss_alert,clothcraft.group_admin,1,0,0,0
+access_dss_health_admin,clothcraft.dss.health admin (read),model_clothcraft_dss_health,clothcraft.group_admin,1,0,0,0
+access_dss_actual_admin,clothcraft.dss.actual admin (read),model_clothcraft_dss_actual,clothcraft.group_admin,1,0,0,0
+access_dss_import_wizard_admin,clothcraft.dss.import.wizard admin,model_clothcraft_dss_import_wizard,clothcraft.group_admin,1,1,1,0

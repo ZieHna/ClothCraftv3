@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- DSS runs and their outputs: read by the Administrator only (ir.model.access.csv has read lines for clothcraft.group_admin and
+         nothing else); written only by the run itself (models/dss_run.py), and append only (models/dss_outputs.py). Multi-company like the
+         other ClothCraft tables. -->
+    <record id="dss_run_company_rule" model="ir.rule">
+        <field name="name">DSS run: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_dss_run"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="dss_forecast_company_rule" model="ir.rule">
+        <field name="name">DSS forecast: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_dss_forecast"/>
+        <field name="domain_force">[('run_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="dss_backtest_company_rule" model="ir.rule">
+        <field name="name">DSS backtest: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_dss_backtest"/>
+        <field name="domain_force">[('run_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="dss_restock_company_rule" model="ir.rule">
+        <field name="name">DSS restock: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_dss_restock"/>
+        <field name="domain_force">[('run_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="dss_segment_company_rule" model="ir.rule">
+        <field name="name">DSS segment: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_dss_segment"/>
+        <field name="domain_force">[('run_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="dss_alert_company_rule" model="ir.rule">
+        <field name="name">DSS alert: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_dss_alert"/>
+        <field name="domain_force">[('run_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="dss_actual_company_rule" model="ir.rule">
+        <field name="name">DSS weekly actuals: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_dss_actual"/>
+        <field name="domain_force">[('run_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="dss_health_company_rule" model="ir.rule">
+        <field name="name">DSS health: multi-company</field>
+        <field name="model_id" ref="model_clothcraft_dss_health"/>
+        <field name="domain_force">[('run_id.company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

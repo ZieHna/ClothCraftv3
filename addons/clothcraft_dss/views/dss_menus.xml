@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_clothcraft_dss_runs" name="DSS runs" parent="clothcraft.menu_clothcraft_root" action="action_dss_runs"
+              sequence="90" groups="clothcraft.group_admin"/>
+</odoo>
